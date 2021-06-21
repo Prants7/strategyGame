@@ -20,12 +20,12 @@ public class ProvinceListFactory {
         return list;
     }
 
-    public JList<String> giveProvinceList(List<Province> provinces) {
-        DefaultListModel<String> l1 = new DefaultListModel<>();
+    public JList<Province> giveProvinceList(List<Province> provinces) {
+        DefaultListModel<Province> l1 = new DefaultListModel<>();
         for(Province oneProvince: provinces) {
-            l1.addElement(oneProvince.getProvinceName());
+            l1.addElement(oneProvince);
         }
-        JList<String> list = new JList<>(l1);
+        JList<Province> list = new JList<>(l1);
         return list;
     }
 }

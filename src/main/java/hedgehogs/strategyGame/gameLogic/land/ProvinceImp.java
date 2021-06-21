@@ -145,4 +145,9 @@ public class ProvinceImp extends BaseProvince {
                 .filter(oneFraction -> oneFraction.isManaged() == false).collect(Collectors.toList());
         return unsettledLands;
     }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }
