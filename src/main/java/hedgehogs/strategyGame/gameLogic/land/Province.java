@@ -1,6 +1,7 @@
 package hedgehogs.strategyGame.gameLogic.land;
 
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
+import hedgehogs.strategyGame.gameLogic.land.infuenceTable.InfluenceTable;
 import hedgehogs.strategyGame.gameLogic.land.landFractction.LandFraction;
 
 import java.util.List;
@@ -23,4 +24,6 @@ public interface Province {
     public void settleAmountOfLand(int amount);
 
     public Map<Faction, Integer> getFractionOwnershipMap();
+
+    public InfluenceTable getProvinceInfluenceTable();
 }

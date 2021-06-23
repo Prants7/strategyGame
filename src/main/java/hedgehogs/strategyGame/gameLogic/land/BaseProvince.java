@@ -1,12 +1,19 @@
 package hedgehogs.strategyGame.gameLogic.land;
 
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
+import hedgehogs.strategyGame.gameLogic.land.infuenceTable.InfluenceTable;
+import hedgehogs.strategyGame.gameLogic.land.infuenceTable.InfluenceTableImp;
 import hedgehogs.strategyGame.gameLogic.land.landFractction.LandFraction;
 
 import java.util.List;
 import java.util.Map;
 
 public abstract class BaseProvince implements Province {
+    private InfluenceTable influenceTable;
+
+    public BaseProvince() {
+        this.influenceTable = new InfluenceTableImp();
+    }
 
     public String getProvinceName() {
         return this.provideProvinceName();
@@ -67,4 +74,8 @@ public abstract class BaseProvince implements Province {
     }
 
     protected abstract Map<Faction, Integer> provideFractionOwnershipMap();
+
+    public InfluenceTable getProvinceInfluenceTable() {
+        return this.influenceTable;
+    }
 }

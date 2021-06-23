@@ -1,5 +1,8 @@
 package hedgehogs.strategyGame.gameLogic.gameTime.calculationHubs.landOwnershipHub;
 
+import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.FactionResourceInterface;
+import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.ResourceSettings;
+import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.ResourceType;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
 import hedgehogs.strategyGame.gameLogic.gameTime.calculationHubs.CalculationHub;
@@ -16,6 +19,8 @@ public class LandOwnershipHubImp implements CalculationHub {
     private World gameWorld;
     @Autowired
     private FactionPhoneBook factionPhoneBook;
+    @Autowired
+    private FactionResourceInterface factionResourceInterface;
 
     @Override
     public void triggerCalculations() {
@@ -41,7 +46,18 @@ public class LandOwnershipHubImp implements CalculationHub {
 
     private void giveGoldToFaction(Faction targetFaction, int amountOfGold, Province sourceOfGold) {
         System.out.println("Faction: "+targetFaction.getFactionName()+", gets "+amountOfGold+" gold");
-        targetFaction.depositGoldToTreasury(amountOfGold);
+        //targetFaction.depositGoldToTreasury(amountOfGold);
+        this.factionResourceInterface.addResourceToFaction(this.getTaxSettings(targetFaction, sourceOfGold, amountOfGold));
         System.out.println(targetFaction.getFactionName()+" gold balance after deposit: "+targetFaction.getCurrentTreasuryGoldBalance());
     }
+
+    private ResourceSettings getTaxSettings(Faction faction, Province source, int amount) {
+        ResourceSettings newSettings = new ResourceSettings();
+        newSettings.setResourceType(ResourceType.GOLD);
+        newSettings.setFaction(faction);
+        newSettings.setProvince(source);
+        newSettings.setAmount(amount);
+        return newSettings;
+    }
+
 }
