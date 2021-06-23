@@ -1,4 +1,4 @@
-package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionModules.landPurchaseCheckModule;
+package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landPurchaseAction;
 
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;

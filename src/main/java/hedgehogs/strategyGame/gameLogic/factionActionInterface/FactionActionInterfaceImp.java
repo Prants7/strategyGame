@@ -1,9 +1,7 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface;
 
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionModules.landClearCheckModule.LandClearCheckModule;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionModules.landClearModule.LandClearModule;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionModules.landPurchaseCheckModule.LandPurchaseCheckModule;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionModules.landPurchaseModule.LandPurchaseModule;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction.LandClearAction;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landPurchaseAction.LandPurchaseAction;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,32 +10,28 @@ import org.springframework.stereotype.Component;
 @Component
 public class FactionActionInterfaceImp extends BaseFactionActionInterface {
     @Autowired
-    private LandPurchaseCheckModule landPurchaseCheckModule;
+    private LandPurchaseAction landPurchaseAction;
     @Autowired
-    private LandPurchaseModule landPurchaseModule;
-    @Autowired
-    private LandClearCheckModule landClearCheckModule;
-    @Autowired
-    private LandClearModule landClearModule;
+    private LandClearAction landClearAction;
 
     @Override
     protected boolean checkIfAllowedToPurchaseLand(Faction targetFaction, Province targetProvince) {
-        return this.landPurchaseCheckModule.allowedToPerformLandPurchaseForFaction(targetFaction, targetProvince);
+        return this.landPurchaseAction.allowedToDoAction(targetFaction, targetProvince, 1);
     }
 
     @Override
     protected void doLandPurchaseForFaction(Faction targetFaction, Province targetProvince) {
-        this.landPurchaseModule.doLandPurchase(targetFaction, targetProvince);
+        this.landPurchaseAction.doAction(targetFaction, targetProvince, 1);
     }
 
     @Override
     protected boolean checkIfAllowedToClearLand(Faction callingFaction, Province targetProvince, int amount) {
-        return this.landClearCheckModule.checkIfAllowedToClearLandInProvince(callingFaction, targetProvince, amount);
+        return this.landClearAction.allowedToDoAction(callingFaction, targetProvince, amount);
     }
 
     @Override
     protected void doClearLand(Faction callingFaction, Province targetProvince, int amount) {
-        this.landClearModule.doClearLandInProvince(callingFaction, targetProvince, amount);
+        this.landClearAction.doAction(callingFaction, targetProvince, amount);
 
     }
 

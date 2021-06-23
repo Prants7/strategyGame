@@ -1,4 +1,4 @@
-package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionModules.landClearModule;
+package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction;
 
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
