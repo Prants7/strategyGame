@@ -18,6 +18,7 @@ public class InfluenceTableImp extends BaseInfluenceTable {
         if(influenceMap.containsKey(targetFaction)) {
             newValue += influenceMap.get(targetFaction);
         }
+        System.out.println("Here new influence of faction: "+targetFaction.getFactionName()+" is "+newValue);
         influenceMap.put(targetFaction, newValue);
     }
 

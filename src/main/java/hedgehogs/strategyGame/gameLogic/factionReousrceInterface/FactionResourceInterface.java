@@ -8,4 +8,6 @@ public interface FactionResourceInterface {
     public boolean addResourceToFaction(ResourceSettings settings);
 
     public boolean removeResourceFromFaction(ResourceSettings settings);
+
+    public boolean canRemoveResourcesFromFaction(ResourceSettings settings);
 }

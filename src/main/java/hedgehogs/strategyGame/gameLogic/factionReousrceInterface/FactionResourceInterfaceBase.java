@@ -55,4 +55,21 @@ public abstract class FactionResourceInterfaceBase implements FactionResourceInt
     }
 
     protected abstract boolean withdrawResourceScript(ResourceSettings settings);
+
+    @Override
+    public boolean canRemoveResourcesFromFaction(ResourceSettings settings) {
+        if(this.missingOneOfCriticalOptions(settings)) {
+            System.out.println("Error: cant withdraw resources cause missing a critical setting field");
+            return false;
+        }
+        if(settings.getResourceType() != ResourceType.GOLD) {
+            if(this.missingLocationInfo(settings)) {
+                System.out.println("Error: missing location info on resource withdraw");
+                return false;
+            }
+        }
+        return this.canWithdrawResourceScript(settings);
+    }
+
+    protected abstract boolean canWithdrawResourceScript(ResourceSettings settings);
 }

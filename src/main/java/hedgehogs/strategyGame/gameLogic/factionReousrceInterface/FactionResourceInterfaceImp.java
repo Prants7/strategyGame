@@ -65,4 +65,29 @@ public class FactionResourceInterfaceImp extends FactionResourceInterfaceBase {
         }
         return false;
     }
+
+    @Override
+    protected boolean canWithdrawResourceScript(ResourceSettings settings) {
+        Faction faction = settings.getFaction();
+        int amount = settings.getAmount();
+        ResourceType resourceType = settings.getResourceType();
+        Province location = settings .getProvince();
+
+        if(resourceType == ResourceType.GOLD) {
+            return canWithdrawGold(faction, amount);
+        }
+        if(resourceType == ResourceType.INFLUENCE) {
+            return canWithdrawInfluence(faction, location, amount);
+        }
+        return false;
+    }
+
+    private boolean canWithdrawGold(Faction faction, int amount) {
+        return faction.canWithdrawGoldAmount(amount);
+    }
+
+    private boolean canWithdrawInfluence(Faction faction, Province location, int amount) {
+        return location.getProvinceInfluenceTable().factionCanWithdrawAmountOfInfluence(faction, amount);
+    }
+
 }
