@@ -8,14 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Map;
 
 @Component
 public class ProvinceViewFactory {
     private Province lastSelectedProvince;
+    private JPanel mainPanel;
     private JLabel provinceNameLabel;
     private JLabel developedLand;
     private JLabel ownerShip;
+    private JList<String> ownershipList;
     private JButton clearLand;
     private JButton buyLand;
     @Autowired
@@ -26,13 +29,42 @@ public class ProvinceViewFactory {
 
     public JPanel giveProvinceView() {
         //this.lastSelectedProvince = targetProvince;
-        JPanel panel=new JPanel();
-        panel.add(this.getProvinceNameLabel());
-        panel.add(this.getDevelopedLandLabel());
-        panel.add(this.getOwnerShipLabel());
-        panel.add(this.getClearLandButton());
-        panel.add(this.getBuyLandButton());
-        return panel;
+        /*JPanel panel=new JPanel();
+        GridBagLayout layout = new GridBagLayout();
+        panel.setLayout(layout);*/
+        this.setUpMainPanel();
+        GridBagConstraints layoutConstraint = new GridBagConstraints();
+
+        layoutConstraint.fill = GridBagConstraints.HORIZONTAL;
+        this.setCoordinatesForLayout(layoutConstraint, 0, 0);
+        this.mainPanel.add(this.getProvinceNameLabel(), layoutConstraint);
+
+        this.setCoordinatesForLayout(layoutConstraint, 0, 1);
+        this.mainPanel.add(this.getDevelopedLandLabel(), layoutConstraint);
+
+        this.setCoordinatesForLayout(layoutConstraint, 0, 2);
+        this.mainPanel.add(this.getOwnerShipLabel(), layoutConstraint);
+
+        this.setCoordinatesForLayout(layoutConstraint, 0, 3);
+        this.mainPanel.add(this.getOwnershipList(), layoutConstraint);
+
+        this.setCoordinatesForLayout(layoutConstraint, 0, 4);
+        this.mainPanel.add(this.getClearLandButton(), layoutConstraint);
+
+        this.setCoordinatesForLayout(layoutConstraint, 1, 4);
+        this.mainPanel.add(this.getBuyLandButton(), layoutConstraint);
+        return this.mainPanel;
+    }
+
+    private void setUpMainPanel() {
+        this.mainPanel = new JPanel();
+        this.mainPanel.setLayout(new GridBagLayout());
+    }
+
+    private GridBagConstraints setCoordinatesForLayout(GridBagConstraints layoutConstraint, int xLocation, int yLocation) {
+        layoutConstraint.gridx = xLocation;
+        layoutConstraint.gridy = yLocation;
+        return layoutConstraint;
     }
 
     private JLabel getProvinceNameLabel() {
@@ -46,8 +78,14 @@ public class ProvinceViewFactory {
     }
 
     private JLabel getOwnerShipLabel() {
+        //String infoText = "Land fraction ownership: ";
         this.ownerShip = new JLabel("-");
         return this.ownerShip;
+    }
+
+    private JList getOwnershipList() {
+        this.ownershipList = new JList<>();
+        return ownershipList;
     }
 
     private JButton getClearLandButton() {
@@ -75,6 +113,7 @@ public class ProvinceViewFactory {
         this.addTextToProvinceNameLabel();
         this.addTextToDevelopedLand();
         addOwnerShipText();
+        writeOwnershipTable();
     }
 
     private void addTextToProvinceNameLabel() {
@@ -88,13 +127,22 @@ public class ProvinceViewFactory {
     }
 
     private void addOwnerShipText() {
-        String infoText = "owners: ";
+        String infoText = "Land fraction ownership: ";
+        this.ownerShip.setText(infoText);
+    }
+
+    private void writeOwnershipTable() {
+        //Map<Faction, Integer> ownershipMap = this.lastSelectedProvince.getFractionOwnershipMap();
+
+        DefaultListModel<String> listModel = new DefaultListModel<>();
         for(Map.Entry<Faction, Integer> oneEntry : this.lastSelectedProvince.getFractionOwnershipMap().entrySet()) {
             if(oneEntry.getKey() != null) {
-                infoText = infoText + oneEntry.getKey().getFactionName()+ ":"+oneEntry.getValue() + ". ";
+                listModel.addElement(oneEntry.getKey().getFactionName()+": "+oneEntry.getValue());
+                //infoText = infoText + oneEntry.getKey().getFactionName()+ ":"+oneEntry.getValue() + ". ";
             }
         }
-        this.ownerShip.setText(infoText);
+        this.ownershipList.setModel(listModel);
+        //this.ownershipList = new JList<>(listModel);
     }
 
     public void activateLandClearOnSelectedProvince() {
