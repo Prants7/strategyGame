@@ -72,4 +72,41 @@ public abstract class FactionResourceInterfaceBase implements FactionResourceInt
     }
 
     protected abstract boolean canWithdrawResourceScript(ResourceSettings settings);
+
+    @Override
+    public boolean addLandFractionIncomeToFaction(ResourceSettings settings) {
+        if(settings.getResourceType() != ResourceType.GOLD) {
+            System.out.println("Error: tried to push something other then gold as land fraction income");
+            return false;
+        }
+        if(this.missingOneOfCriticalOptions(settings)) {
+            System.out.println("Error: cant add resources cause missing a critical setting field");
+            return false;
+        }
+        if(this.missingLocationInfo(settings)) {
+            System.out.println("Error: cant push land fraction income without specific location");
+            return false;
+        }
+        int pureIncome = this.filterOutIncomeForRegionProsperity(settings);
+        if(pureIncome > 0) {
+            this.addResourceToFaction(this.getSettingsWithNewAmount(pureIncome, settings));
+        }
+        return true;
+    }
+
+    private int filterOutIncomeForRegionProsperity(ResourceSettings settings) {
+        int forLocalProsperity = settings.getFaction().accessTaxPolicy().returnValueForLocalProsperity(settings.getAmount());
+        int forPureIncome = settings.getAmount() - forLocalProsperity;
+        settings.getProvince().accessProsperity().increaseByValue(forLocalProsperity);
+        return forPureIncome;
+    }
+
+    private ResourceSettings getSettingsWithNewAmount(int newAmount, ResourceSettings previousSettings) {
+        ResourceSettings newSettings = new ResourceSettings();
+        newSettings.setResourceType(previousSettings.getResourceType());
+        newSettings.setFaction(previousSettings.getFaction());
+        newSettings.setProvince(previousSettings.getProvince());
+        newSettings.setAmount(newAmount);
+        return newSettings;
+    }
 }

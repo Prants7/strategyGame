@@ -41,13 +41,14 @@ public class LandOwnershipHubImp implements CalculationHub {
     }
 
     private int provideIncomeValueFromAmountOfOwnedLand(int amountOfLandFractions) {
-        return amountOfLandFractions * 2;
+        return amountOfLandFractions * 4;
     }
 
     private void giveGoldToFaction(Faction targetFaction, int amountOfGold, Province sourceOfGold) {
         System.out.println("Faction: "+targetFaction.getFactionName()+", gets "+amountOfGold+" gold");
         //targetFaction.depositGoldToTreasury(amountOfGold);
-        this.factionResourceInterface.addResourceToFaction(this.getTaxSettings(targetFaction, sourceOfGold, amountOfGold));
+        //this.factionResourceInterface.addResourceToFaction(this.getTaxSettings(targetFaction, sourceOfGold, amountOfGold));
+        this.factionResourceInterface.addLandFractionIncomeToFaction(this.getTaxSettings(targetFaction, sourceOfGold, amountOfGold));
         System.out.println(targetFaction.getFactionName()+" gold balance after deposit: "+targetFaction.getCurrentTreasuryGoldBalance());
     }
 

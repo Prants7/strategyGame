@@ -10,4 +10,6 @@ public interface FactionResourceInterface {
     public boolean removeResourceFromFaction(ResourceSettings settings);
 
     public boolean canRemoveResourcesFromFaction(ResourceSettings settings);
+
+    public boolean addLandFractionIncomeToFaction(ResourceSettings settings);
 }

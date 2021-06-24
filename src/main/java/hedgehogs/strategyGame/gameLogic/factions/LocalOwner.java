@@ -1,5 +1,8 @@
 package hedgehogs.strategyGame.gameLogic.factions;
 
+import hedgehogs.strategyGame.gameLogic.factions.FactionFractionTaxPolicy.FactionFractionTaxPolicy;
+import hedgehogs.strategyGame.gameLogic.factions.FactionFractionTaxPolicy.LocalsTaxPolicy;
+
 public class LocalOwner extends BaseFaction {
 
     @Override
@@ -26,4 +29,11 @@ public class LocalOwner extends BaseFaction {
     protected int doWithdrawGoldAmount(int amount) {
         return 0;
     }
+
+    @Override
+    protected FactionFractionTaxPolicy provideTaxPolicy() {
+        return new LocalsTaxPolicy();
+    }
+
+
 }
