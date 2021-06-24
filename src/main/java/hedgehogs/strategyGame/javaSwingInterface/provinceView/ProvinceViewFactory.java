@@ -18,6 +18,7 @@ public class ProvinceViewFactory {
     private JPanel mainPanel;
     private JLabel provinceNameLabel;
     private JLabel developedLand;
+    private JLabel prosperity;
     private JLabel ownerShip;
     private JLabel playerInfluence;
     private JList<String> ownershipList;
@@ -42,6 +43,9 @@ public class ProvinceViewFactory {
         layoutConstraint.fill = GridBagConstraints.HORIZONTAL;
         this.setCoordinatesForLayout(layoutConstraint, 0, 0);
         this.mainPanel.add(this.getProvinceNameLabel(), layoutConstraint);
+
+        this.setCoordinatesForLayout(layoutConstraint, 1, 0);
+        this.mainPanel.add(this.getProsperityLabel(), layoutConstraint);
 
         this.setCoordinatesForLayout(layoutConstraint, 0, 1);
         this.mainPanel.add(this.getDevelopedLandLabel(), layoutConstraint);
@@ -82,6 +86,11 @@ public class ProvinceViewFactory {
     private JLabel getDevelopedLandLabel() {
         this.developedLand = new JLabel("-");
         return this.developedLand;
+    }
+
+    private JLabel getProsperityLabel() {
+        this.prosperity = new JLabel("-");
+        return this.prosperity;
     }
 
     private JLabel getOwnerShipLabel() {
@@ -134,6 +143,7 @@ public class ProvinceViewFactory {
         this.addOwnerShipText();
         this.writeOwnershipTable();
         this.writePlayerInfluenceText();
+        this.addTextToProsperity();
     }
 
     private void addTextToProvinceNameLabel() {
@@ -144,6 +154,10 @@ public class ProvinceViewFactory {
         this.developedLand.setText("Developed land: "+this.lastSelectedProvince.getAmountOfSettledLand()
                 + ", undeveloped: "+this.lastSelectedProvince.getAmountOfUnsettledLand()
         +" total: "+this.lastSelectedProvince.getAllLandFractions().size());
+    }
+
+    private void addTextToProsperity() {
+        this.prosperity.setText("Prosperity: "+this.lastSelectedProvince.accessProsperity().getCurrentValue());
     }
 
     private void addOwnerShipText() {

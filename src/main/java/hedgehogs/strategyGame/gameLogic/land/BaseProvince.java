@@ -4,15 +4,19 @@ import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.infuenceTable.InfluenceTable;
 import hedgehogs.strategyGame.gameLogic.land.infuenceTable.InfluenceTableImp;
 import hedgehogs.strategyGame.gameLogic.land.landFractction.LandFraction;
+import hedgehogs.strategyGame.gameLogic.land.prosperity.Prosperity;
+import hedgehogs.strategyGame.gameLogic.land.prosperity.ProsperityImp;
 
 import java.util.List;
 import java.util.Map;
 
 public abstract class BaseProvince implements Province {
     private InfluenceTable influenceTable;
+    private Prosperity prosperity;
 
     public BaseProvince() {
         this.influenceTable = new InfluenceTableImp();
+        this.prosperity = new ProsperityImp();
     }
 
     public String getProvinceName() {
@@ -77,5 +81,10 @@ public abstract class BaseProvince implements Province {
 
     public InfluenceTable getProvinceInfluenceTable() {
         return this.influenceTable;
+    }
+
+    @Override
+    public Prosperity accessProsperity() {
+        return this.prosperity;
     }
 }
