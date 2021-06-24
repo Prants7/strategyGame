@@ -1,5 +1,6 @@
-package hedgehogs.strategyGame.gameLogic.factions;
+package hedgehogs.strategyGame.gameLogic.factions.uniqueFactions;
 
+import hedgehogs.strategyGame.gameLogic.factions.BaseFaction;
 import hedgehogs.strategyGame.gameLogic.factions.FactionFractionTaxPolicy.FactionFractionTaxPolicy;
 import hedgehogs.strategyGame.gameLogic.factions.FactionFractionTaxPolicy.LocalsTaxPolicy;
 

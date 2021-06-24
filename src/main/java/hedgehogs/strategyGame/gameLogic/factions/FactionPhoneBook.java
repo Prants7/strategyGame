@@ -1,5 +1,7 @@
 package hedgehogs.strategyGame.gameLogic.factions;
 
+import hedgehogs.strategyGame.gameLogic.factions.uniqueFactions.LocalOwner;
+import hedgehogs.strategyGame.gameLogic.factions.uniqueFactions.PlayerFaction;
 import org.springframework.stereotype.Component;
 
 @Component

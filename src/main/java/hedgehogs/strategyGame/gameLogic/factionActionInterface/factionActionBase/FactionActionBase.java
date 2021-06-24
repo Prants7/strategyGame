@@ -107,4 +107,20 @@ public abstract class FactionActionBase {
     protected abstract void addResourceGains(List<FactionActionGainImp> addLocation);
 
     protected abstract void addResourceCosts(List<FactionActionCostImp> addLocation);
+
+    public String getCostsString() {
+        if(this.costs.isEmpty()) {
+            return "free";
+        }
+        else {
+            String costList = "";
+            for(FactionActionCostImp oneCost : this.costs) {
+                if(!costList.equals("")) {
+                    costList += ", ";
+                }
+                costList += oneCost.getResourceType().name()+": "+oneCost.getAmount();
+            }
+            return costList;
+        }
+    }
 }
