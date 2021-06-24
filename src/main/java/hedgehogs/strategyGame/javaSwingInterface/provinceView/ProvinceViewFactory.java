@@ -1,6 +1,9 @@
 package hedgehogs.strategyGame.javaSwingInterface.provinceView;
 
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.FactionActionInterface;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.FactionActionInterfaceImp;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction.LandClearAction;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landPurchaseAction.LandPurchaseAction;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
 import hedgehogs.strategyGame.gameLogic.land.Province;
@@ -110,13 +113,13 @@ public class ProvinceViewFactory {
     }
 
     private JButton getClearLandButton() {
-        this.clearLand = new JButton("Clear land");
+        this.clearLand = new JButton("Clear land "+this.getFactionActionInterfaceAsImp().getLandClearAction().getCostsString());
         this.clearLand.addActionListener(new ClearLandButtonActionListener(this));
         return this.clearLand;
     }
 
     private JButton getBuyLandButton() {
-        this.buyLand = new JButton("Buy land");
+        this.buyLand = new JButton("Buy land "+this.getFactionActionInterfaceAsImp().getLandPurchaseAction().getCostsString());
         this.buyLand.addActionListener(new PurchaseLandButtonActionListener(this));
         return this.buyLand;
     }
@@ -215,6 +218,10 @@ public class ProvinceViewFactory {
 
     private void activateLandPurchase(Faction playerFaction, Province targetProvince, int amount) {
         this.factionActionInterface.performLandPurchase(playerFaction, targetProvince);
+    }
+
+    private FactionActionInterfaceImp getFactionActionInterfaceAsImp() {
+        return (FactionActionInterfaceImp) this.factionActionInterface;
     }
 
 }

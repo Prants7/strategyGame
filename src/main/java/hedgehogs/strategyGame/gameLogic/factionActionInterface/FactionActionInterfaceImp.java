@@ -5,6 +5,7 @@ import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.la
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landPurchaseAction.LandPurchaseAction;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -48,5 +49,11 @@ public class FactionActionInterfaceImp extends BaseFactionActionInterface {
 
     }
 
+    public LandPurchaseAction getLandPurchaseAction() {
+        return landPurchaseAction;
+    }
 
+    public LandClearAction getLandClearAction() {
+        return landClearAction;
+    }
 }
