@@ -1,4 +1,4 @@
-package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionCostAndGains;
+package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase;
 
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.ResourceType;
 import lombok.Data;

@@ -1,8 +1,6 @@
-package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionCostAndGains;
+package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase;
 
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.ResourceType;
-import hedgehogs.strategyGame.gameLogic.factions.Faction;
-import hedgehogs.strategyGame.gameLogic.land.Province;
 import lombok.Data;
 
 @Data

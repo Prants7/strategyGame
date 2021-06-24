@@ -1,4 +1,4 @@
-package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionCostAndGains;
+package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase;
 
 
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.FactionResourceInterface;
@@ -11,7 +11,7 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class FactionActionCostAndGainBase {
+public abstract class FactionActionBase {
     @Autowired
     private FactionResourceInterface factionResourceInterface;
     private List<FactionActionCostImp> costs;
@@ -21,17 +21,40 @@ public abstract class FactionActionCostAndGainBase {
     private void bootUp() {
         this.costs = new ArrayList<>();
         this.gains = new ArrayList<>();
-        this.addResourceCosts();
-        this.addResourceGains();
+        this.addResourceCosts(this.costs);
+        this.addResourceGains(this.gains);
     }
 
-    protected void addGain(FactionActionGainImp newGain) {
+    public boolean allowedToDoAction(Faction callerFaction, Province location, int amount) {
+        if(!this.checkIfCanDoCosts(callerFaction, location)) {
+            return false;
+        }
+        if(!this.passesSystematicConstraints(callerFaction, location, amount)) {
+            return false;
+        }
+        return true;
+    }
+
+    protected abstract boolean passesSystematicConstraints(Faction callerFaction, Province location, int amount);
+
+    public void doAction(Faction callerFaction, Province location, int amount) {
+        if(!this.allowedToDoAction(callerFaction, location, amount)) {
+            return;
+        }
+        this.doCosts(callerFaction, location);
+        this.runActionScript(callerFaction, location, amount);
+        this.doGains(callerFaction, location);
+    }
+
+    protected abstract void runActionScript(Faction callerFaction, Province location, int amount);
+
+    /*protected void addGain(FactionActionGainImp newGain) {
         this.gains.add(newGain);
-    }
+    }*/
 
-    protected void addCost(FactionActionCostImp newCost) {
+    /*protected void addCost(FactionActionCostImp newCost) {
         this.costs.add(newCost);
-    }
+    }*/
 
     protected boolean checkIfCanDoCosts(Faction callerFaction, Province location) {
         for(FactionActionCostImp oneCost : this.costs) {
@@ -81,7 +104,7 @@ public abstract class FactionActionCostAndGainBase {
         return true;
     }
 
-    protected abstract void addResourceGains();
+    protected abstract void addResourceGains(List<FactionActionGainImp> addLocation);
 
-    protected abstract void addResourceCosts();
+    protected abstract void addResourceCosts(List<FactionActionCostImp> addLocation);
 }

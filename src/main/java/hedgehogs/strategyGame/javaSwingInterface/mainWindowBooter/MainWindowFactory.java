@@ -58,6 +58,7 @@ public class MainWindowFactory {
 
     public void updateTexts() {
         this.factionInfoFactory.updateData();
+        this.provinceViewFactory.updateText();
     }
 
     public void openProvinceView(Province selectedProvince) {

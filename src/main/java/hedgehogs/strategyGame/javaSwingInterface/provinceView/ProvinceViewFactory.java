@@ -4,6 +4,7 @@ import hedgehogs.strategyGame.gameLogic.factionActionInterface.FactionActionInte
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
 import hedgehogs.strategyGame.gameLogic.land.Province;
+import hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter.MainWindowFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,8 @@ public class ProvinceViewFactory {
     private FactionActionInterface factionActionInterface;
     @Autowired
     private FactionPhoneBook factionPhoneBook;
+    @Autowired
+    private MainWindowFactory mainWindowFactory;
 
 
     public JPanel giveProvinceView() {
@@ -111,14 +114,21 @@ public class ProvinceViewFactory {
 
 
     public void openViewForProvince(Province province) {
-        this.updateViewForProvince(province);
-    }
-
-    private void updateViewForProvince(Province province) {
         if(province == null) {
             return;
         }
         this.lastSelectedProvince = province;
+        updateAllDataHere();
+    }
+
+    public void updateText() {
+        if(this.lastSelectedProvince == null) {
+            return;
+        }
+        updateAllDataHere();
+    }
+
+    private void updateAllDataHere() {
         this.addTextToProvinceNameLabel();
         this.addTextToDevelopedLand();
         this.addOwnerShipText();
@@ -166,7 +176,7 @@ public class ProvinceViewFactory {
             return;
         }
         this.activateLandClear(this.getPlayerFaction(), this.lastSelectedProvince, 1);
-        this.updateViewForProvince(this.lastSelectedProvince);
+        callSuperUpdateOnGameInterface();
     }
 
     private void activateLandClear(Faction playerFaction, Province targetProvince, int amount) {
@@ -182,7 +192,11 @@ public class ProvinceViewFactory {
             return;
         }
         activateLandPurchase(this.getPlayerFaction(), this.lastSelectedProvince, 1);
-        this.updateViewForProvince(this.lastSelectedProvince);
+        callSuperUpdateOnGameInterface();
+    }
+
+    private void callSuperUpdateOnGameInterface() {
+        this.mainWindowFactory.updateTexts();
     }
 
     private void activateLandPurchase(Faction playerFaction, Province targetProvince, int amount) {
