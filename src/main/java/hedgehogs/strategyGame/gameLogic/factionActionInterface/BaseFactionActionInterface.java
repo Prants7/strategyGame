@@ -6,6 +6,18 @@ import hedgehogs.strategyGame.gameLogic.land.Province;
 public abstract class BaseFactionActionInterface implements FactionActionInterface {
 
     @Override
+    public void performAdminLandAssign(Faction forFaction, Province targetProvince) {
+        if(!this.checkIfAllowedToAssignLand(forFaction, targetProvince)) {
+            return;
+        }
+        this.doLandAssignForFaction(forFaction, targetProvince);
+    }
+
+    protected abstract boolean checkIfAllowedToAssignLand(Faction targetFaction, Province targetProvince);
+
+    protected abstract void doLandAssignForFaction(Faction targetFaction, Province targetProvince);
+
+    @Override
     public void performLandPurchase(Faction callingFaction, Province targetProvince) {
         if(!this.checkIfAllowedToPurchaseLand(callingFaction, targetProvince)){
             return;

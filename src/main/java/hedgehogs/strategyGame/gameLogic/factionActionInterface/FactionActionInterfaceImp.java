@@ -1,5 +1,6 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface;
 
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.adminLandAssign.AdminLandAssignAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction.LandClearAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landPurchaseAction.LandPurchaseAction;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
@@ -13,6 +14,18 @@ public class FactionActionInterfaceImp extends BaseFactionActionInterface {
     private LandPurchaseAction landPurchaseAction;
     @Autowired
     private LandClearAction landClearAction;
+    @Autowired
+    private AdminLandAssignAction adminLandAssignAction;
+
+    @Override
+    protected boolean checkIfAllowedToAssignLand(Faction targetFaction, Province targetProvince) {
+        return this.adminLandAssignAction.allowedToDoAction(targetFaction, targetProvince, 1);
+    }
+
+    @Override
+    protected void doLandAssignForFaction(Faction targetFaction, Province targetProvince) {
+        this.adminLandAssignAction.doAction(targetFaction, targetProvince, 1);
+    }
 
     @Override
     protected boolean checkIfAllowedToPurchaseLand(Faction targetFaction, Province targetProvince) {

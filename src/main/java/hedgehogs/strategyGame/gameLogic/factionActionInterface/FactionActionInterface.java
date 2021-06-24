@@ -5,6 +5,8 @@ import hedgehogs.strategyGame.gameLogic.land.Province;
 
 public interface FactionActionInterface {
 
+    public void performAdminLandAssign(Faction forFaction, Province targetProvince);
+
     public void performLandPurchase(Faction callingFaction, Province targetProvince);
 
     public void performLandClearance(Faction callingFaction, Province targetProvince, int amount);

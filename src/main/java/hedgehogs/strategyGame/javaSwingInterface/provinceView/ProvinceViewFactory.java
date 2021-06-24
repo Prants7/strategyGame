@@ -18,6 +18,7 @@ public class ProvinceViewFactory {
     private JLabel provinceNameLabel;
     private JLabel developedLand;
     private JLabel ownerShip;
+    private JLabel playerInfluence;
     private JList<String> ownershipList;
     private JButton clearLand;
     private JButton buyLand;
@@ -44,6 +45,9 @@ public class ProvinceViewFactory {
 
         this.setCoordinatesForLayout(layoutConstraint, 0, 2);
         this.mainPanel.add(this.getOwnerShipLabel(), layoutConstraint);
+
+        this.setCoordinatesForLayout(layoutConstraint, 1, 2);
+        this.mainPanel.add(this.getPlayerInfluenceLabel(), layoutConstraint);
 
         this.setCoordinatesForLayout(layoutConstraint, 0, 3);
         this.mainPanel.add(this.getOwnershipList(), layoutConstraint);
@@ -83,6 +87,11 @@ public class ProvinceViewFactory {
         return this.ownerShip;
     }
 
+    private JLabel getPlayerInfluenceLabel() {
+        this.playerInfluence = new JLabel("-");
+        return this.playerInfluence;
+    }
+
     private JList getOwnershipList() {
         this.ownershipList = new JList<>();
         return ownershipList;
@@ -112,8 +121,9 @@ public class ProvinceViewFactory {
         this.lastSelectedProvince = province;
         this.addTextToProvinceNameLabel();
         this.addTextToDevelopedLand();
-        addOwnerShipText();
-        writeOwnershipTable();
+        this.addOwnerShipText();
+        this.writeOwnershipTable();
+        this.writePlayerInfluenceText();
     }
 
     private void addTextToProvinceNameLabel() {
@@ -129,6 +139,12 @@ public class ProvinceViewFactory {
     private void addOwnerShipText() {
         String infoText = "Land fraction ownership: ";
         this.ownerShip.setText(infoText);
+    }
+
+    private void writePlayerInfluenceText() {
+        String infoText = "Influence: "
+                +this.lastSelectedProvince.getProvinceInfluenceTable().getFactionInfluenceHere(this.getPlayerFaction());
+        this.playerInfluence.setText(infoText);
     }
 
     private void writeOwnershipTable() {
