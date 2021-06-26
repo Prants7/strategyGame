@@ -39,7 +39,9 @@ public class FactionActionInterfaceImp extends BaseFactionActionInterface {
 
     @Override
     protected void doLandPurchaseForFaction(Faction targetFaction, Province targetProvince) {
-        this.landPurchaseAction.doAction(targetFaction, targetProvince, 1);
+        TimedActionWrapper newAction = this.getNewTimedAction(this.landPurchaseAction, targetFaction, targetProvince, 1);
+        this.timedActionWaitList.addNewTimedAction(newAction);
+        //this.landPurchaseAction.doAction(targetFaction, targetProvince, 1);
     }
 
     @Override
