@@ -4,7 +4,7 @@ import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 
-public class TimedActionBase {
+public class TimedActionWrapper {
     private FactionActionBase designatedAction;
     private Faction targetFaction;
     private Province location;
@@ -12,7 +12,7 @@ public class TimedActionBase {
     private int time;
     private boolean finished;
 
-    public TimedActionBase(FactionActionBase actionBase, Faction targetFaction, Province location, int amount) {
+    public TimedActionWrapper(FactionActionBase actionBase, Faction targetFaction, Province location, int amount) {
         this.designatedAction = actionBase;
         this.targetFaction = targetFaction;
         this.location = location;

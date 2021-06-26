@@ -9,14 +9,14 @@ import java.util.stream.Collectors;
 
 @Component
 public class TimedActionWaitList {
-    private List<TimedActionBase> waitingList;
+    private List<TimedActionWrapper> waitingList;
 
     @PostConstruct
     private void bootUp() {
         this.waitingList = new ArrayList<>();
     }
 
-    public void addNewTimedAction(TimedActionBase newAction) {
+    public void addNewTimedAction(TimedActionWrapper newAction) {
         this.waitingList.add(newAction);
         printOutAllActionsInList();
     }
@@ -35,19 +35,19 @@ public class TimedActionWaitList {
         this.removeFinishedActions(this.getFinishedActions());
     }
 
-    private List<TimedActionBase> getFinishedActions() {
-        List<TimedActionBase> finishedActions = this.waitingList.stream()
+    private List<TimedActionWrapper> getFinishedActions() {
+        List<TimedActionWrapper> finishedActions = this.waitingList.stream()
                 .filter(oneAction -> oneAction.isFinished() == true).collect(Collectors.toList());
         return finishedActions;
     }
 
-    private void removeFinishedActions(List<TimedActionBase> finishedActions) {
+    private void removeFinishedActions(List<TimedActionWrapper> finishedActions) {
         this.waitingList.removeAll(finishedActions);
     }
 
     private void printOutAllActionsInList() {
         System.out.println("printing out waiting actions");
-        for(TimedActionBase oneAction: this.waitingList) {
+        for(TimedActionWrapper oneAction: this.waitingList) {
             System.out.println("action waiting: "+oneAction.getDesignatedAction().getClass());
         }
         System.out.println("----------");

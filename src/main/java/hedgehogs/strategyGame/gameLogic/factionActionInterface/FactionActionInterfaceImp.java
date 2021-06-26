@@ -4,11 +4,10 @@ import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.adminLandAssign.AdminLandAssignAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction.LandClearAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landPurchaseAction.LandPurchaseAction;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionBase;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapper;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWaitList;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -51,7 +50,7 @@ public class FactionActionInterfaceImp extends BaseFactionActionInterface {
     @Override
     protected void doClearLand(Faction callingFaction, Province targetProvince, int amount) {
         //this.landClearAction.doAction(callingFaction, targetProvince, amount);
-        TimedActionBase newAction = this.getNewTimedAction(this.landClearAction, callingFaction, targetProvince, amount);
+        TimedActionWrapper newAction = this.getNewTimedAction(this.landClearAction, callingFaction, targetProvince, amount);
         this.timedActionWaitList.addNewTimedAction(newAction);
 
     }
@@ -64,8 +63,8 @@ public class FactionActionInterfaceImp extends BaseFactionActionInterface {
         return landClearAction;
     }
 
-    private TimedActionBase getNewTimedAction(FactionActionBase actionBase, Faction targetFaction, Province location, int amount) {
-        TimedActionBase newAction = new TimedActionBase(actionBase, targetFaction, location, amount);
+    private TimedActionWrapper getNewTimedAction(FactionActionBase actionBase, Faction targetFaction, Province location, int amount) {
+        TimedActionWrapper newAction = new TimedActionWrapper(actionBase, targetFaction, location, amount);
         return newAction;
     }
 }
