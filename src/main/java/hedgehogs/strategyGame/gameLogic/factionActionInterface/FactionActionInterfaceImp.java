@@ -1,8 +1,11 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface;
 
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionBase;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.adminLandAssign.AdminLandAssignAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction.LandClearAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landPurchaseAction.LandPurchaseAction;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionBase;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWaitList;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 import lombok.Data;
@@ -17,6 +20,8 @@ public class FactionActionInterfaceImp extends BaseFactionActionInterface {
     private LandClearAction landClearAction;
     @Autowired
     private AdminLandAssignAction adminLandAssignAction;
+    @Autowired
+    private TimedActionWaitList timedActionWaitList;
 
     @Override
     protected boolean checkIfAllowedToAssignLand(Faction targetFaction, Province targetProvince) {
@@ -45,7 +50,9 @@ public class FactionActionInterfaceImp extends BaseFactionActionInterface {
 
     @Override
     protected void doClearLand(Faction callingFaction, Province targetProvince, int amount) {
-        this.landClearAction.doAction(callingFaction, targetProvince, amount);
+        //this.landClearAction.doAction(callingFaction, targetProvince, amount);
+        TimedActionBase newAction = this.getNewTimedAction(this.landClearAction, callingFaction, targetProvince, amount);
+        this.timedActionWaitList.addNewTimedAction(newAction);
 
     }
 
@@ -55,5 +62,10 @@ public class FactionActionInterfaceImp extends BaseFactionActionInterface {
 
     public LandClearAction getLandClearAction() {
         return landClearAction;
+    }
+
+    private TimedActionBase getNewTimedAction(FactionActionBase actionBase, Faction targetFaction, Province location, int amount) {
+        TimedActionBase newAction = new TimedActionBase(actionBase, targetFaction, location, amount);
+        return newAction;
     }
 }

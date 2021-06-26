@@ -41,7 +41,7 @@ public abstract class FactionActionBase {
         if(!this.allowedToDoAction(callerFaction, location, amount)) {
             return;
         }
-        this.doCosts(callerFaction, location);
+        //this.doCosts(callerFaction, location);
         this.runActionScript(callerFaction, location, amount);
         this.doGains(callerFaction, location);
     }
@@ -82,6 +82,10 @@ public abstract class FactionActionBase {
         newSettings.setResourceType(gain.getResourceType());
         newSettings.setAmount(gain.getAmount());
         return newSettings;
+    }
+
+    public boolean callToDoCosts(Faction callerFaction, Province location) {
+        return this.doCosts(callerFaction, location);
     }
 
     protected boolean doCosts(Faction callerFaction, Province location) {

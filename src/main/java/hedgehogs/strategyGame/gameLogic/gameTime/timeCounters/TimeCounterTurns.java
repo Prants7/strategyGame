@@ -22,6 +22,7 @@ public class TimeCounterTurns implements TimeCounter {
 
     private void doGeneralTurnChangeCommands() {
         this.timeChangeTriggers.callOnIncomeCollectionFromLandOwnership();
+        this.timeChangeTriggers.callOnAdvanceTimeOnTimedActions();
     }
 
     private void advanceTimeCounter() {

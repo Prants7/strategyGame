@@ -10,9 +10,16 @@ public class TimeChangeTriggers {
     @Autowired
     @Qualifier("LandOwnership")
     private CalculationHub landOwnershipHub;
+    @Autowired
+    @Qualifier("TimedAction")
+    private CalculationHub timedActionHub;
 
     public void callOnIncomeCollectionFromLandOwnership() {
         this.landOwnershipHub.triggerCalculations();
+    }
+
+    public void callOnAdvanceTimeOnTimedActions() {
+        this.timedActionHub.triggerCalculations();
     }
 
 }
