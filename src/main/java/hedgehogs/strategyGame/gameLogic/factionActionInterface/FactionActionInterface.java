@@ -10,4 +10,6 @@ public interface FactionActionInterface {
     public void performLandPurchase(Faction callingFaction, Province targetProvince);
 
     public void performLandClearance(Faction callingFaction, Province targetProvince, int amount);
+
+    public void performFamilyHallBuild(Faction callingFaction, Province targetProvince);
 }

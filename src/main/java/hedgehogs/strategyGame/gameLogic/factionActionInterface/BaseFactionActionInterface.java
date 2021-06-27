@@ -41,4 +41,11 @@ public abstract class BaseFactionActionInterface implements FactionActionInterfa
     protected abstract boolean checkIfAllowedToClearLand(Faction callingFaction, Province targetProvince, int amount);
 
     protected abstract void doClearLand(Faction callingFaction, Province targetProvince, int amount);
+
+    @Override
+    public void performFamilyHallBuild(Faction callingFaction, Province targetProvince) {
+        this.doBuildFamilyHall(callingFaction, targetProvince);
+    }
+
+    protected abstract void doBuildFamilyHall(Faction callingFaction, Province targetProvince);
 }

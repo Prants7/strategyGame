@@ -2,6 +2,7 @@ package hedgehogs.strategyGame.gameLogic.factionActionInterface;
 
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionBase;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.adminLandAssign.AdminLandAssignAction;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.buildOfficeAction.BuildOfficeAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction.LandClearAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landPurchaseAction.LandPurchaseAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapper;
@@ -21,6 +22,8 @@ public class FactionActionInterfaceImp extends BaseFactionActionInterface {
     private AdminLandAssignAction adminLandAssignAction;
     @Autowired
     private TimedActionWaitList timedActionWaitList;
+    @Autowired
+    private BuildOfficeAction buildOfficeAction;
 
     @Override
     protected boolean checkIfAllowedToAssignLand(Faction targetFaction, Province targetProvince) {
@@ -55,6 +58,11 @@ public class FactionActionInterfaceImp extends BaseFactionActionInterface {
         TimedActionWrapper newAction = this.getNewTimedAction(this.landClearAction, callingFaction, targetProvince, amount);
         this.timedActionWaitList.addNewTimedAction(newAction);
 
+    }
+
+    @Override
+    protected void doBuildFamilyHall(Faction callingFaction, Province targetProvince) {
+        this.buildOfficeAction.doAction(callingFaction, targetProvince, 1);
     }
 
     public LandPurchaseAction getLandPurchaseAction() {
