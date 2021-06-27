@@ -28,6 +28,9 @@ public class LandClearCheckImp implements LandClearCheck {
         if(location.getAmountOfUnsettledLand() < amount) {
             return false;
         }
+        if(!location.accessLocationOffices().factionHasOffice(callerFaction)) {
+            return false;
+        }
         return true;
     }
 }

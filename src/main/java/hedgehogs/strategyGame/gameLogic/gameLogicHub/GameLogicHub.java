@@ -34,10 +34,10 @@ public class GameLogicHub {
         System.out.println("Performing land purchase for player faction");
         Province targetProvince = this.world.getAllProvinces().get(0);
         Faction playerFaction = this.factionPhoneBook.getPlayerFaction();
+        this.givePlayerOfficeInStartLocation();
         this.factionActionInterface.performAdminLandAssign(playerFaction, targetProvince);
         this.factionActionInterface.performAdminLandAssign(playerFaction,targetProvince);
         System.out.println("Finished with land purchase for player faction");
-        this.givePlayerOfficeInStartLocation();
     }
 
     private void givePlayerOfficeInStartLocation() {

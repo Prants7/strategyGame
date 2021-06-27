@@ -17,6 +17,9 @@ public class LandPurchaseCheckModuleImp implements LandPurchaseCheckModule{
         if(amountOfSettledLand <= amountOfTargetFactionLand) {
             return false;
         }
+        if(!targetProvince.accessLocationOffices().factionHasOffice(targetFaction)) {
+            return false;
+        }
         return true;
     }
 }
