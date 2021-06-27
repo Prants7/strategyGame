@@ -7,6 +7,7 @@ import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.la
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
 import hedgehogs.strategyGame.gameLogic.land.Province;
+import hedgehogs.strategyGame.gameLogic.land.buildings.offices.base.Office;
 import hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter.MainWindowFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,9 +23,12 @@ public class ProvinceViewFactory {
     private JLabel provinceNameLabel;
     private JLabel developedLand;
     private JLabel prosperity;
-    private JLabel ownerShip;
     private JLabel playerInfluence;
+    private JLabel ownerShip;
     private JList<String> ownershipList;
+    private JLabel officeListLabel;
+    private JList<String> officeList;
+
     private JButton clearLand;
     private JButton buyLand;
     @Autowired
@@ -63,9 +67,15 @@ public class ProvinceViewFactory {
         this.mainPanel.add(this.getOwnershipList(), layoutConstraint);
 
         this.setCoordinatesForLayout(layoutConstraint, 0, 4);
+        this.mainPanel.add(this.getOfficeListLabel(), layoutConstraint);
+
+        this.setCoordinatesForLayout(layoutConstraint, 0, 5);
+        this.mainPanel.add(this.getOfficeList(), layoutConstraint);
+
+        this.setCoordinatesForLayout(layoutConstraint, 0, 6);
         this.mainPanel.add(this.getClearLandButton(), layoutConstraint);
 
-        this.setCoordinatesForLayout(layoutConstraint, 1, 4);
+        this.setCoordinatesForLayout(layoutConstraint, 1, 6);
         this.mainPanel.add(this.getBuyLandButton(), layoutConstraint);
         return this.mainPanel;
     }
@@ -98,7 +108,7 @@ public class ProvinceViewFactory {
 
     private JLabel getOwnerShipLabel() {
         //String infoText = "Land fraction ownership: ";
-        this.ownerShip = new JLabel("-");
+        this.ownerShip = new JLabel("Land fraction ownership: ");
         return this.ownerShip;
     }
 
@@ -110,6 +120,16 @@ public class ProvinceViewFactory {
     private JList getOwnershipList() {
         this.ownershipList = new JList<>();
         return ownershipList;
+    }
+
+    private JLabel getOfficeListLabel() {
+        this.officeListLabel = new JLabel("Faction offices:");
+        return this.officeListLabel;
+    }
+
+    private JList getOfficeList() {
+        this.officeList = new JList<>();
+        return this.officeList;
     }
 
     private JButton getClearLandButton() {
@@ -143,10 +163,10 @@ public class ProvinceViewFactory {
     private void updateAllDataHere() {
         this.addTextToProvinceNameLabel();
         this.addTextToDevelopedLand();
-        this.addOwnerShipText();
         this.writeOwnershipTable();
         this.writePlayerInfluenceText();
         this.addTextToProsperity();
+        this.writeOfficeTable();
     }
 
     private void addTextToProvinceNameLabel() {
@@ -163,10 +183,10 @@ public class ProvinceViewFactory {
         this.prosperity.setText("Prosperity: "+this.lastSelectedProvince.accessProsperity().getCurrentValue());
     }
 
-    private void addOwnerShipText() {
+    /*private void addOwnerShipText() {
         String infoText = "Land fraction ownership: ";
         this.ownerShip.setText(infoText);
-    }
+    }*/
 
     private void writePlayerInfluenceText() {
         String infoText = "Influence: "
@@ -186,6 +206,16 @@ public class ProvinceViewFactory {
         }
         this.ownershipList.setModel(listModel);
         //this.ownershipList = new JList<>(listModel);
+    }
+
+    private void writeOfficeTable() {
+        DefaultListModel<String> listModel = new DefaultListModel<>();
+        for(Map.Entry<Faction, Office> oneEntry : this.lastSelectedProvince.accessLocationOffices().getAllOffices().entrySet()) {
+            if(oneEntry.getKey() != null) {
+                listModel.addElement(oneEntry.getKey().getFactionName()+": "+oneEntry.getValue().getBuildingTypeName());
+            }
+        }
+        this.officeList.setModel(listModel);
     }
 
     public void activateLandClearOnSelectedProvince() {
