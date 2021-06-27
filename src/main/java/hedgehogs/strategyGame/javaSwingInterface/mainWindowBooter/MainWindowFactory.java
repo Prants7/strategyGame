@@ -6,6 +6,7 @@ import hedgehogs.strategyGame.javaSwingInterface.factionInfo.FactionInfoFactory;
 import hedgehogs.strategyGame.javaSwingInterface.provinceList.ProvinceListFactory;
 import hedgehogs.strategyGame.javaSwingInterface.provinceList.ProvinceSelectListener;
 import hedgehogs.strategyGame.javaSwingInterface.provinceView.ProvinceViewFactory;
+import hedgehogs.strategyGame.javaSwingInterface.timedActionListView.TimedActionListViewFactory;
 import hedgehogs.strategyGame.javaSwingInterface.turnChangeButton.TurnChangeButtonFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,8 @@ public class MainWindowFactory {
     private TurnChangeButtonFactory turnChangeButtonFactory;
     @Autowired
     private ProvinceViewFactory provinceViewFactory;
+    @Autowired
+    private TimedActionListViewFactory timedActionListViewFactory;
     private JFrame mainFrame;
     private ProvinceSelectListener provinceSelectListener;
 
@@ -40,12 +43,12 @@ public class MainWindowFactory {
         JList<Province> provinceList = this.provinceListFactory.giveProvinceList(this.gameLogic.getWorld().getAllProvinces());
         provinceSelectListener = new ProvinceSelectListener(provinceList, this);
         provinceList.addListSelectionListener(provinceSelectListener);
+
         mainFrame.add(provinceList, BorderLayout.WEST);
-
-
         mainFrame.add(this.factionInfoFactory.getFactionInfoPanel(this.gameLogic.getFactionPhoneBook().getPlayerFaction()), BorderLayout.NORTH);
         mainFrame.add(this.turnChangeButtonFactory.giveTurnChangeButton(this.gameLogic.getTimeCenterSocket(), this), BorderLayout.SOUTH);
         mainFrame.add(this.provinceViewFactory.giveProvinceView(), BorderLayout.CENTER);
+        mainFrame.add(this.timedActionListViewFactory.getMainElement(), BorderLayout.EAST);
 
         mainFrame.setSize(800,600);//400 width and 500 height
         //f.setLayout(new BoxLayout(f, BoxLayout.X_AXIS));//using no layout managers
@@ -59,6 +62,7 @@ public class MainWindowFactory {
     public void updateTexts() {
         this.factionInfoFactory.updateData();
         this.provinceViewFactory.updateText();
+        this.timedActionListViewFactory.updateData();
     }
 
     public void openProvinceView(Province selectedProvince) {

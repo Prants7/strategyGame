@@ -37,4 +37,9 @@ public class LandPurchaseAction extends FactionActionBase {
     protected void addResourceCosts(List<FactionActionCostImp> addLocation) {
         addLocation.add(new FactionActionCostImp(ResourceType.GOLD, 2));
     }
+
+    @Override
+    protected String bootGiveActionName() {
+        return "Land purchase action";
+    }
 }

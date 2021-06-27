@@ -53,4 +53,13 @@ public class TimedActionWrapper {
     public FactionActionBase getDesignatedAction() {
         return designatedAction;
     }
+
+    public String getDescriptionString() {
+        return this.targetFaction.getFactionName() + " " + this.designatedAction.getActionName() + " "
+                + this.getTurnsTillComplete();
+    }
+
+    public int getTurnsTillComplete() {
+        return this.time;
+    }
 }

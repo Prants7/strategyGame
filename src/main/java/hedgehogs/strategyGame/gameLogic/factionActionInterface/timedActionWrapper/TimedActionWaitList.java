@@ -52,4 +52,8 @@ public class TimedActionWaitList {
         }
         System.out.println("----------");
     }
+
+    public List<TimedActionWrapper> getCopyOfActions() {
+        return new ArrayList<>(this.waitingList);
+    }
 }

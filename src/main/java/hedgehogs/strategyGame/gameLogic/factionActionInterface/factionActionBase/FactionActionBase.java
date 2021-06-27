@@ -16,6 +16,7 @@ public abstract class FactionActionBase {
     private FactionResourceInterface factionResourceInterface;
     private List<FactionActionCostImp> costs;
     private List<FactionActionGainImp> gains;
+    private String actionName;
 
     @PostConstruct
     private void bootUp() {
@@ -23,6 +24,7 @@ public abstract class FactionActionBase {
         this.gains = new ArrayList<>();
         this.addResourceCosts(this.costs);
         this.addResourceGains(this.gains);
+        this.actionName = this.bootGiveActionName();
     }
 
     public boolean allowedToDoAction(Faction callerFaction, Province location, int amount) {
@@ -126,5 +128,11 @@ public abstract class FactionActionBase {
             }
             return costList;
         }
+    }
+
+    protected abstract String bootGiveActionName();
+
+    public String getActionName() {
+        return this.actionName;
     }
 }

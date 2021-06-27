@@ -18,25 +18,6 @@ public class LandClearAction extends FactionActionBase {
     @Autowired
     private LandClearModule landClearModule;
 
-    /*public boolean allowedToDoAction(Faction callerFaction, Province location, int amount) {
-        if(!this.checkIfCanDoCosts(callerFaction, location)) {
-            return false;
-        }
-        return this.landClearCheck.allowedToDoAction(callerFaction, location, amount);
-    }*/
-
-    /*public void doAction(Faction callerFaction, Province location, int amount) {
-        if(!this.checkIfCanDoCosts(callerFaction, location)) {
-            return;
-        }
-        if(this.allowedToDoAction(callerFaction, location, amount)) {
-            this.doCosts(callerFaction, location);
-            this.landClearModule.doClearLandInProvince(callerFaction, location, amount);
-            this.doGains(callerFaction, location);
-
-        }
-    }*/
-
     @Override
     protected boolean passesSystematicConstraints(Faction callerFaction, Province location, int amount) {
         return this.landClearCheck.allowedToDoAction(callerFaction, location, amount);
@@ -55,6 +36,11 @@ public class LandClearAction extends FactionActionBase {
     @Override
     protected void addResourceCosts(List<FactionActionCostImp> addLocation) {
         addLocation.add(new FactionActionCostImp(ResourceType.GOLD, 2));
+    }
+
+    @Override
+    protected String bootGiveActionName() {
+        return "Land clear action";
     }
 
 }
