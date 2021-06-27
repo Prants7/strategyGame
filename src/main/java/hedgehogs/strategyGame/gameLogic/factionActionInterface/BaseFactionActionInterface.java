@@ -48,4 +48,11 @@ public abstract class BaseFactionActionInterface implements FactionActionInterfa
     }
 
     protected abstract void doBuildFamilyHall(Faction callingFaction, Province targetProvince);
+
+    @Override
+    public void seizeControlInCity(Faction callingFaction, Province targetProvince) {
+        this.doSeizeControlInCity(callingFaction, targetProvince);
+    }
+
+    protected abstract void doSeizeControlInCity(Faction callingFaction, Province targetProvince);
 }

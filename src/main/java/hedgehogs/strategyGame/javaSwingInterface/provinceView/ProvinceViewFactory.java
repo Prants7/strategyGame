@@ -28,9 +28,11 @@ public class ProvinceViewFactory {
     private JList<String> ownershipList;
     private JLabel officeListLabel;
     private JList<String> officeList;
+    private JLabel controllingFaction;
 
     private JButton clearLand;
     private JButton buyLand;
+    private JButton seizeControl;
     @Autowired
     private FactionActionInterface factionActionInterface;
     @Autowired
@@ -40,10 +42,6 @@ public class ProvinceViewFactory {
 
 
     public JPanel giveProvinceView() {
-        //this.lastSelectedProvince = targetProvince;
-        /*JPanel panel=new JPanel();
-        GridBagLayout layout = new GridBagLayout();
-        panel.setLayout(layout);*/
         this.setUpMainPanel();
         GridBagConstraints layoutConstraint = new GridBagConstraints();
 
@@ -72,11 +70,17 @@ public class ProvinceViewFactory {
         this.setCoordinatesForLayout(layoutConstraint, 0, 5);
         this.mainPanel.add(this.getOfficeList(), layoutConstraint);
 
+        this.setCoordinatesForLayout(layoutConstraint, 1, 4);
+        this.mainPanel.add(this.getControllingFactionLabel(), layoutConstraint);
+
         this.setCoordinatesForLayout(layoutConstraint, 0, 6);
         this.mainPanel.add(this.getClearLandButton(), layoutConstraint);
 
         this.setCoordinatesForLayout(layoutConstraint, 1, 6);
         this.mainPanel.add(this.getBuyLandButton(), layoutConstraint);
+
+        this.setCoordinatesForLayout(layoutConstraint, 0, 7);
+        this.mainPanel.add(this.getSeizeControlButton(), layoutConstraint);
         return this.mainPanel;
     }
 
@@ -132,6 +136,11 @@ public class ProvinceViewFactory {
         return this.officeList;
     }
 
+    private JLabel getControllingFactionLabel() {
+        this.controllingFaction = new JLabel("");
+        return this.controllingFaction;
+    }
+
     private JButton getClearLandButton() {
         this.clearLand = new JButton("Clear land "+this.getFactionActionInterfaceAsImp().getLandClearAction().getCostsString());
         this.clearLand.addActionListener(new ClearLandButtonActionListener(this));
@@ -142,6 +151,14 @@ public class ProvinceViewFactory {
         this.buyLand = new JButton("Buy land "+this.getFactionActionInterfaceAsImp().getLandPurchaseAction().getCostsString());
         this.buyLand.addActionListener(new PurchaseLandButtonActionListener(this));
         return this.buyLand;
+    }
+
+    private JButton getSeizeControlButton() {
+        this.seizeControl = new JButton("Seize control for "+this.getPlayerFaction().getFactionName());
+        this.seizeControl.addActionListener( e -> {
+            this.activateSeizeControl();
+        });
+        return this.seizeControl;
     }
 
 
@@ -167,6 +184,7 @@ public class ProvinceViewFactory {
         this.writePlayerInfluenceText();
         this.addTextToProsperity();
         this.writeOfficeTable();
+        writeControllingFactionString();
     }
 
     private void addTextToProvinceNameLabel() {
@@ -183,11 +201,6 @@ public class ProvinceViewFactory {
         this.prosperity.setText("Prosperity: "+this.lastSelectedProvince.accessProsperity().getCurrentValue());
     }
 
-    /*private void addOwnerShipText() {
-        String infoText = "Land fraction ownership: ";
-        this.ownerShip.setText(infoText);
-    }*/
-
     private void writePlayerInfluenceText() {
         String infoText = "Influence: "
                 +this.lastSelectedProvince.getProvinceInfluenceTable().getFactionInfluenceHere(this.getPlayerFaction());
@@ -195,17 +208,13 @@ public class ProvinceViewFactory {
     }
 
     private void writeOwnershipTable() {
-        //Map<Faction, Integer> ownershipMap = this.lastSelectedProvince.getFractionOwnershipMap();
-
         DefaultListModel<String> listModel = new DefaultListModel<>();
         for(Map.Entry<Faction, Integer> oneEntry : this.lastSelectedProvince.getFractionOwnershipMap().entrySet()) {
             if(oneEntry.getKey() != null) {
                 listModel.addElement(oneEntry.getKey().getFactionName()+": "+oneEntry.getValue());
-                //infoText = infoText + oneEntry.getKey().getFactionName()+ ":"+oneEntry.getValue() + ". ";
             }
         }
         this.ownershipList.setModel(listModel);
-        //this.ownershipList = new JList<>(listModel);
     }
 
     private void writeOfficeTable() {
@@ -216,6 +225,10 @@ public class ProvinceViewFactory {
             }
         }
         this.officeList.setModel(listModel);
+    }
+
+    private void writeControllingFactionString() {
+        this.controllingFaction.setText(this.lastSelectedProvince.accessLocationOffices().getControlSituation());
     }
 
     public void activateLandClearOnSelectedProvince() {
@@ -252,6 +265,14 @@ public class ProvinceViewFactory {
 
     private FactionActionInterfaceImp getFactionActionInterfaceAsImp() {
         return (FactionActionInterfaceImp) this.factionActionInterface;
+    }
+
+    private void activateSeizeControl() {
+        if(this.lastSelectedProvince == null) {
+            return;
+        }
+        this.factionActionInterface.seizeControlInCity(this.getPlayerFaction(), this.lastSelectedProvince);
+        callSuperUpdateOnGameInterface();
     }
 
 }

@@ -8,9 +8,11 @@ import java.util.Map;
 
 public class CityOfficeLocationImp {
     private Map<Faction, Office> officeMap;
+    private Faction provinceController;
 
     public CityOfficeLocationImp() {
         this.officeMap = new HashMap<>();
+        this.provinceController = null;
     }
 
     public Map<Faction, Office> getAllOffices() {
@@ -30,5 +32,37 @@ public class CityOfficeLocationImp {
             System.out.println("adding new office for faction: "+owner.getFactionName());
         }
         this.officeMap.put(owner, newOffice);
+    }
+
+    public boolean hasControllingFaction() {
+        return this.provinceController != null;
+    }
+
+    public Faction getControllingFaction() {
+        return this.provinceController;
+    }
+
+    public Office getControllingBuilding() {
+        if(this.hasControllingFaction()) {
+            return this.officeMap.get(this.provinceController);
+        }
+        else {
+            return null;
+        }
+    }
+
+    public String getControlSituation() {
+        if(this.hasControllingFaction()) {
+            return "Controller: "+this.provinceController.getFactionName();
+        }
+        return "Local control";
+    }
+
+    public boolean setControllingFaction(Faction faction) {
+        if(!this.officeMap.containsKey(faction)) {
+            return false;
+        }
+        this.provinceController = faction;
+        return true;
     }
 }
