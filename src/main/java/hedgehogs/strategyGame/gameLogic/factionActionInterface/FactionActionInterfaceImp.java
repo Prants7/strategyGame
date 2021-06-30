@@ -9,80 +9,12 @@ import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.se
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapper;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWaitList;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
+import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class FactionActionInterfaceImp extends BaseFactionActionInterface {
-    @Autowired
-    private LandPurchaseAction landPurchaseAction;
-    @Autowired
-    private LandClearAction landClearAction;
-    @Autowired
-    private AdminLandAssignAction adminLandAssignAction;
-    @Autowired
-    private TimedActionWaitList timedActionWaitList;
-    @Autowired
-    private BuildOfficeAction buildOfficeAction;
-    @Autowired
-    private SeizeControlFromLocalsAction seizeControlAction;
 
-    @Override
-    protected boolean checkIfAllowedToAssignLand(Faction targetFaction, Province targetProvince) {
-        return this.adminLandAssignAction.allowedToDoAction(targetFaction, targetProvince, 1);
-    }
-
-    @Override
-    protected void doLandAssignForFaction(Faction targetFaction, Province targetProvince) {
-        this.adminLandAssignAction.doAction(targetFaction, targetProvince, 1);
-    }
-
-    @Override
-    protected boolean checkIfAllowedToPurchaseLand(Faction targetFaction, Province targetProvince) {
-        return this.landPurchaseAction.allowedToDoAction(targetFaction, targetProvince, 1);
-    }
-
-    @Override
-    protected void doLandPurchaseForFaction(Faction targetFaction, Province targetProvince) {
-        TimedActionWrapper newAction = this.getNewTimedAction(this.landPurchaseAction, targetFaction, targetProvince, 1);
-        this.timedActionWaitList.addNewTimedAction(newAction);
-        //this.landPurchaseAction.doAction(targetFaction, targetProvince, 1);
-    }
-
-    @Override
-    protected boolean checkIfAllowedToClearLand(Faction callingFaction, Province targetProvince, int amount) {
-        return this.landClearAction.allowedToDoAction(callingFaction, targetProvince, amount);
-    }
-
-    @Override
-    protected void doClearLand(Faction callingFaction, Province targetProvince, int amount) {
-        //this.landClearAction.doAction(callingFaction, targetProvince, amount);
-        TimedActionWrapper newAction = this.getNewTimedAction(this.landClearAction, callingFaction, targetProvince, amount);
-        this.timedActionWaitList.addNewTimedAction(newAction);
-
-    }
-
-    @Override
-    protected void doBuildFamilyHall(Faction callingFaction, Province targetProvince) {
-        this.buildOfficeAction.doAction(callingFaction, targetProvince, 1);
-    }
-
-    @Override
-    protected void doSeizeControlInCity(Faction callingFaction, Province targetProvince) {
-        this.seizeControlAction.doAction(callingFaction, targetProvince, 1);
-    }
-
-    public LandPurchaseAction getLandPurchaseAction() {
-        return landPurchaseAction;
-    }
-
-    public LandClearAction getLandClearAction() {
-        return landClearAction;
-    }
-
-    private TimedActionWrapper getNewTimedAction(FactionActionBase actionBase, Faction targetFaction, Province location, int amount) {
-        TimedActionWrapper newAction = new TimedActionWrapper(actionBase, targetFaction, location, amount);
-        return newAction;
-    }
 }
