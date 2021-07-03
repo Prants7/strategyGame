@@ -10,39 +10,45 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+
 @Component
 @Data
 public class GameLogicHub {
-    @Autowired
     private World world;
-    @Autowired
     private FactionPhoneBook factionPhoneBook;
-    @Autowired
     private FactionActionInterface factionActionInterface;
-    @Autowired
     private TimeCenterSocket timeCenterSocket;
+
+    @Autowired
+    public GameLogicHub(World world,
+                        FactionPhoneBook factionPhoneBook,
+                        FactionActionInterface factionActionInterface,
+                        TimeCenterSocket timeCenterSocket) {
+        this.world = world;
+        this.factionPhoneBook = factionPhoneBook;
+        this.factionActionInterface = factionActionInterface;
+        this.timeCenterSocket = timeCenterSocket;
+    }
 
     public void bootUpGame() {
         System.out.println("game starts");
         this.world.bootStart();
         this.timeCenterSocket.bootUpCounter();
-        this.givePlayerSomeLand();
+        this.setUpStandardStarLocationForPlayer();
         System.out.println("world booted up");
     }
 
-    private void givePlayerSomeLand() {
-        System.out.println("Performing land purchase for player faction");
+    private void setUpStandardStarLocationForPlayer() {
         Province targetProvince = this.world.getAllProvinces().get(0);
         Faction playerFaction = this.factionPhoneBook.getPlayerFaction();
-        this.givePlayerOfficeInStartLocation();
-        this.factionActionInterface.performAdminLandAssign(playerFaction, targetProvince);
-        this.factionActionInterface.performAdminLandAssign(playerFaction,targetProvince);
-        System.out.println("Finished with land purchase for player faction");
+        this.setUpStartLocationForFaction(playerFaction, targetProvince);
     }
 
-    private void givePlayerOfficeInStartLocation() {
-        Province targetProvince = this.world.getAllProvinces().get(0);
-        Faction playerFaction = this.factionPhoneBook.getPlayerFaction();
-        this.factionActionInterface.performAdminFamilyHallBuild(playerFaction, targetProvince);
+    private void setUpStartLocationForFaction(Faction targetFaction, Province targetProvince) {
+        this.factionActionInterface.performAdminFamilyHallBuild(targetFaction, targetProvince);
+        this.factionActionInterface.performAdminLandAssign(targetFaction, targetProvince);
+        this.factionActionInterface.performAdminLandAssign(targetFaction,targetProvince);
     }
+
 }
