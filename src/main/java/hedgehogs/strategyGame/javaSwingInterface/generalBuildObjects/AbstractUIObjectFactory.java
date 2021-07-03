@@ -1,5 +1,7 @@
 package hedgehogs.strategyGame.javaSwingInterface.generalBuildObjects;
 
+import hedgehogs.strategyGame.gameLogic.factions.Faction;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,6 +12,7 @@ public abstract class AbstractUIObjectFactory implements UIObjectFactory {
     private void bootUp() {
         this.mainPanel = new JPanel();
         this.layout = new GridBagConstraints();
+        this.mainPanel.setLayout(new GridBagLayout());
         this.layout.fill = GridBagConstraints.HORIZONTAL;
         this.makeAllMinorElements();
     }
