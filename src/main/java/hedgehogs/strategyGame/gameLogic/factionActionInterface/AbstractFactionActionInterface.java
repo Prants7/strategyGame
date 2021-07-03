@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class AbstractFactionActionInterface implements FactionActionInterface {
     private FactionAction landPurchaseAction;
     private FactionAction landClearAction;
-    //private AdminLandAssignAction adminLandAssignAction;
     private TimedActionWaitList timedActionWaitList;
     private FactionAction buildOfficeAction;
     private FactionAction seizeControlAction;
@@ -27,7 +26,6 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
                                           SeizeControlFromLocalsAction seizeControlAction) {
         this.landPurchaseAction = landPurchaseAction;
         this.landClearAction = landClearAction;
-        //this.adminLandAssignAction = adminLandAssignAction;
         this.timedActionWaitList = timedActionWaitList;
         this.buildOfficeAction = buildOfficeAction;
         this.seizeControlAction = seizeControlAction;
@@ -35,10 +33,6 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
 
     @Override
     public void performAdminLandAssign(Faction forFaction, Province targetProvince) {
-        /*if(!this.checkIfAllowedToAssignLand(forFaction, targetProvince)) {
-            return;
-        }
-        this.doLandAssignForFaction(forFaction, targetProvince);*/
         this.landPurchaseAction.forceDoAction(forFaction, targetProvince, 1);
     }
 
@@ -48,14 +42,6 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
         }
         action.doAction(targetFaction, targetProvince, amount);
     }
-
-    /*protected boolean checkIfAllowedToAssignLand(Faction targetFaction, Province targetProvince) {
-        return this.adminLandAssignAction.allowedToDoAction(targetFaction, targetProvince, 1);
-    }*/
-
-    /*protected void doLandAssignForFaction(Faction targetFaction, Province targetProvince) {
-        this.adminLandAssignAction.doAction(targetFaction, targetProvince, 1);
-    }*/
 
     @Override
     public void performLandPurchase(Faction callingFaction, Province targetProvince) {
