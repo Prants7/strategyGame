@@ -14,25 +14,26 @@ import java.util.List;
 
 @Component
 public class LandClearAction extends AbstractFactionAction {
-    private LandClearCheck landClearCheck;
-    private LandClearModule landClearModule;
 
     @Autowired
-    public LandClearAction(FactionResourceInterface factionResourceInterface,
-                           LandClearCheck landClearCheck, LandClearModule landClearModule) {
+    public LandClearAction(FactionResourceInterface factionResourceInterface) {
         super(factionResourceInterface);
-        this.landClearCheck = landClearCheck;
-        this.landClearModule = landClearModule;
     }
 
     @Override
     protected boolean passesSystematicConstraints(Faction callerFaction, Province location, int amount) {
-        return this.landClearCheck.allowedToDoAction(callerFaction, location, amount);
+        if(location.getAmountOfUnsettledLand() < amount) {
+            return false;
+        }
+        if(!location.accessLocationOffices().factionHasOffice(callerFaction)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     protected void runActionScript(Faction callerFaction, Province location, int amount) {
-        this.landClearModule.doClearLandInProvince(callerFaction, location, amount);
+        location.settleAmountOfLand(amount);
     }
 
     @Override
