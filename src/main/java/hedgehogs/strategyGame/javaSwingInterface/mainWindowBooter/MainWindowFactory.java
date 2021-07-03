@@ -47,8 +47,8 @@ public class MainWindowFactory {
         mainFrame.add(provinceList, BorderLayout.WEST);
         mainFrame.add(this.factionInfoFactory.getFactionInfoPanel(this.gameLogic.getFactionPhoneBook().getPlayerFaction()), BorderLayout.NORTH);
         mainFrame.add(this.turnChangeButtonFactory.giveTurnChangeButton(this.gameLogic.getTimeCenterSocket(), this), BorderLayout.SOUTH);
-        mainFrame.add(this.provinceViewFactory.giveProvinceView(), BorderLayout.CENTER);
-        mainFrame.add(this.timedActionListViewFactory.getMainElement(), BorderLayout.EAST);
+        mainFrame.add(this.provinceViewFactory.getPanelObject(), BorderLayout.CENTER);
+        mainFrame.add(this.timedActionListViewFactory.getPanelObject(), BorderLayout.EAST);
 
         mainFrame.setSize(800,600);//400 width and 500 height
         //f.setLayout(new BoxLayout(f, BoxLayout.X_AXIS));//using no layout managers
@@ -61,8 +61,8 @@ public class MainWindowFactory {
 
     public void updateTexts() {
         this.factionInfoFactory.updateData();
-        this.provinceViewFactory.updateText();
-        this.timedActionListViewFactory.updateData();
+        this.provinceViewFactory.refreshElements();
+        this.timedActionListViewFactory.refreshElements();
     }
 
     public void openProvinceView(Province selectedProvince) {
