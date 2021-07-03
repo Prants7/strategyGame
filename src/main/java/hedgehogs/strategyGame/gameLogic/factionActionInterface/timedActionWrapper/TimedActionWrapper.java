@@ -25,6 +25,13 @@ public class TimedActionWrapper {
         this.time = time;
         this.finished = false;
         this.fillActionCost();
+        doFinishedCheck();
+    }
+
+    private void doFinishedCheck() {
+        if(time < 1) {
+            this.fillAction();
+        }
     }
 
     private void fillActionCost() {
@@ -38,9 +45,7 @@ public class TimedActionWrapper {
 
     public void countDown() {
         this.time--;
-        if(time < 1){
-            this.fillAction();
-        }
+        doFinishedCheck();
     }
 
     public boolean isFinished() {

@@ -17,8 +17,10 @@ public class TimedActionWaitList {
     }
 
     public void addNewTimedAction(TimedActionWrapper newAction) {
-        this.waitingList.add(newAction);
-        printOutAllActionsInList();
+        if(!newAction.isFinished()) {
+            this.waitingList.add(newAction);
+        }
+        //printOutAllActionsInList();
     }
 
     public void advanceTime() {
