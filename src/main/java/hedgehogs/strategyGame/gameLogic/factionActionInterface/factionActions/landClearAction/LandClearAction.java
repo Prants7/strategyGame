@@ -21,6 +21,11 @@ public class LandClearAction extends AbstractFactionAction {
     }
 
     @Override
+    protected int bootGiveStandardFillTime() {
+        return 2;
+    }
+
+    @Override
     protected boolean passesSystematicConstraints(Faction callerFaction, Province location, int amount) {
         if(location.getAmountOfUnsettledLand() < amount) {
             return false;

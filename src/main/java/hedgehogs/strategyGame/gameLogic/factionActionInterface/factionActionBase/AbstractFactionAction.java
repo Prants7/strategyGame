@@ -17,6 +17,7 @@ public abstract class AbstractFactionAction implements FactionAction {
     private List<FactionActionCostImp> costs;
     private List<FactionActionGainImp> gains;
     private String actionName;
+    private int standardFillTime;
 
     @Autowired
     public AbstractFactionAction(FactionResourceInterface factionResourceInterface) {
@@ -30,7 +31,10 @@ public abstract class AbstractFactionAction implements FactionAction {
         this.addResourceCosts(this.costs);
         this.addResourceGains(this.gains);
         this.actionName = this.bootGiveActionName();
+        this.standardFillTime = this.bootGiveStandardFillTime();
     }
+
+    protected abstract int bootGiveStandardFillTime();
 
     @Override
     public boolean allowedToDoAction(Faction callerFaction, Province location, int amount) {
@@ -152,7 +156,13 @@ public abstract class AbstractFactionAction implements FactionAction {
     }
 
     private TimedActionWrapper makeTimedWrapperBasedOnThis(Faction callerFaction, Province location, int amount) {
-        TimedActionWrapper newWrapper = new TimedActionWrapper(this, callerFaction, location, amount);
+        int calculatedActionTime = this.calculateActionTimeForFactionOnLocation(callerFaction, location, amount);
+        TimedActionWrapper newWrapper =
+                new TimedActionWrapper(this, callerFaction, location, amount, calculatedActionTime);
         return newWrapper;
+    }
+
+    private int calculateActionTimeForFactionOnLocation(Faction callerFaction, Province location, int amount) {
+        return this.standardFillTime;
     }
 }

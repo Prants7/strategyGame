@@ -13,12 +13,16 @@ public class TimedActionWrapper {
     private int time;
     private boolean finished;
 
-    public TimedActionWrapper(FactionAction actionBase, Faction targetFaction, Province location, int amount) {
+    public TimedActionWrapper(FactionAction actionBase,
+                              Faction targetFaction,
+                              Province location,
+                              int amount,
+                              int time) {
         this.designatedAction = actionBase;
         this.targetFaction = targetFaction;
         this.location = location;
         this.amount = amount;
-        this.time = 1;
+        this.time = time;
         this.finished = false;
         this.fillActionCost();
     }

@@ -22,6 +22,11 @@ public class LandPurchaseAction extends AbstractFactionAction {
     }
 
     @Override
+    protected int bootGiveStandardFillTime() {
+        return 1;
+    }
+
+    @Override
     protected boolean passesSystematicConstraints(Faction callerFaction, Province location, int amount) {
         int amountOfSettledLand = location.getAmountOfSettledLand();
         int amountOfTargetFactionLand = 0;

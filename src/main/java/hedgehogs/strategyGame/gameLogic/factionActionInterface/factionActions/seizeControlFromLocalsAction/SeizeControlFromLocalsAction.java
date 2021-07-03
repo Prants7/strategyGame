@@ -21,6 +21,11 @@ public class SeizeControlFromLocalsAction extends AbstractFactionAction {
     }
 
     @Override
+    protected int bootGiveStandardFillTime() {
+        return 0;
+    }
+
+    @Override
     protected boolean passesSystematicConstraints(Faction callerFaction, Province location, int amount) {
         if(location.accessLocationOffices().hasControllingFaction()) {
             return false;

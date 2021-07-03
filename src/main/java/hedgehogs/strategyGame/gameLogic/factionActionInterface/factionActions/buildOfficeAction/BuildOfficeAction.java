@@ -22,6 +22,11 @@ public class BuildOfficeAction extends AbstractFactionAction {
     }
 
     @Override
+    protected int bootGiveStandardFillTime() {
+        return 5;
+    }
+
+    @Override
     protected boolean passesSystematicConstraints(Faction callerFaction, Province location, int amount) {
         return true;
     }
