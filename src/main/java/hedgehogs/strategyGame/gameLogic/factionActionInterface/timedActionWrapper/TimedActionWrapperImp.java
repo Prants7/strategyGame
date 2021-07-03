@@ -43,24 +43,29 @@ public class TimedActionWrapperImp implements TimedActionWrapper {
         this.finished = true;
     }
 
+    @Override
     public void countDown() {
         this.time--;
         doFinishedCheck();
     }
 
+    @Override
     public boolean isFinished() {
         return finished;
     }
 
+    @Override
     public FactionAction getDesignatedAction() {
         return designatedAction;
     }
 
+    @Override
     public String getDescriptionString() {
         return this.targetFaction.getFactionName() + " " + this.designatedAction.getActionName() + " "
                 + this.getTurnsTillComplete();
     }
 
+    @Override
     public int getTurnsTillComplete() {
         return this.time;
     }
