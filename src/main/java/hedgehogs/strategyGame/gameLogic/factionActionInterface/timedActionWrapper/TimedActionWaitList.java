@@ -26,7 +26,7 @@ public class TimedActionWaitList {
     public void advanceTime() {
         this.countUpActions();
         this.performActionCleanUp();
-        printOutAllActionsInList();
+        //printOutAllActionsInList();
     }
 
     private void countUpActions() {
