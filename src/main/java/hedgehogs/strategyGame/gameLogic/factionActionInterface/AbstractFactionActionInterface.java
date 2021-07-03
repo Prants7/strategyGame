@@ -1,8 +1,6 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface;
 
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.AbstractFactionAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionAction;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.adminLandAssign.AdminLandAssignAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.buildOfficeAction.BuildOfficeAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction.LandClearAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landPurchaseAction.LandPurchaseAction;
@@ -16,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public abstract class AbstractFactionActionInterface implements FactionActionInterface {
     private FactionAction landPurchaseAction;
     private FactionAction landClearAction;
-    private AdminLandAssignAction adminLandAssignAction;
+    //private AdminLandAssignAction adminLandAssignAction;
     private TimedActionWaitList timedActionWaitList;
     private FactionAction buildOfficeAction;
     private FactionAction seizeControlAction;
@@ -24,13 +22,12 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
     @Autowired
     public AbstractFactionActionInterface(LandPurchaseAction landPurchaseAction,
                                           LandClearAction landClearAction,
-                                          AdminLandAssignAction adminLandAssignAction,
                                           TimedActionWaitList timedActionWaitList,
                                           BuildOfficeAction buildOfficeAction,
                                           SeizeControlFromLocalsAction seizeControlAction) {
         this.landPurchaseAction = landPurchaseAction;
         this.landClearAction = landClearAction;
-        this.adminLandAssignAction = adminLandAssignAction;
+        //this.adminLandAssignAction = adminLandAssignAction;
         this.timedActionWaitList = timedActionWaitList;
         this.buildOfficeAction = buildOfficeAction;
         this.seizeControlAction = seizeControlAction;
@@ -38,10 +35,11 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
 
     @Override
     public void performAdminLandAssign(Faction forFaction, Province targetProvince) {
-        if(!this.checkIfAllowedToAssignLand(forFaction, targetProvince)) {
+        /*if(!this.checkIfAllowedToAssignLand(forFaction, targetProvince)) {
             return;
         }
-        this.doLandAssignForFaction(forFaction, targetProvince);
+        this.doLandAssignForFaction(forFaction, targetProvince);*/
+        this.landPurchaseAction.forceDoAction(forFaction, targetProvince, 1);
     }
 
     protected void performFactionActionBaseTypeAction(Faction targetFaction, FactionAction action, Province targetProvince, int amount) {
@@ -51,13 +49,13 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
         action.doAction(targetFaction, targetProvince, amount);
     }
 
-    protected boolean checkIfAllowedToAssignLand(Faction targetFaction, Province targetProvince) {
+    /*protected boolean checkIfAllowedToAssignLand(Faction targetFaction, Province targetProvince) {
         return this.adminLandAssignAction.allowedToDoAction(targetFaction, targetProvince, 1);
-    }
+    }*/
 
-    protected void doLandAssignForFaction(Faction targetFaction, Province targetProvince) {
+    /*protected void doLandAssignForFaction(Faction targetFaction, Province targetProvince) {
         this.adminLandAssignAction.doAction(targetFaction, targetProvince, 1);
-    }
+    }*/
 
     @Override
     public void performLandPurchase(Faction callingFaction, Province targetProvince) {

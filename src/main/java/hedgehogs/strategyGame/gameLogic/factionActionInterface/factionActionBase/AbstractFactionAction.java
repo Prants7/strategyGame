@@ -59,6 +59,7 @@ public abstract class AbstractFactionAction implements FactionAction {
             System.out.println("Failed to force through action cause of systematic constraints");
             return;
         }
+        this.runActionScript(callerFaction, location, amount);
     }
 
     protected abstract void runActionScript(Faction callerFaction, Province location, int amount);

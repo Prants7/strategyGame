@@ -1,6 +1,5 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface;
 
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.adminLandAssign.AdminLandAssignAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.buildOfficeAction.BuildOfficeAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction.LandClearAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landPurchaseAction.LandPurchaseAction;
@@ -15,13 +14,11 @@ public class FactionActionInterfaceImp extends AbstractFactionActionInterface {
     @Autowired
     public FactionActionInterfaceImp(LandPurchaseAction landPurchaseAction,
                                      LandClearAction landClearAction,
-                                     AdminLandAssignAction adminLandAssignAction,
                                      TimedActionWaitList timedActionWaitList,
                                      BuildOfficeAction buildOfficeAction,
                                      SeizeControlFromLocalsAction seizeControlAction) {
         super(landPurchaseAction,
                 landClearAction,
-                adminLandAssignAction,
                 timedActionWaitList,
                 buildOfficeAction,
                 seizeControlAction);

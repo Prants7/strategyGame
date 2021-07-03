@@ -7,6 +7,7 @@ import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.FactionResource
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.ResourceType;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
+import hedgehogs.strategyGame.gameLogic.land.landFractction.LandFraction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,25 +15,36 @@ import java.util.List;
 
 @Component
 public class LandPurchaseAction extends AbstractFactionAction {
-    private LandPurchaseCheckModule landPurchaseCheck;
-    private LandPurchaseModule landPurchaseModule;
 
     @Autowired
-    public LandPurchaseAction(FactionResourceInterface factionResourceInterface,
-                              LandPurchaseCheckModule landPurchaseCheck, LandPurchaseModule landPurchaseModule) {
+    public LandPurchaseAction(FactionResourceInterface factionResourceInterface) {
         super(factionResourceInterface);
-        this.landPurchaseCheck = landPurchaseCheck;
-        this.landPurchaseModule = landPurchaseModule;
     }
 
     @Override
     protected boolean passesSystematicConstraints(Faction callerFaction, Province location, int amount) {
-        return this.landPurchaseCheck.allowedToPerformLandPurchaseForFaction(callerFaction, location);
+        int amountOfSettledLand = location.getAmountOfSettledLand();
+        int amountOfTargetFactionLand = 0;
+        if(location.getFractionOwnershipMap().containsKey(location)) {
+            amountOfTargetFactionLand = location.getFractionOwnershipMap().get(location);
+        }
+        if(amountOfSettledLand <= amountOfTargetFactionLand) {
+            return false;
+        }
+        if(!location.accessLocationOffices().factionHasOffice(callerFaction)) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     protected void runActionScript(Faction callerFaction, Province location, int amount) {
-        this.landPurchaseModule.doLandPurchase(callerFaction, location);
+        LandFraction targetFractionToPurchase = location.getFirstFractionNotInHandsOfFaction(callerFaction);
+        if(!targetFractionToPurchase.isManaged()) {
+            System.out.println("Aborted land purchase in perform module as got unmanaged land");
+            return;
+        }
+        targetFractionToPurchase.changeOwner(callerFaction);
     }
 
     @Override
