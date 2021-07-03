@@ -12,4 +12,6 @@ public abstract class MinorAbstractUIObjectFactory extends AbstractUIObjectFacto
     protected Faction getPerspectiveFaction() {
         return this.perspectiveFaction;
     }
+
+    protected abstract void makeContentRefreshCall();
 }

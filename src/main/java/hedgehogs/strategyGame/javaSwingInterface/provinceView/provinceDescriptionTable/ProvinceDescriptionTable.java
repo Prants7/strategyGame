@@ -16,6 +16,11 @@ public class ProvinceDescriptionTable extends MinorAbstractUIObjectFactory {
     }
 
     @Override
+    protected void makeContentRefreshCall() {
+
+    }
+
+    @Override
     protected void makeAllMinorElements() {
         this.makeProvinceNameLabel();
         this.makeProsperityLabel();

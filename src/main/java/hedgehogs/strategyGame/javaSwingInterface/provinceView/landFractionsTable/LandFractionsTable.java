@@ -19,6 +19,11 @@ public class LandFractionsTable extends MinorAbstractUIObjectFactory  {
     }
 
     @Override
+    protected void makeContentRefreshCall() {
+
+    }
+
+    @Override
     protected void makeAllMinorElements() {
         this.makeDevelopedLandLabel();
         this.makeUndevelopedLandLabel();

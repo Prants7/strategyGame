@@ -21,6 +21,11 @@ public class ControlTable extends MinorAbstractUIObjectFactory {
     }
 
     @Override
+    protected void makeContentRefreshCall() {
+
+    }
+
+    @Override
     protected void makeAllMinorElements() {
         this.makeControllingFactionLabel();
         this.makePlayerInfluenceLabel();
