@@ -10,6 +10,7 @@ import hedgehogs.strategyGame.gameLogic.land.Province;
 import hedgehogs.strategyGame.gameLogic.land.buildings.offices.base.Office;
 import hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter.MainWindowFactory;
 import hedgehogs.strategyGame.javaSwingInterface.provinceView.controlTable.ControlTable;
+import hedgehogs.strategyGame.javaSwingInterface.provinceView.landFractionsTable.LandFractionsTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,15 +23,16 @@ public class ProvinceViewFactory {
     private Province lastSelectedProvince;
     private JPanel mainPanel;
     private JLabel provinceNameLabel;
-    private JLabel developedLand;
+    //private JLabel developedLand;
     private JLabel prosperity;
     //private JLabel playerInfluence;
-    private JLabel ownerShip;
-    private JList<String> ownershipList;
+    //private JLabel ownerShip;
+    //private JList<String> ownershipList;
     /*private JLabel officeListLabel;
     private JList<String> officeList;*/
     //private JLabel controllingFaction;
     private ControlTable controlTable;
+    private LandFractionsTable landFractionsTable;
 
     private JButton clearLand;
     private JButton buyLand;
@@ -54,17 +56,21 @@ public class ProvinceViewFactory {
         this.setCoordinatesForLayout(layoutConstraint, 1, 0);
         this.mainPanel.add(this.getProsperityLabel(), layoutConstraint);
 
-        this.setCoordinatesForLayout(layoutConstraint, 0, 1);
-        this.mainPanel.add(this.getDevelopedLandLabel(), layoutConstraint);
+        /*this.setCoordinatesForLayout(layoutConstraint, 0, 1);
+        this.mainPanel.add(this.getDevelopedLandLabel(), layoutConstraint);*/
 
-        this.setCoordinatesForLayout(layoutConstraint, 0, 2);
-        this.mainPanel.add(this.getOwnerShipLabel(), layoutConstraint);
+        this.landFractionsTable = new LandFractionsTable(this.getPlayerFaction());
+        this.setCoordinatesForLayout(layoutConstraint, 0, 1);
+        this.mainPanel.add(this.landFractionsTable.getPanelObject(), layoutConstraint);
+
+        /*this.setCoordinatesForLayout(layoutConstraint, 0, 2);
+        this.mainPanel.add(this.getOwnerShipLabel(), layoutConstraint);*/
 
         /*this.setCoordinatesForLayout(layoutConstraint, 1, 2);
         this.mainPanel.add(this.getPlayerInfluenceLabel(), layoutConstraint);*/
 
-        this.setCoordinatesForLayout(layoutConstraint, 0, 3);
-        this.mainPanel.add(this.getOwnershipList(), layoutConstraint);
+        /*this.setCoordinatesForLayout(layoutConstraint, 0, 3);
+        this.mainPanel.add(this.getOwnershipList(), layoutConstraint);*/
 
         /*this.setCoordinatesForLayout(layoutConstraint, 0, 4);
         this.mainPanel.add(this.getOfficeListLabel(), layoutConstraint);
@@ -109,31 +115,31 @@ public class ProvinceViewFactory {
         return this.provinceNameLabel;
     }
 
-    private JLabel getDevelopedLandLabel() {
+    /*private JLabel getDevelopedLandLabel() {
         this.developedLand = new JLabel("-");
         return this.developedLand;
-    }
+    }*/
 
     private JLabel getProsperityLabel() {
         this.prosperity = new JLabel("-");
         return this.prosperity;
     }
 
-    private JLabel getOwnerShipLabel() {
+    /*private JLabel getOwnerShipLabel() {
         //String infoText = "Land fraction ownership: ";
         this.ownerShip = new JLabel("Land fraction ownership: ");
         return this.ownerShip;
-    }
+    }*/
 
     /*private JLabel getPlayerInfluenceLabel() {
         this.playerInfluence = new JLabel("-");
         return this.playerInfluence;
     }*/
 
-    private JList getOwnershipList() {
+    /*private JList getOwnershipList() {
         this.ownershipList = new JList<>();
         return ownershipList;
-    }
+    }*/
 
     /*private JLabel getOfficeListLabel() {
         this.officeListLabel = new JLabel("Faction offices:");
@@ -183,6 +189,7 @@ public class ProvinceViewFactory {
         }
         this.lastSelectedProvince = province;
         this.controlTable.setLastSelectedProvince(province);
+        this.landFractionsTable.setLastSelectedProvince(province);
         updateAllDataHere();
     }
 
@@ -195,24 +202,25 @@ public class ProvinceViewFactory {
 
     private void updateAllDataHere() {
         this.addTextToProvinceNameLabel();
-        this.addTextToDevelopedLand();
-        this.writeOwnershipTable();
+        //this.addTextToDevelopedLand();
+        //this.writeOwnershipTable();
         //this.writePlayerInfluenceText();
         this.addTextToProsperity();
         //this.writeOfficeTable();
         //writeControllingFactionString();
         this.controlTable.refreshElements();
+        this.landFractionsTable.refreshElements();
     }
 
     private void addTextToProvinceNameLabel() {
         this.provinceNameLabel.setText(this.lastSelectedProvince.getProvinceName());
     }
 
-    private void addTextToDevelopedLand() {
+    /*private void addTextToDevelopedLand() {
         this.developedLand.setText("Developed land: "+this.lastSelectedProvince.getAmountOfSettledLand()
                 + ", undeveloped: "+this.lastSelectedProvince.getAmountOfUnsettledLand()
         +" total: "+this.lastSelectedProvince.getAllLandFractions().size());
-    }
+    }*/
 
     private void addTextToProsperity() {
         this.prosperity.setText("Prosperity: "+this.lastSelectedProvince.accessProsperity().getCurrentValue());
@@ -224,7 +232,7 @@ public class ProvinceViewFactory {
         this.playerInfluence.setText(infoText);
     }*/
 
-    private void writeOwnershipTable() {
+    /*private void writeOwnershipTable() {
         DefaultListModel<String> listModel = new DefaultListModel<>();
         for(Map.Entry<Faction, Integer> oneEntry : this.lastSelectedProvince.getFractionOwnershipMap().entrySet()) {
             if(oneEntry.getKey() != null) {
@@ -232,7 +240,7 @@ public class ProvinceViewFactory {
             }
         }
         this.ownershipList.setModel(listModel);
-    }
+    }*/
 
     /*private void writeOfficeTable() {
         DefaultListModel<String> listModel = new DefaultListModel<>();
