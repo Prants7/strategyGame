@@ -12,6 +12,7 @@ import hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter.MainWindowFact
 import hedgehogs.strategyGame.javaSwingInterface.provinceView.controlTable.ControlTable;
 import hedgehogs.strategyGame.javaSwingInterface.provinceView.landFractionsTable.LandFractionsTable;
 import hedgehogs.strategyGame.javaSwingInterface.provinceView.provinceDescriptionTable.ProvinceDescriptionTable;
+import hedgehogs.strategyGame.javaSwingInterface.provinceView.provincePlayerActionButtons.ProvincePlayerActionButtons;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -26,10 +27,8 @@ public class ProvinceViewFactory {
     private ControlTable controlTable;
     private LandFractionsTable landFractionsTable;
     private ProvinceDescriptionTable provinceDescriptionTable;
+    private ProvincePlayerActionButtons playerActionButtons;
 
-    private JButton clearLand;
-    private JButton buyLand;
-    private JButton seizeControl;
     @Autowired
     private FactionActionInterface factionActionInterface;
     @Autowired
@@ -56,14 +55,10 @@ public class ProvinceViewFactory {
         this.setCoordinatesForLayout(layoutConstraint, 0, 4);
         this.mainPanel.add(this.controlTable.getPanelObject(), layoutConstraint);
 
-        this.setCoordinatesForLayout(layoutConstraint, 0, 6);
-        this.mainPanel.add(this.getClearLandButton(), layoutConstraint);
-
-        this.setCoordinatesForLayout(layoutConstraint, 1, 6);
-        this.mainPanel.add(this.getBuyLandButton(), layoutConstraint);
-
-        this.setCoordinatesForLayout(layoutConstraint, 0, 7);
-        this.mainPanel.add(this.getSeizeControlButton(), layoutConstraint);
+        this.playerActionButtons =
+                new ProvincePlayerActionButtons(this.getPlayerFaction(), this, this.factionActionInterface);
+        this.setCoordinatesForLayout(layoutConstraint, 0, 5);
+        this.mainPanel.add(this.playerActionButtons.getPanelObject(), layoutConstraint);
 
         return this.mainPanel;
     }
@@ -79,31 +74,6 @@ public class ProvinceViewFactory {
         return layoutConstraint;
     }
 
-    private JButton getClearLandButton() {
-        this.clearLand = new JButton("Clear land "+this.getFactionActionInterfaceAsImp().getLandClearAction().getCostsString());
-        this.clearLand.addActionListener( e -> {
-            this.activateLandClearOnSelectedProvince();
-        });
-        return this.clearLand;
-    }
-
-    private JButton getBuyLandButton() {
-        this.buyLand = new JButton("Buy land "+this.getFactionActionInterfaceAsImp().getLandPurchaseAction().getCostsString());
-        this.buyLand.addActionListener( e -> {
-            this.activateLandPurchaseOnSelectedProvince();
-        });
-        return this.buyLand;
-    }
-
-    private JButton getSeizeControlButton() {
-        this.seizeControl = new JButton("Seize control for "+this.getPlayerFaction().getFactionName());
-        this.seizeControl.addActionListener( e -> {
-            this.activateSeizeControl();
-        });
-        return this.seizeControl;
-    }
-
-
     public void openViewForProvince(Province province) {
         if(province == null) {
             return;
@@ -112,6 +82,7 @@ public class ProvinceViewFactory {
         this.provinceDescriptionTable.setLastSelectedProvince(province);
         this.controlTable.setLastSelectedProvince(province);
         this.landFractionsTable.setLastSelectedProvince(province);
+        this.playerActionButtons.setLastSelectedProvince(province);
         updateAllDataHere();
     }
 
@@ -126,50 +97,19 @@ public class ProvinceViewFactory {
         this.provinceDescriptionTable.refreshElements();
         this.controlTable.refreshElements();
         this.landFractionsTable.refreshElements();
-    }
-
-    public void activateLandClearOnSelectedProvince() {
-        if(this.lastSelectedProvince == null) {
-            return;
-        }
-        this.activateLandClear(this.getPlayerFaction(), this.lastSelectedProvince, 1);
-        callSuperUpdateOnGameInterface();
-    }
-
-    private void activateLandClear(Faction playerFaction, Province targetProvince, int amount) {
-        this.factionActionInterface.performLandClearance(playerFaction, targetProvince, amount);
+        this.playerActionButtons.refreshElements();
     }
 
     private Faction getPlayerFaction() {
         return this.factionPhoneBook.getPlayerFaction();
     }
 
-    public void activateLandPurchaseOnSelectedProvince() {
-        if(this.lastSelectedProvince == null) {
-            return;
-        }
-        activateLandPurchase(this.getPlayerFaction(), this.lastSelectedProvince, 1);
-        callSuperUpdateOnGameInterface();
-    }
-
-    private void callSuperUpdateOnGameInterface() {
+    public void callSuperUpdateOnGameInterface() {
         this.mainWindowFactory.updateTexts();
-    }
-
-    private void activateLandPurchase(Faction playerFaction, Province targetProvince, int amount) {
-        this.factionActionInterface.performLandPurchase(playerFaction, targetProvince);
     }
 
     private FactionActionInterfaceImp getFactionActionInterfaceAsImp() {
         return (FactionActionInterfaceImp) this.factionActionInterface;
-    }
-
-    private void activateSeizeControl() {
-        if(this.lastSelectedProvince == null) {
-            return;
-        }
-        this.factionActionInterface.seizeControlInCity(this.getPlayerFaction(), this.lastSelectedProvince);
-        callSuperUpdateOnGameInterface();
     }
 
 }
