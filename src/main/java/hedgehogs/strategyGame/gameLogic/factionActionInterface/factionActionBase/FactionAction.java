@@ -1,5 +1,6 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase;
 
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapper;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 
@@ -16,4 +17,6 @@ public interface FactionAction {
     public String getCostsString();
 
     public String getActionName();
+
+    public TimedActionWrapper getActionAsTimedElement(Faction callerFaction, Province location, int amount);
 }

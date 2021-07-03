@@ -95,7 +95,7 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
     }
 
     private TimedActionWrapper getNewTimedAction(FactionAction actionBase, Faction targetFaction, Province location, int amount) {
-        TimedActionWrapper newAction = new TimedActionWrapper(actionBase, targetFaction, location, amount);
+        TimedActionWrapper newAction = actionBase.getActionAsTimedElement(targetFaction, location, amount);
         return newAction;
     }
 }
