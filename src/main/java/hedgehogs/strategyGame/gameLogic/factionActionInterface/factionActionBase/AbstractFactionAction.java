@@ -11,12 +11,16 @@ import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class FactionActionBase {
-    @Autowired
+public abstract class AbstractFactionAction implements FactionAction {
     private FactionResourceInterface factionResourceInterface;
     private List<FactionActionCostImp> costs;
     private List<FactionActionGainImp> gains;
     private String actionName;
+
+    @Autowired
+    public AbstractFactionAction(FactionResourceInterface factionResourceInterface) {
+        this.factionResourceInterface = factionResourceInterface;
+    }
 
     @PostConstruct
     private void bootUp() {
@@ -27,6 +31,7 @@ public abstract class FactionActionBase {
         this.actionName = this.bootGiveActionName();
     }
 
+    @Override
     public boolean allowedToDoAction(Faction callerFaction, Province location, int amount) {
         if(!this.checkIfCanDoCosts(callerFaction, location)) {
             return false;
@@ -39,24 +44,24 @@ public abstract class FactionActionBase {
 
     protected abstract boolean passesSystematicConstraints(Faction callerFaction, Province location, int amount);
 
+    @Override
     public void doAction(Faction callerFaction, Province location, int amount) {
         if(!this.allowedToDoAction(callerFaction, location, amount)) {
             return;
         }
-        //this.doCosts(callerFaction, location);
         this.runActionScript(callerFaction, location, amount);
         this.doGains(callerFaction, location);
     }
 
+    @Override
+    public void forceDoAction(Faction callerFaction, Province location, int amount) {
+        if(!this.passesSystematicConstraints(callerFaction, location, amount)) {
+            System.out.println("Failed to force through action cause of systematic constraints");
+            return;
+        }
+    }
+
     protected abstract void runActionScript(Faction callerFaction, Province location, int amount);
-
-    /*protected void addGain(FactionActionGainImp newGain) {
-        this.gains.add(newGain);
-    }*/
-
-    /*protected void addCost(FactionActionCostImp newCost) {
-        this.costs.add(newCost);
-    }*/
 
     protected boolean checkIfCanDoCosts(Faction callerFaction, Province location) {
         for(FactionActionCostImp oneCost : this.costs) {
@@ -86,6 +91,7 @@ public abstract class FactionActionBase {
         return newSettings;
     }
 
+    @Override
     public boolean callToDoCosts(Faction callerFaction, Province location) {
         return this.doCosts(callerFaction, location);
     }
@@ -114,6 +120,7 @@ public abstract class FactionActionBase {
 
     protected abstract void addResourceCosts(List<FactionActionCostImp> addLocation);
 
+    @Override
     public String getCostsString() {
         if(this.costs.isEmpty()) {
             return "free";
@@ -132,6 +139,7 @@ public abstract class FactionActionBase {
 
     protected abstract String bootGiveActionName();
 
+    @Override
     public String getActionName() {
         return this.actionName;
     }

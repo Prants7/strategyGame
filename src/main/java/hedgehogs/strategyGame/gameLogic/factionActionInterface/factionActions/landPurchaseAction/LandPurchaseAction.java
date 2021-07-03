@@ -1,8 +1,9 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landPurchaseAction;
 
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionBase;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.AbstractFactionAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCostImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionGainImp;
+import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.FactionResourceInterface;
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.ResourceType;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
@@ -12,11 +13,17 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class LandPurchaseAction extends FactionActionBase {
-    @Autowired
+public class LandPurchaseAction extends AbstractFactionAction {
     private LandPurchaseCheckModule landPurchaseCheck;
-    @Autowired
     private LandPurchaseModule landPurchaseModule;
+
+    @Autowired
+    public LandPurchaseAction(FactionResourceInterface factionResourceInterface,
+                              LandPurchaseCheckModule landPurchaseCheck, LandPurchaseModule landPurchaseModule) {
+        super(factionResourceInterface);
+        this.landPurchaseCheck = landPurchaseCheck;
+        this.landPurchaseModule = landPurchaseModule;
+    }
 
     @Override
     protected boolean passesSystematicConstraints(Faction callerFaction, Province location, int amount) {

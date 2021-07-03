@@ -1,18 +1,19 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper;
 
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionBase;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.AbstractFactionAction;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionAction;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 
 public class TimedActionWrapper {
-    private FactionActionBase designatedAction;
+    private FactionAction designatedAction;
     private Faction targetFaction;
     private Province location;
     private int amount;
     private int time;
     private boolean finished;
 
-    public TimedActionWrapper(FactionActionBase actionBase, Faction targetFaction, Province location, int amount) {
+    public TimedActionWrapper(FactionAction actionBase, Faction targetFaction, Province location, int amount) {
         this.designatedAction = actionBase;
         this.targetFaction = targetFaction;
         this.location = location;
@@ -50,7 +51,7 @@ public class TimedActionWrapper {
         return time;
     }
 
-    public FactionActionBase getDesignatedAction() {
+    public FactionAction getDesignatedAction() {
         return designatedAction;
     }
 

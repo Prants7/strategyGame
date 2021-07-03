@@ -143,13 +143,19 @@ public class ProvinceViewFactory {
 
     private JButton getClearLandButton() {
         this.clearLand = new JButton("Clear land "+this.getFactionActionInterfaceAsImp().getLandClearAction().getCostsString());
-        this.clearLand.addActionListener(new ClearLandButtonActionListener(this));
+        this.clearLand.addActionListener( e -> {
+            this.activateLandClearOnSelectedProvince();
+        });
+        //this.clearLand.addActionListener(new ClearLandButtonActionListener(this));
         return this.clearLand;
     }
 
     private JButton getBuyLandButton() {
         this.buyLand = new JButton("Buy land "+this.getFactionActionInterfaceAsImp().getLandPurchaseAction().getCostsString());
-        this.buyLand.addActionListener(new PurchaseLandButtonActionListener(this));
+        this.buyLand.addActionListener( e -> {
+            this.activateLandPurchaseOnSelectedProvince();
+        });
+        //this.buyLand.addActionListener(new PurchaseLandButtonActionListener(this));
         return this.buyLand;
     }
 

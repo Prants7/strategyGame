@@ -1,8 +1,9 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction;
 
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionBase;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.AbstractFactionAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCostImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionGainImp;
+import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.FactionResourceInterface;
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.ResourceType;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
@@ -12,11 +13,17 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class LandClearAction extends FactionActionBase {
-    @Autowired
+public class LandClearAction extends AbstractFactionAction {
     private LandClearCheck landClearCheck;
-    @Autowired
     private LandClearModule landClearModule;
+
+    @Autowired
+    public LandClearAction(FactionResourceInterface factionResourceInterface,
+                           LandClearCheck landClearCheck, LandClearModule landClearModule) {
+        super(factionResourceInterface);
+        this.landClearCheck = landClearCheck;
+        this.landClearModule = landClearModule;
+    }
 
     @Override
     protected boolean passesSystematicConstraints(Faction callerFaction, Province location, int amount) {

@@ -1,6 +1,7 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface;
 
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionBase;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.AbstractFactionAction;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.adminLandAssign.AdminLandAssignAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.buildOfficeAction.BuildOfficeAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction.LandClearAction;
@@ -12,21 +13,28 @@ import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.PostConstruct;
-
-public abstract class BaseFactionActionInterface implements FactionActionInterface {
-    @Autowired
-    private LandPurchaseAction landPurchaseAction;
-    @Autowired
-    private LandClearAction landClearAction;
-    @Autowired
+public abstract class AbstractFactionActionInterface implements FactionActionInterface {
+    private FactionAction landPurchaseAction;
+    private FactionAction landClearAction;
     private AdminLandAssignAction adminLandAssignAction;
-    @Autowired
     private TimedActionWaitList timedActionWaitList;
+    private FactionAction buildOfficeAction;
+    private FactionAction seizeControlAction;
+
     @Autowired
-    private BuildOfficeAction buildOfficeAction;
-    @Autowired
-    private SeizeControlFromLocalsAction seizeControlAction;
+    public AbstractFactionActionInterface(LandPurchaseAction landPurchaseAction,
+                                          LandClearAction landClearAction,
+                                          AdminLandAssignAction adminLandAssignAction,
+                                          TimedActionWaitList timedActionWaitList,
+                                          BuildOfficeAction buildOfficeAction,
+                                          SeizeControlFromLocalsAction seizeControlAction) {
+        this.landPurchaseAction = landPurchaseAction;
+        this.landClearAction = landClearAction;
+        this.adminLandAssignAction = adminLandAssignAction;
+        this.timedActionWaitList = timedActionWaitList;
+        this.buildOfficeAction = buildOfficeAction;
+        this.seizeControlAction = seizeControlAction;
+    }
 
     @Override
     public void performAdminLandAssign(Faction forFaction, Province targetProvince) {
@@ -36,7 +44,7 @@ public abstract class BaseFactionActionInterface implements FactionActionInterfa
         this.doLandAssignForFaction(forFaction, targetProvince);
     }
 
-    protected void performFactionActionBaseTypeAction(Faction targetFaction, FactionActionBase action, Province targetProvince, int amount) {
+    protected void performFactionActionBaseTypeAction(Faction targetFaction, FactionAction action, Province targetProvince, int amount) {
         if(!action.allowedToDoAction(targetFaction, targetProvince, amount)) {
             return;
         }
@@ -56,7 +64,7 @@ public abstract class BaseFactionActionInterface implements FactionActionInterfa
         this.performFactionActionBaseTypeTimedAction(callingFaction, this.landPurchaseAction, targetProvince, 1);
     }
 
-    protected void performFactionActionBaseTypeTimedAction(Faction targetFaction, FactionActionBase action, Province targetProvince, int amount) {
+    protected void performFactionActionBaseTypeTimedAction(Faction targetFaction, FactionAction action, Province targetProvince, int amount) {
         if(!action.allowedToDoAction(targetFaction, targetProvince, amount)) {
             return;
         }
@@ -80,15 +88,15 @@ public abstract class BaseFactionActionInterface implements FactionActionInterfa
         performFactionActionBaseTypeAction(callingFaction, this.seizeControlAction, targetProvince, 1);
     }
 
-    public LandPurchaseAction getLandPurchaseAction() {
+    public FactionAction getLandPurchaseAction() {
         return landPurchaseAction;
     }
 
-    public LandClearAction getLandClearAction() {
+    public FactionAction getLandClearAction() {
         return landClearAction;
     }
 
-    private TimedActionWrapper getNewTimedAction(FactionActionBase actionBase, Faction targetFaction, Province location, int amount) {
+    private TimedActionWrapper getNewTimedAction(FactionAction actionBase, Faction targetFaction, Province location, int amount) {
         TimedActionWrapper newAction = new TimedActionWrapper(actionBase, targetFaction, location, amount);
         return newAction;
     }
