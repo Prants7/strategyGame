@@ -37,12 +37,6 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
         adminPerformAction(this.landPurchaseAction, forFaction, targetProvince, 1);
     }
 
-    /*protected void performFactionActionBaseTypeAction(Faction targetFaction, FactionAction action, Province targetProvince, int amount) {
-        if(!action.allowedToDoAction(targetFaction, targetProvince, amount)) {
-            return;
-        }
-        action.doAction(targetFaction, targetProvince, amount);
-    }*/
 
     protected void adminPerformAction(FactionAction action, Faction targetFaction, Province targetProvince, int amount) {
         action.forceDoAction(targetFaction, targetProvince, amount);
@@ -52,14 +46,6 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
     public void performLandPurchase(Faction callingFaction, Province targetProvince) {
         this.performStandardVersionOfAction(this.landPurchaseAction, callingFaction,targetProvince, 1);
     }
-
-    /*protected void performFactionActionBaseTypeTimedAction(Faction targetFaction, FactionAction action, Province targetProvince, int amount) {
-        if(!action.allowedToDoAction(targetFaction, targetProvince, amount)) {
-            return;
-        }
-        TimedActionWrapper newAction = this.getNewTimedAction(action, targetFaction, targetProvince, 1);
-        this.timedActionWaitList.addNewTimedAction(newAction);
-    }*/
 
     protected void performStandardVersionOfAction(FactionAction action, Faction targetFaction, Province targetProvince, int amount) {
         if(!action.allowedToDoAction(targetFaction, targetProvince, amount)) {
@@ -71,14 +57,12 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
 
     @Override
     public void performLandClearance(Faction callingFaction, Province targetProvince, int amount) {
-        //this.performFactionActionBaseTypeTimedAction(callingFaction, this.landClearAction, targetProvince, 1);
         this.performStandardVersionOfAction(this.landClearAction, callingFaction,targetProvince, 1);
 
     }
 
     @Override
     public void performFamilyHallBuild(Faction callingFaction, Province targetProvince) {
-        //performFactionActionBaseTypeAction(callingFaction, this.buildOfficeAction, targetProvince, 1);
         this.performStandardVersionOfAction(this.buildOfficeAction, callingFaction,targetProvince, 1);
     }
 
@@ -89,7 +73,6 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
 
     @Override
     public void seizeControlInCity(Faction callingFaction, Province targetProvince) {
-        //performFactionActionBaseTypeAction(callingFaction, this.seizeControlAction, targetProvince, 1);
         this.performStandardVersionOfAction(this.seizeControlAction, callingFaction,targetProvince, 1);
     }
 
