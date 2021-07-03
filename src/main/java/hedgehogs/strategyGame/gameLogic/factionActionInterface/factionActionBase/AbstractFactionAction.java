@@ -2,6 +2,7 @@ package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBas
 
 
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapper;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapperImp;
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.FactionResourceInterface;
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.ResourceSettings;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
@@ -157,8 +158,8 @@ public abstract class AbstractFactionAction implements FactionAction {
 
     private TimedActionWrapper makeTimedWrapperBasedOnThis(Faction callerFaction, Province location, int amount) {
         int calculatedActionTime = this.calculateActionTimeForFactionOnLocation(callerFaction, location, amount);
-        TimedActionWrapper newWrapper =
-                new TimedActionWrapper(this, callerFaction, location, amount, calculatedActionTime);
+        TimedActionWrapperImp newWrapper =
+                new TimedActionWrapperImp(this, callerFaction, location, amount, calculatedActionTime);
         return newWrapper;
     }
 
