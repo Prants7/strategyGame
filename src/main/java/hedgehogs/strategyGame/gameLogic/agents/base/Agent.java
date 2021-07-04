@@ -12,4 +12,6 @@ public interface Agent {
     public Faction getAlignmentFaction();
 
     public Province getLocation();
+
+    public boolean moveAgent(Province newLocation);
 }

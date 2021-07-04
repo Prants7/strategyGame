@@ -42,4 +42,10 @@ public abstract class AbstractAgent implements Agent {
     public Province getLocation() {
         return this.location;
     }
+
+    @Override
+    public boolean moveAgent(Province newLocation) {
+        this.location = newLocation;
+        return true;
+    }
 }
