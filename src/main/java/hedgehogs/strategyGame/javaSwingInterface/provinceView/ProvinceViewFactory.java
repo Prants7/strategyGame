@@ -1,5 +1,6 @@
 package hedgehogs.strategyGame.javaSwingInterface.provinceView;
 
+import hedgehogs.strategyGame.gameLogic.agents.agentPhoneBook.AgentPhoneBook;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.FactionActionInterface;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.FactionActionInterfaceImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction.LandClearAction;
@@ -27,6 +28,7 @@ public class ProvinceViewFactory extends AbstractUIObjectFactory  {
     private FactionActionInterface factionActionInterface;
     private FactionPhoneBook factionPhoneBook;
     private MainWindowFactory mainWindowFactory;
+    private AgentPhoneBook agentPhoneBook;
 
     private Province lastSelectedProvince;
     private ControlTable controlTable;
@@ -40,11 +42,11 @@ public class ProvinceViewFactory extends AbstractUIObjectFactory  {
     public ProvinceViewFactory(FactionActionInterface factionActionInterface,
                                FactionPhoneBook factionPhoneBook,
                                MainWindowFactory mainWindowFactory,
-                               AgentList agentList) {
+                               AgentPhoneBook agentPhoneBook) {
         this.factionActionInterface = factionActionInterface;
         this.factionPhoneBook = factionPhoneBook;
         this.mainWindowFactory = mainWindowFactory;
-        this.agentList = agentList;
+        this.agentPhoneBook = agentPhoneBook;
     }
 
     @Override
@@ -58,6 +60,7 @@ public class ProvinceViewFactory extends AbstractUIObjectFactory  {
         this.controlTable = new ControlTable(this.getPlayerFaction());
         this.addNewElementToPanel(this.controlTable.getPanelObject(), 0, 2);
 
+        this.agentList = new AgentList(this.getPlayerFaction(), agentPhoneBook);
         this.addNewElementToPanel(this.agentList.getPanelObject(), 1, 2);
 
         this.playerActionButtons =
@@ -111,6 +114,7 @@ public class ProvinceViewFactory extends AbstractUIObjectFactory  {
         this.controlTable.setLastSelectedProvince(province);
         this.landFractionsTable.setLastSelectedProvince(province);
         this.playerActionButtons.setLastSelectedProvince(province);
+        this.agentList.setLastSelectedProvince(province);
         //updateAllDataHere();
         this.elementContentRefresh();
     }

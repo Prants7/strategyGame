@@ -4,25 +4,26 @@ import hedgehogs.strategyGame.gameLogic.agents.agentPhoneBook.AgentPhoneBook;
 import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
+import hedgehogs.strategyGame.gameLogic.land.Province;
 import hedgehogs.strategyGame.javaSwingInterface.generalBuildObjects.AbstractUIObjectFactory;
+import hedgehogs.strategyGame.javaSwingInterface.generalBuildObjects.MinorAbstractUIObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import java.util.Map;
 
-@Component
-public class AgentList extends AbstractUIObjectFactory {
+public class AgentList extends MinorAbstractUIObjectFactory {
     private AgentPhoneBook agentPhoneBook;
-    private FactionPhoneBook factionPhoneBook;
+    private Province lastSelectedProvince;
 
     private JLabel agentLabel;
     private JList<Agent> agentList;
 
     @Autowired
-    public AgentList(AgentPhoneBook agentPhoneBook, FactionPhoneBook factionPhoneBook) {
+    public AgentList(Faction perspectiveFaction, AgentPhoneBook agentPhoneBook) {
+        super(perspectiveFaction);
         this.agentPhoneBook = agentPhoneBook;
-        this.factionPhoneBook = factionPhoneBook;
     }
 
     @Override
@@ -32,7 +33,7 @@ public class AgentList extends AbstractUIObjectFactory {
     }
 
     private void makeAgentLabel() {
-        this.agentLabel = new JLabel(this.getDisplayedFaction().getFactionName() + " agents: ");
+        this.agentLabel = new JLabel(this.getPerspectiveFaction().getFactionName() + " agents: ");
         this.addNewElementToPanel(this.agentLabel, 0, 0);
     }
 
@@ -47,14 +48,30 @@ public class AgentList extends AbstractUIObjectFactory {
     }
 
     private void writeAgentsList() {
+        if(!this.hasSelectedProvince()) {
+            return;
+        }
         DefaultListModel<Agent> listModel = new DefaultListModel<>();
-        for(Agent oneAgent: this.agentPhoneBook.getFactionAgents(this.getDisplayedFaction())) {
+        for(Agent oneAgent: this.agentPhoneBook.getFactionsAgentsOnLocation(this.perspectiveFaction, this.lastSelectedProvince)) {
             listModel.addElement(oneAgent);
         }
         this.agentList.setModel(listModel);
     }
 
-    private Faction getDisplayedFaction() {
-        return this.factionPhoneBook.getPlayerFaction();
+    @Override
+    protected void makeContentRefreshCall() {
+
+    }
+
+    private boolean hasSelectedProvince() {
+        return lastSelectedProvince != null;
+    }
+
+    public Province getLastSelectedProvince() {
+        return lastSelectedProvince;
+    }
+
+    public void setLastSelectedProvince(Province lastSelectedProvince) {
+        this.lastSelectedProvince = lastSelectedProvince;
     }
 }

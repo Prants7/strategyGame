@@ -3,6 +3,7 @@ package hedgehogs.strategyGame.gameLogic.agents.agentPhoneBook;
 import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
+import hedgehogs.strategyGame.gameLogic.land.Province;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 public class AgentPhoneBook {
@@ -47,5 +49,15 @@ public class AgentPhoneBook {
             return new ArrayList<Agent>(accessFactionList(keyFaction));
         }
         return new ArrayList<>();
+    }
+
+    public List<Agent> getFactionsAgentsOnLocation(Faction faction, Province location) {
+        List<Agent> factionAgents = this.getFactionAgents(faction);
+        if(factionAgents.isEmpty()) {
+            return factionAgents;
+        }
+        else {
+            return factionAgents.stream().filter(oneAgent -> oneAgent.getLocation().equals(location)).collect(Collectors.toList());
+        }
     }
 }
