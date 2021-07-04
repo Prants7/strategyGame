@@ -29,4 +29,9 @@ public abstract class AbstractAgent implements Agent {
     public Faction getAlignmentFaction() {
         return this.alignment;
     }
+
+    @Override
+    public String toString() {
+        return this.roleName + ": "+this.name;
+    }
 }

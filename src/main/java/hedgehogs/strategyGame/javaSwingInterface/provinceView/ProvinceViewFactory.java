@@ -8,6 +8,7 @@ import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 import hedgehogs.strategyGame.gameLogic.land.buildings.offices.base.Office;
+import hedgehogs.strategyGame.javaSwingInterface.agentList.AgentList;
 import hedgehogs.strategyGame.javaSwingInterface.generalBuildObjects.AbstractUIObjectFactory;
 import hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter.MainWindowFactory;
 import hedgehogs.strategyGame.javaSwingInterface.provinceView.controlTable.ControlTable;
@@ -33,37 +34,35 @@ public class ProvinceViewFactory extends AbstractUIObjectFactory  {
     private ProvinceDescriptionTable provinceDescriptionTable;
     private ProvincePlayerActionButtons playerActionButtons;
 
+    private AgentList agentList;
+
     @Autowired
     public ProvinceViewFactory(FactionActionInterface factionActionInterface,
                                FactionPhoneBook factionPhoneBook,
-                               MainWindowFactory mainWindowFactory) {
+                               MainWindowFactory mainWindowFactory,
+                               AgentList agentList) {
         this.factionActionInterface = factionActionInterface;
         this.factionPhoneBook = factionPhoneBook;
         this.mainWindowFactory = mainWindowFactory;
+        this.agentList = agentList;
     }
 
     @Override
     protected void makeAllMinorElements() {
         this.provinceDescriptionTable = new ProvinceDescriptionTable(this.getPlayerFaction());
         this.addNewElementToPanel(this.provinceDescriptionTable.getPanelObject(), 0, 0);
-        /*this.setCoordinatesForLayout(layoutConstraint, 0, 0);
-        this.mainPanel.add(this.provinceDescriptionTable.getPanelObject(), layoutConstraint);*/
 
         this.landFractionsTable = new LandFractionsTable(this.getPlayerFaction());
         this.addNewElementToPanel(this.landFractionsTable.getPanelObject(), 0, 1);
-        /*this.setCoordinatesForLayout(layoutConstraint, 0, 1);
-        this.mainPanel.add(this.landFractionsTable.getPanelObject(), layoutConstraint);*/
 
         this.controlTable = new ControlTable(this.getPlayerFaction());
         this.addNewElementToPanel(this.controlTable.getPanelObject(), 0, 2);
-        /*this.setCoordinatesForLayout(layoutConstraint, 0, 4);
-        this.mainPanel.add(this.controlTable.getPanelObject(), layoutConstraint);*/
+
+        this.addNewElementToPanel(this.agentList.getPanelObject(), 1, 2);
 
         this.playerActionButtons =
                 new ProvincePlayerActionButtons(this.getPlayerFaction(), this, this.factionActionInterface);
         this.addNewElementToPanel(this.playerActionButtons.getPanelObject(), 0, 3);
-        /*this.setCoordinatesForLayout(layoutConstraint, 0, 5);
-        this.mainPanel.add(this.playerActionButtons.getPanelObject(), layoutConstraint);*/
     }
 
     /*public JPanel giveProvinceView() {
@@ -128,6 +127,7 @@ public class ProvinceViewFactory extends AbstractUIObjectFactory  {
         this.controlTable.refreshElements();
         this.landFractionsTable.refreshElements();
         this.playerActionButtons.refreshElements();
+        this.agentList.refreshElements();
     }
 
     private Faction getPlayerFaction() {
