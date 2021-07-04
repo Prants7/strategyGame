@@ -52,7 +52,7 @@ public class GameLogicHub {
         Province targetProvince = this.world.getAllProvinces().get(0);
         Faction playerFaction = this.factionPhoneBook.getPlayerFaction();
         this.setUpStartLocationForFaction(playerFaction, targetProvince);
-        printOutFactionAgents(playerFaction);
+        //printOutFactionAgents(playerFaction);
     }
 
     private void setUpStartLocationForFaction(Faction targetFaction, Province targetProvince) {
