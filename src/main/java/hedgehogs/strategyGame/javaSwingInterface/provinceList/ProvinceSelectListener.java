@@ -25,5 +25,6 @@ public class ProvinceSelectListener implements ListSelectionListener {
             return;
         }
         this.mainWindowFactory.openProvinceView(selectedProvince);
+        this.list.clearSelection();
     }
 }

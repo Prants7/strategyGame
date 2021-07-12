@@ -7,6 +7,7 @@ import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 import hedgehogs.strategyGame.javaSwingInterface.generalBuildObjects.AbstractUIObjectFactory;
 import hedgehogs.strategyGame.javaSwingInterface.generalBuildObjects.MinorAbstractUIObjectFactory;
+import hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter.MainWindowFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,14 +17,16 @@ import java.util.Map;
 public class AgentList extends MinorAbstractUIObjectFactory {
     private AgentPhoneBook agentPhoneBook;
     private Province lastSelectedProvince;
+    private MainWindowFactory mainWindowFactory;
 
     private JLabel agentLabel;
     private JList<Agent> agentList;
 
     @Autowired
-    public AgentList(Faction perspectiveFaction, AgentPhoneBook agentPhoneBook) {
+    public AgentList(Faction perspectiveFaction, AgentPhoneBook agentPhoneBook, MainWindowFactory mainWindowFactory) {
         super(perspectiveFaction);
         this.agentPhoneBook = agentPhoneBook;
+        this.mainWindowFactory = mainWindowFactory;
     }
 
     @Override
@@ -40,6 +43,11 @@ public class AgentList extends MinorAbstractUIObjectFactory {
     private void makeAgentsList() {
         this.agentList = new JList<>();
         this.addNewElementToPanel(this.agentList, 0, 1);
+        this.agentList.addListSelectionListener( selectedElement -> {
+            if(agentList.getSelectedValue() != null) {
+                this.mainWindowFactory.openAgentView(agentList.getSelectedValue());
+            }
+        });
     }
 
     @Override

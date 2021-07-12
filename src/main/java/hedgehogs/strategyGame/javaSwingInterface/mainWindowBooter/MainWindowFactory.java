@@ -1,11 +1,14 @@
 package hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter;
 
+import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.gameLogicHub.GameLogicHub;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 import hedgehogs.strategyGame.javaSwingInterface.factionInfo.FactionInfoFactory;
+import hedgehogs.strategyGame.javaSwingInterface.oneAgentView.OneAgentViewFactory;
 import hedgehogs.strategyGame.javaSwingInterface.provinceList.ProvinceListFactory;
 import hedgehogs.strategyGame.javaSwingInterface.provinceList.ProvinceSelectListener;
 import hedgehogs.strategyGame.javaSwingInterface.provinceView.ProvinceViewFactory;
+import hedgehogs.strategyGame.javaSwingInterface.tabViewer.TabViewerFactory;
 import hedgehogs.strategyGame.javaSwingInterface.timedActionListView.TimedActionListViewFactory;
 import hedgehogs.strategyGame.javaSwingInterface.turnChangeButton.TurnChangeButtonFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,10 @@ public class MainWindowFactory {
     private ProvinceViewFactory provinceViewFactory;
     @Autowired
     private TimedActionListViewFactory timedActionListViewFactory;
+    @Autowired
+    private TabViewerFactory tabViewerFactory;
+    @Autowired
+    private OneAgentViewFactory agentViewFactory;
     private JFrame mainFrame;
     private ProvinceSelectListener provinceSelectListener;
 
@@ -47,7 +54,10 @@ public class MainWindowFactory {
         mainFrame.add(provinceList, BorderLayout.WEST);
         mainFrame.add(this.factionInfoFactory.getFactionInfoPanel(this.gameLogic.getFactionPhoneBook().getPlayerFaction()), BorderLayout.NORTH);
         mainFrame.add(this.turnChangeButtonFactory.giveTurnChangeButton(this.gameLogic.getTimeCenterSocket(), this), BorderLayout.SOUTH);
-        mainFrame.add(this.provinceViewFactory.getPanelObject(), BorderLayout.CENTER);
+
+        mainFrame.add(this.tabViewerFactory.getPanelObject(),BorderLayout.CENTER);
+        //mainFrame.add(this.provinceViewFactory.getPanelObject(), BorderLayout.CENTER);
+
         mainFrame.add(this.timedActionListViewFactory.getPanelObject(), BorderLayout.EAST);
 
         mainFrame.setSize(800,600);//400 width and 500 height
@@ -66,6 +76,12 @@ public class MainWindowFactory {
     }
 
     public void openProvinceView(Province selectedProvince) {
+        this.tabViewerFactory.changeScreenTo(this.provinceViewFactory);
         this.provinceViewFactory.openViewForProvince(selectedProvince);
+    }
+
+    public void openAgentView(Agent selectedAgent) {
+        this.tabViewerFactory.changeScreenTo(this.agentViewFactory);
+        this.agentViewFactory.selectAgent(selectedAgent);
     }
 }
