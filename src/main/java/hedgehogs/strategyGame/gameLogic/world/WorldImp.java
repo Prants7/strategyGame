@@ -32,9 +32,9 @@ public class WorldImp extends BaseWorld {
     }
 
     private void makeFirstTimeProvinces() {
-        this.provinces.add( this.provinceFactory.getBasicProvince("firstProvince", true));
-        this.provinces.add( this.provinceFactory.getBasicProvince("secondProvince", false));
-        this.provinces.add( this.provinceFactory.getBasicProvince("thirdProvince", false));
+        this.provinces.add( this.provinceFactory.getBasicProvince("firstProvince", true, 5, 5));
+        this.provinces.add( this.provinceFactory.getBasicProvince("secondProvince", false, 5, 12));
+        this.provinces.add( this.provinceFactory.getBasicProvince("thirdProvince", false, 15, 8));
     }
 
     @Override

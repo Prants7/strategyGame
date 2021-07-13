@@ -9,7 +9,7 @@ public class ProvinceFactory {
     @Autowired
     private LandFractionFactory fractionFactory;
 
-    public Province getBasicProvince(String name, boolean developed) {
-        return new ProvinceImp(name, developed, this.fractionFactory);
+    public Province getBasicProvince(String name, boolean developed, int xLocation, int yLocation) {
+        return new ProvinceImp(name, developed, this.fractionFactory, xLocation, yLocation);
     }
 }

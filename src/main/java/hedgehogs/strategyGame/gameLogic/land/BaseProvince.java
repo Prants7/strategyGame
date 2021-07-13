@@ -1,5 +1,7 @@
 package hedgehogs.strategyGame.gameLogic.land;
 
+import hedgehogs.strategyGame.gameLogic.coordinates.Coordinates;
+import hedgehogs.strategyGame.gameLogic.coordinates.SettlementCoordinates;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.buildings.offices.officeLocationArea.CityOfficeLocationImp;
 import hedgehogs.strategyGame.gameLogic.land.infuenceTable.InfluenceTable;
@@ -15,11 +17,13 @@ public abstract class BaseProvince implements Province {
     private InfluenceTable influenceTable;
     private Prosperity prosperity;
     private CityOfficeLocationImp officeInterface;
+    private Coordinates settlementCoordinates;
 
-    public BaseProvince() {
+    public BaseProvince(int xLocation, int yLocation) {
         this.influenceTable = new InfluenceTableImp();
         this.prosperity = new ProsperityImp();
         this.officeInterface = new CityOfficeLocationImp();
+        this.settlementCoordinates = new SettlementCoordinates(xLocation, yLocation);
     }
 
     public String getProvinceName() {
@@ -94,5 +98,10 @@ public abstract class BaseProvince implements Province {
     @Override
     public CityOfficeLocationImp accessLocationOffices() {
         return this.officeInterface;
+    }
+
+    @Override
+    public Coordinates accessCoordinates() {
+        return this.settlementCoordinates;
     }
 }

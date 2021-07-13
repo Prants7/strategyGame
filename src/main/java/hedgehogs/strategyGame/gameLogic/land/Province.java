@@ -1,5 +1,6 @@
 package hedgehogs.strategyGame.gameLogic.land;
 
+import hedgehogs.strategyGame.gameLogic.coordinates.Coordinates;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.buildings.offices.officeLocationArea.CityOfficeLocationImp;
 import hedgehogs.strategyGame.gameLogic.land.infuenceTable.InfluenceTable;
@@ -32,4 +33,6 @@ public interface Province {
     public Prosperity accessProsperity();
 
     public CityOfficeLocationImp accessLocationOffices();
+
+    public Coordinates accessCoordinates();
 }

@@ -14,7 +14,9 @@ public class ProvinceImp extends BaseProvince {
     private String name;
     private List<LandFraction> landFractions;
 
-    public ProvinceImp(String provinceName, boolean settled, LandFractionFactory fractionFactory) {
+    public ProvinceImp(String provinceName, boolean settled, LandFractionFactory fractionFactory,
+                       int xLocation, int yLocation) {
+        super(xLocation, yLocation);
         this.name = provinceName;
         this.setUpLandFractions(fractionFactory);
         if(settled) {
