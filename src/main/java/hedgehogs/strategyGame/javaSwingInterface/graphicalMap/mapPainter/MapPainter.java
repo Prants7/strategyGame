@@ -49,7 +49,11 @@ public class MapPainter extends Canvas {
     }
 
     private void paintOneSettlement(Graphics g, VisualCityObject oneCity) {
+        if(oneCity.getLogicalObject().accessLocationOffices().hasControllingFaction()) {
+            g.setColor(Color.GREEN);
+        }
         g.fillOval(oneCity.getDrawX(), oneCity.getDrawY(), oneCity.getDrawLength(), oneCity.getDrawWidth());
+        g.setColor(Color.BLACK);
         g.drawString(oneCity.getLogicalObject().getProvinceName(), oneCity.getDrawX(), oneCity.getDrawY());
     }
 
