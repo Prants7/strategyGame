@@ -2,26 +2,17 @@ package hedgehogs.strategyGame.javaSwingInterface.provinceView;
 
 import hedgehogs.strategyGame.gameLogic.agents.agentPhoneBook.AgentPhoneBook;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.FactionActionInterface;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.FactionActionInterfaceImp;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction.LandClearAction;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landPurchaseAction.LandPurchaseAction;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
 import hedgehogs.strategyGame.gameLogic.land.Province;
-import hedgehogs.strategyGame.gameLogic.land.buildings.offices.base.Office;
 import hedgehogs.strategyGame.javaSwingInterface.agentList.AgentList;
 import hedgehogs.strategyGame.javaSwingInterface.generalBuildObjects.AbstractUIObjectFactory;
 import hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter.MainWindowFactory;
 import hedgehogs.strategyGame.javaSwingInterface.provinceView.controlTable.ControlTable;
 import hedgehogs.strategyGame.javaSwingInterface.provinceView.landFractionsTable.LandFractionsTable;
 import hedgehogs.strategyGame.javaSwingInterface.provinceView.provinceDescriptionTable.ProvinceDescriptionTable;
-import hedgehogs.strategyGame.javaSwingInterface.provinceView.provincePlayerActionButtons.ProvincePlayerActionButtons;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.swing.*;
-import java.awt.*;
-import java.util.Map;
 
 @Component
 public class ProvinceViewFactory extends AbstractUIObjectFactory  {
