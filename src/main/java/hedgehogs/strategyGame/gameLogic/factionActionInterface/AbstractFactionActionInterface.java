@@ -13,12 +13,16 @@ import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class AbstractFactionActionInterface implements FactionActionInterface {
     private FactionAction landPurchaseAction;
     private FactionAction landClearAction;
     private TimedActionWaitList timedActionWaitList;
     private FactionAction buildOfficeAction;
     private FactionAction seizeControlAction;
+    private List<FactionAction> actionList;
 
     @Autowired
     public AbstractFactionActionInterface(LandPurchaseAction landPurchaseAction,
@@ -31,6 +35,15 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
         this.timedActionWaitList = timedActionWaitList;
         this.buildOfficeAction = buildOfficeAction;
         this.seizeControlAction = seizeControlAction;
+        this.makeActionList();
+    }
+
+    private void makeActionList() {
+        this.actionList = new ArrayList<>();
+        this.actionList.add(this.landClearAction);
+        this.actionList.add(this.landPurchaseAction);
+        this.actionList.add(this.buildOfficeAction);
+        this.actionList.add(this.seizeControlAction);
     }
 
     @Override
@@ -88,5 +101,16 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
     private TimedActionWrapper getNewTimedAction(FactionAction actionBase, Agent agent) {
         TimedActionWrapper newAction = actionBase.getActionAsTimedElement(agent);
         return newAction;
+    }
+
+    @Override
+    public List<FactionAction> getListOfUsableFactionActions() {
+        return new ArrayList<>(this.actionList);
+    }
+
+    @Override
+    public boolean tryToPerformActionWithAgent(FactionAction desiredAction, Agent targetAgent) {
+        this.performStandardVersionOfAction(desiredAction, targetAgent);
+        return true;
     }
 }

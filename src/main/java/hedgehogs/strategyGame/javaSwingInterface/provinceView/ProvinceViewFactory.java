@@ -34,7 +34,7 @@ public class ProvinceViewFactory extends AbstractUIObjectFactory  {
     private ControlTable controlTable;
     private LandFractionsTable landFractionsTable;
     private ProvinceDescriptionTable provinceDescriptionTable;
-    private ProvincePlayerActionButtons playerActionButtons;
+    //private ProvincePlayerActionButtons playerActionButtons;
 
     private AgentList agentList;
 
@@ -63,9 +63,9 @@ public class ProvinceViewFactory extends AbstractUIObjectFactory  {
         this.agentList = new AgentList(this.getPlayerFaction(), agentPhoneBook, mainWindowFactory);
         this.addNewElementToPanel(this.agentList.getPanelObject(), 1, 2);
 
-        this.playerActionButtons =
+        /*this.playerActionButtons =
                 new ProvincePlayerActionButtons(this.getPlayerFaction(), this, this.factionActionInterface, this.agentPhoneBook);
-        this.addNewElementToPanel(this.playerActionButtons.getPanelObject(), 0, 3);
+        this.addNewElementToPanel(this.playerActionButtons.getPanelObject(), 0, 3);*/
     }
 
     /*public JPanel giveProvinceView() {
@@ -113,7 +113,7 @@ public class ProvinceViewFactory extends AbstractUIObjectFactory  {
         this.provinceDescriptionTable.setLastSelectedProvince(province);
         this.controlTable.setLastSelectedProvince(province);
         this.landFractionsTable.setLastSelectedProvince(province);
-        this.playerActionButtons.setLastSelectedProvince(province);
+        //this.playerActionButtons.setLastSelectedProvince(province);
         this.agentList.setLastSelectedProvince(province);
         //updateAllDataHere();
         this.elementContentRefresh();
@@ -130,7 +130,7 @@ public class ProvinceViewFactory extends AbstractUIObjectFactory  {
         this.provinceDescriptionTable.refreshElements();
         this.controlTable.refreshElements();
         this.landFractionsTable.refreshElements();
-        this.playerActionButtons.refreshElements();
+        //this.playerActionButtons.refreshElements();
         this.agentList.refreshElements();
     }
 

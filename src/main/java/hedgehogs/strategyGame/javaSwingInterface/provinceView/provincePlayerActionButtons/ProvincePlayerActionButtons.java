@@ -4,57 +4,75 @@ import hedgehogs.strategyGame.gameLogic.agents.agentPhoneBook.AgentPhoneBook;
 import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.FactionActionInterface;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.FactionActionInterfaceImp;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionAction;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 import hedgehogs.strategyGame.javaSwingInterface.generalBuildObjects.MinorAbstractUIObjectFactory;
+import hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter.MainWindowFactory;
 import hedgehogs.strategyGame.javaSwingInterface.provinceView.ProvinceViewFactory;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class ProvincePlayerActionButtons extends MinorAbstractUIObjectFactory {
-    private Province lastSelectedProvince;
-    private ProvinceViewFactory masterTable;
+    private Agent lastSelectedAgent;
     private FactionActionInterface factionActionInterface;
-    private AgentPhoneBook agentPhoneBook;
-    private JButton clearLand;
-    private JButton buyLand;
-    private JButton seizeControl;
+    private MainWindowFactory mainWindowFactory;
+    //private JButton clearLand;
+    //private JButton buyLand;
+    //private JButton seizeControl;
+    private java.util.List<JButton> allButtons;
 
     public ProvincePlayerActionButtons(Faction perspectiveFaction,
-                                       ProvinceViewFactory masterTable,
                                        FactionActionInterface factionActionInterface,
-                                       AgentPhoneBook agentPhoneBook) {
+                                       MainWindowFactory mainWindowFactory) {
         super(perspectiveFaction);
-        this.masterTable = masterTable;
         this.factionActionInterface = factionActionInterface;
-        this.agentPhoneBook = agentPhoneBook;
+        this.mainWindowFactory = mainWindowFactory;
+        this.allButtons = new ArrayList<>();
     }
 
     @Override
     protected void makeContentRefreshCall() {
-        if(!this.hasSelectedProvince()) {
+        if(!this.hasSelectedAgent()) {
             return;
         }
-        this.masterTable.callSuperUpdateOnGameInterface();
+        this.mainWindowFactory.updateTexts();
     }
 
     @Override
     protected void makeAllMinorElements() {
-        makeClearLandButton();
+        /*makeClearLandButton();
         makeBuyLandButton();
-        makeSeizeControlButton();
+        makeSeizeControlButton();*/
+        makeAllActionButtons(this.factionActionInterface.getListOfUsableFactionActions());
     }
 
-    private void makeClearLandButton() {
+    private void makeAllActionButtons(java.util.List<FactionAction> actions) {
+        int buttonY = 0;
+        for(FactionAction oneAction : actions) {
+            JButton newButton = new JButton(oneAction.getActionName() + " " + oneAction.getCostsString());
+            newButton.addActionListener( e -> {
+                System.out.println("trying to do action "+oneAction.getActionName()+ " with agent " + this.lastSelectedAgent.getName());
+                this.factionActionInterface.tryToPerformActionWithAgent(oneAction, this.lastSelectedAgent);
+                this.makeContentRefreshCall();
+            });
+            this.allButtons.add(newButton);
+            this.addNewElementToPanel(newButton, 0, buttonY);
+            buttonY++;
+        }
+    }
+
+    /*private void makeClearLandButton() {
         this.clearLand = new JButton("Clear land "+this.getFactionActionInterfaceAsImp().getLandClearAction().getCostsString());
         this.clearLand.addActionListener( e -> {
             this.activateLandClearOnSelectedProvince();
         });
         this.addNewElementToPanel(this.clearLand, 0, 0);
-    }
+    }*/
 
-    public void activateLandClearOnSelectedProvince() {
-        if(this.lastSelectedProvince == null) {
+    /*public void activateLandClearOnSelectedProvince() {
+        if(this.lastSelectedAgent == null) {
             return;
         }
         this.activateLandClear(this.getPerspectiveFaction(), this.lastSelectedProvince, 1);
@@ -66,17 +84,17 @@ public class ProvincePlayerActionButtons extends MinorAbstractUIObjectFactory {
             return;
         }
         this.factionActionInterface.performLandClearance(this.getFirstAgentInCity());
-    }
+    }*/
 
-    private void makeBuyLandButton() {
+    /*private void makeBuyLandButton() {
         this.buyLand = new JButton("Buy land "+this.getFactionActionInterfaceAsImp().getLandPurchaseAction().getCostsString());
         this.buyLand.addActionListener( e -> {
             this.activateLandPurchaseOnSelectedProvince();
         });
         this.addNewElementToPanel(this.buyLand, 0, 1);
-    }
+    }*/
 
-    public void activateLandPurchaseOnSelectedProvince() {
+    /*public void activateLandPurchaseOnSelectedProvince() {
         if(this.lastSelectedProvince == null) {
             return;
         }
@@ -89,17 +107,17 @@ public class ProvincePlayerActionButtons extends MinorAbstractUIObjectFactory {
             return;
         }
         this.factionActionInterface.performLandPurchase(this.getFirstAgentInCity());
-    }
+    }*/
 
-    private void makeSeizeControlButton() {
+    /*private void makeSeizeControlButton() {
         this.seizeControl = new JButton("Seize control for "+this.getPerspectiveFaction().getFactionName());
         this.seizeControl.addActionListener( e -> {
             this.activateSeizeControl();
         });
         this.addNewElementToPanel(this.seizeControl, 0, 2);
-    }
+    }*/
 
-    private void activateSeizeControl() {
+    /*private void activateSeizeControl() {
         if(this.lastSelectedProvince == null) {
             return;
         }
@@ -108,7 +126,7 @@ public class ProvincePlayerActionButtons extends MinorAbstractUIObjectFactory {
         }
         this.factionActionInterface.seizeControlInCity(this.getFirstAgentInCity());
         makeContentRefreshCall();
-    }
+    }*/
 
     private FactionActionInterfaceImp getFactionActionInterfaceAsImp() {
         return (FactionActionInterfaceImp) this.factionActionInterface;
@@ -116,24 +134,27 @@ public class ProvincePlayerActionButtons extends MinorAbstractUIObjectFactory {
 
     @Override
     protected void elementContentRefresh() {
-        if(!this.hasSelectedProvince()) {
+        if(!this.hasSelectedAgent()) {
             return;
         }
+        this.getPanelObject().removeAll();
+        this.allButtons.clear();
+        this.makeAllActionButtons(this.factionActionInterface.getListOfUsableFactionActions());
     }
 
-    private boolean hasSelectedProvince() {
-        return lastSelectedProvince != null;
+    private boolean hasSelectedAgent() {
+        return lastSelectedAgent != null;
     }
 
-    public Province getLastSelectedProvince() {
-        return lastSelectedProvince;
+    public Agent getLastSelectedAgent() {
+        return this.lastSelectedAgent;
     }
 
-    public void setLastSelectedProvince(Province lastSelectedProvince) {
-        this.lastSelectedProvince = lastSelectedProvince;
+    public void setLastSelectedAgent(Agent lastSelectedAgent) {
+        this.lastSelectedAgent = lastSelectedAgent;
     }
 
-    private boolean tempHasAgentsInCity() {
+    /*private boolean tempHasAgentsInCity() {
         return !this.agentPhoneBook.getFactionsAgentsOnLocation(this.getPerspectiveFaction(), this.lastSelectedProvince).isEmpty();
     }
 
@@ -141,5 +162,5 @@ public class ProvincePlayerActionButtons extends MinorAbstractUIObjectFactory {
         Agent firstAgent = this.agentPhoneBook.getFactionsAgentsOnLocation(this.getPerspectiveFaction(), this.lastSelectedProvince).get(0);
         System.out.println("Getting first agent: "+firstAgent.getName());
         return firstAgent;
-    }
+    }*/
 }

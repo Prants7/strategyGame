@@ -1,17 +1,29 @@
 package hedgehogs.strategyGame.javaSwingInterface.oneAgentView;
 
 import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.FactionActionInterface;
+import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
 import hedgehogs.strategyGame.javaSwingInterface.generalBuildObjects.AbstractUIObjectFactory;
+import hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter.MainWindowFactory;
+import hedgehogs.strategyGame.javaSwingInterface.provinceView.provincePlayerActionButtons.ProvincePlayerActionButtons;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 
 @Component
 public class OneAgentViewFactory extends AbstractUIObjectFactory {
+    @Autowired
+    private FactionActionInterface factionActionInterface;
+    @Autowired
+    private MainWindowFactory mainWindowFactory;
+    @Autowired
+    private FactionPhoneBook factionPhoneBook;
     private Agent selectedAgent;
     private JLabel agentNameLabel;
     private JLabel factionLabel;
     private JLabel locationLabel;
+    private ProvincePlayerActionButtons provincePlayerActionButtons;
 
 
     @Override
@@ -22,6 +34,9 @@ public class OneAgentViewFactory extends AbstractUIObjectFactory {
         this.addNewElementToPanel(factionLabel, 0, 1);
         this.locationLabel = new JLabel("");
         this.addNewElementToPanel(locationLabel, 0, 2);
+        this.provincePlayerActionButtons = new ProvincePlayerActionButtons(
+                this.factionPhoneBook.getPlayerFaction(), this.factionActionInterface, this.mainWindowFactory);
+        this.addNewElementToPanel(this.provincePlayerActionButtons.getPanelObject(), 0, 3);
     }
 
     @Override
@@ -36,6 +51,7 @@ public class OneAgentViewFactory extends AbstractUIObjectFactory {
         this.writeContentToNameLabel();
         this.writeFactionLabel();
         this.writeLocationLabel();
+        this.provincePlayerActionButtons.refreshElements();
     }
 
     private void writeContentToNameLabel() {
@@ -52,6 +68,7 @@ public class OneAgentViewFactory extends AbstractUIObjectFactory {
 
     public void selectAgent(Agent selectedAgent) {
         this.selectedAgent = selectedAgent;
+        this.provincePlayerActionButtons.setLastSelectedAgent(selectedAgent);
         this.updateAllValues();
     }
 }

@@ -67,6 +67,7 @@ public class GameLogicHub {
     private void setUpStartAgentsForFaction(Faction targetFaction, Province targetProvince) {
         this.agentFactory.makeNewEnvoyForFaction("Billy", targetFaction, targetProvince);
         this.agentFactory.makeNewEnvoyForFaction("Jimmy", targetFaction, targetProvince);
+        this.agentFactory.makeNewEnvoyForFaction("Michael", targetFaction, targetProvince);
     }
 
     private void printOutFactionAgents(Faction targetFaction) {
