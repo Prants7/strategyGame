@@ -4,6 +4,7 @@ import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.gameLogicHub.GameLogicHub;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 import hedgehogs.strategyGame.javaSwingInterface.factionInfo.FactionInfoFactory;
+import hedgehogs.strategyGame.javaSwingInterface.graphicalMap.mapFactory.MapFactory;
 import hedgehogs.strategyGame.javaSwingInterface.oneAgentView.OneAgentViewFactory;
 import hedgehogs.strategyGame.javaSwingInterface.provinceList.ProvinceListFactory;
 import hedgehogs.strategyGame.javaSwingInterface.provinceList.ProvinceSelectListener;
@@ -35,6 +36,8 @@ public class MainWindowFactory {
     private TabViewerFactory tabViewerFactory;
     @Autowired
     private OneAgentViewFactory agentViewFactory;
+    @Autowired
+    private MapFactory mapFactory;
     private JFrame mainFrame;
     private ProvinceSelectListener provinceSelectListener;
 
@@ -56,6 +59,7 @@ public class MainWindowFactory {
         mainFrame.add(this.turnChangeButtonFactory.giveTurnChangeButton(this.gameLogic.getTimeCenterSocket(), this), BorderLayout.SOUTH);
 
         mainFrame.add(this.tabViewerFactory.getPanelObject(),BorderLayout.CENTER);
+        this.tabViewerFactory.changeScreenTo(this.mapFactory);
         //mainFrame.add(this.provinceViewFactory.getPanelObject(), BorderLayout.CENTER);
 
         mainFrame.add(this.timedActionListViewFactory.getPanelObject(), BorderLayout.EAST);
