@@ -1,19 +1,20 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface;
 
+import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 
 public interface FactionActionInterface {
 
-    public void performLandPurchase(Faction callingFaction, Province targetProvince);
+    public void performLandPurchase(Agent agent);
 
     public void performAdminLandAssign(Faction forFaction, Province targetProvince);
 
-    public void performLandClearance(Faction callingFaction, Province targetProvince, int amount);
+    public void performLandClearance(Agent agent);
 
-    public void performFamilyHallBuild(Faction callingFaction, Province targetProvince);
+    public void performFamilyHallBuild(Agent agent);
 
     public void performAdminFamilyHallBuild(Faction callingFaction, Province targetProvince);
 
-    public void seizeControlInCity(Faction callingFaction, Province targetProvince);
+    public void seizeControlInCity(Agent agent);
 }

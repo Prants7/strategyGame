@@ -27,7 +27,7 @@ public class LandPurchaseAction extends AbstractFactionAction {
     }
 
     @Override
-    protected boolean passesSystematicConstraints(Faction callerFaction, Province location, int amount) {
+    protected boolean passesSystematicConstraints(Faction callerFaction, Province location) {
         int amountOfSettledLand = location.getAmountOfSettledLand();
         int amountOfTargetFactionLand = 0;
         if(location.getFractionOwnershipMap().containsKey(location)) {
@@ -43,7 +43,7 @@ public class LandPurchaseAction extends AbstractFactionAction {
     }
 
     @Override
-    protected void runActionScript(Faction callerFaction, Province location, int amount) {
+    protected void runActionScriptWithoutAgent(Faction callerFaction, Province location) {
         LandFraction targetFractionToPurchase = location.getFirstFractionNotInHandsOfFaction(callerFaction);
         if(!targetFractionToPurchase.isManaged()) {
             System.out.println("Aborted land purchase in perform module as got unmanaged land");

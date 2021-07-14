@@ -1,5 +1,7 @@
 package hedgehogs.strategyGame.javaSwingInterface.provinceView.provincePlayerActionButtons;
 
+import hedgehogs.strategyGame.gameLogic.agents.agentPhoneBook.AgentPhoneBook;
+import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.FactionActionInterface;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.FactionActionInterfaceImp;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
@@ -13,16 +15,19 @@ public class ProvincePlayerActionButtons extends MinorAbstractUIObjectFactory {
     private Province lastSelectedProvince;
     private ProvinceViewFactory masterTable;
     private FactionActionInterface factionActionInterface;
+    private AgentPhoneBook agentPhoneBook;
     private JButton clearLand;
     private JButton buyLand;
     private JButton seizeControl;
 
     public ProvincePlayerActionButtons(Faction perspectiveFaction,
                                        ProvinceViewFactory masterTable,
-                                       FactionActionInterface factionActionInterface) {
+                                       FactionActionInterface factionActionInterface,
+                                       AgentPhoneBook agentPhoneBook) {
         super(perspectiveFaction);
         this.masterTable = masterTable;
         this.factionActionInterface = factionActionInterface;
+        this.agentPhoneBook = agentPhoneBook;
     }
 
     @Override
@@ -57,7 +62,10 @@ public class ProvincePlayerActionButtons extends MinorAbstractUIObjectFactory {
     }
 
     private void activateLandClear(Faction playerFaction, Province targetProvince, int amount) {
-        this.factionActionInterface.performLandClearance(playerFaction, targetProvince, amount);
+        if(!this.tempHasAgentsInCity()) {
+            return;
+        }
+        this.factionActionInterface.performLandClearance(this.getFirstAgentInCity());
     }
 
     private void makeBuyLandButton() {
@@ -77,7 +85,10 @@ public class ProvincePlayerActionButtons extends MinorAbstractUIObjectFactory {
     }
 
     private void activateLandPurchase(Faction playerFaction, Province targetProvince, int amount) {
-        this.factionActionInterface.performLandPurchase(playerFaction, targetProvince);
+        if(!this.tempHasAgentsInCity()) {
+            return;
+        }
+        this.factionActionInterface.performLandPurchase(this.getFirstAgentInCity());
     }
 
     private void makeSeizeControlButton() {
@@ -92,7 +103,10 @@ public class ProvincePlayerActionButtons extends MinorAbstractUIObjectFactory {
         if(this.lastSelectedProvince == null) {
             return;
         }
-        this.factionActionInterface.seizeControlInCity(this.getPerspectiveFaction(), this.lastSelectedProvince);
+        if(!this.tempHasAgentsInCity()) {
+            return;
+        }
+        this.factionActionInterface.seizeControlInCity(this.getFirstAgentInCity());
         makeContentRefreshCall();
     }
 
@@ -117,5 +131,15 @@ public class ProvincePlayerActionButtons extends MinorAbstractUIObjectFactory {
 
     public void setLastSelectedProvince(Province lastSelectedProvince) {
         this.lastSelectedProvince = lastSelectedProvince;
+    }
+
+    private boolean tempHasAgentsInCity() {
+        return !this.agentPhoneBook.getFactionsAgentsOnLocation(this.getPerspectiveFaction(), this.lastSelectedProvince).isEmpty();
+    }
+
+    private Agent getFirstAgentInCity() {
+        Agent firstAgent = this.agentPhoneBook.getFactionsAgentsOnLocation(this.getPerspectiveFaction(), this.lastSelectedProvince).get(0);
+        System.out.println("Getting first agent: "+firstAgent.getName());
+        return firstAgent;
     }
 }

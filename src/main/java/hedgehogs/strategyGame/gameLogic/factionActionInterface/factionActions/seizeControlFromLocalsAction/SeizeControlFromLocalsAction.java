@@ -26,7 +26,7 @@ public class SeizeControlFromLocalsAction extends AbstractFactionAction {
     }
 
     @Override
-    protected boolean passesSystematicConstraints(Faction callerFaction, Province location, int amount) {
+    protected boolean passesSystematicConstraints(Faction callerFaction, Province location) {
         if(location.accessLocationOffices().hasControllingFaction()) {
             return false;
         }
@@ -37,7 +37,7 @@ public class SeizeControlFromLocalsAction extends AbstractFactionAction {
     }
 
     @Override
-    protected void runActionScript(Faction callerFaction, Province location, int amount) {
+    protected void runActionScriptWithoutAgent(Faction callerFaction, Province location) {
         location.accessLocationOffices().setControllingFaction(callerFaction);
     }
 

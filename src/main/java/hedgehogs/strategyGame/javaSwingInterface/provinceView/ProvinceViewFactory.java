@@ -64,7 +64,7 @@ public class ProvinceViewFactory extends AbstractUIObjectFactory  {
         this.addNewElementToPanel(this.agentList.getPanelObject(), 1, 2);
 
         this.playerActionButtons =
-                new ProvincePlayerActionButtons(this.getPlayerFaction(), this, this.factionActionInterface);
+                new ProvincePlayerActionButtons(this.getPlayerFaction(), this, this.factionActionInterface, this.agentPhoneBook);
         this.addNewElementToPanel(this.playerActionButtons.getPanelObject(), 0, 3);
     }
 

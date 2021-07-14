@@ -1,6 +1,7 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase;
 
 
+import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapper;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapperImp;
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.FactionResourceInterface;
@@ -38,37 +39,44 @@ public abstract class AbstractFactionAction implements FactionAction {
     protected abstract int bootGiveStandardFillTime();
 
     @Override
-    public boolean allowedToDoAction(Faction callerFaction, Province location, int amount) {
-        if(!this.checkIfCanDoCosts(callerFaction, location)) {
+    public boolean allowedToDoAction(Agent agent) {
+        if(agent.getLocation() == null) {
             return false;
         }
-        if(!this.passesSystematicConstraints(callerFaction, location, amount)) {
+        if(!this.checkIfCanDoCosts(agent.getAlignmentFaction(), agent.getLocation())) {
+            return false;
+        }
+        if(!this.passesSystematicConstraints(agent.getAlignmentFaction(), agent.getLocation())) {
             return false;
         }
         return true;
     }
 
-    protected abstract boolean passesSystematicConstraints(Faction callerFaction, Province location, int amount);
+    protected abstract boolean passesSystematicConstraints(Faction callerFaction, Province location);
 
     @Override
-    public void doAction(Faction callerFaction, Province location, int amount) {
-        if(!this.allowedToDoAction(callerFaction, location, amount)) {
+    public void doAction(Agent agent) {
+        if(!this.allowedToDoAction(agent)) {
             return;
         }
-        this.runActionScript(callerFaction, location, amount);
-        this.doGains(callerFaction, location);
+        this.runActionScript(agent);
+        this.doGains(agent.getAlignmentFaction(), agent.getLocation());
     }
 
     @Override
-    public void forceDoAction(Faction callerFaction, Province location, int amount) {
-        if(!this.passesSystematicConstraints(callerFaction, location, amount)) {
+    public void forceDoAction(Faction callerFaction, Province location) {
+        if(!this.passesSystematicConstraints(callerFaction, location)) {
             System.out.println("Failed to force through action cause of systematic constraints");
             return;
         }
-        this.runActionScript(callerFaction, location, amount);
+        this.runActionScriptWithoutAgent(callerFaction, location);
     }
 
-    protected abstract void runActionScript(Faction callerFaction, Province location, int amount);
+    protected void runActionScript(Agent agent) {
+        this.runActionScriptWithoutAgent(agent.getAlignmentFaction(), agent.getLocation());
+    }
+
+    protected abstract void runActionScriptWithoutAgent(Faction callerFaction, Province location);
 
     protected boolean checkIfCanDoCosts(Faction callerFaction, Province location) {
         for(FactionActionCostImp oneCost : this.costs) {
@@ -152,18 +160,18 @@ public abstract class AbstractFactionAction implements FactionAction {
     }
 
     @Override
-    public TimedActionWrapper getActionAsTimedElement(Faction callerFaction, Province location, int amount) {
-        return this.makeTimedWrapperBasedOnThis(callerFaction, location, amount);
+    public TimedActionWrapper getActionAsTimedElement(Agent agent) {
+        return this.makeTimedWrapperBasedOnThis(agent);
     }
 
-    private TimedActionWrapper makeTimedWrapperBasedOnThis(Faction callerFaction, Province location, int amount) {
-        int calculatedActionTime = this.calculateActionTimeForFactionOnLocation(callerFaction, location, amount);
+    private TimedActionWrapper makeTimedWrapperBasedOnThis(Agent agent) {
+        int calculatedActionTime = this.calculateActionTimeForFactionOnLocation(agent.getAlignmentFaction(), agent.getLocation());
         TimedActionWrapperImp newWrapper =
-                new TimedActionWrapperImp(this, callerFaction, location, amount, calculatedActionTime);
+                new TimedActionWrapperImp(this, agent, calculatedActionTime);
         return newWrapper;
     }
 
-    private int calculateActionTimeForFactionOnLocation(Faction callerFaction, Province location, int amount) {
+    private int calculateActionTimeForFactionOnLocation(Faction callerFaction, Province location) {
         return this.standardFillTime;
     }
 }

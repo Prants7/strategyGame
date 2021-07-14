@@ -1,5 +1,6 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase;
 
+import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapper;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapperImp;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
@@ -7,11 +8,11 @@ import hedgehogs.strategyGame.gameLogic.land.Province;
 
 public interface FactionAction {
 
-    public boolean allowedToDoAction(Faction callerFaction, Province location, int amount);
+    public boolean allowedToDoAction(Agent agent);
 
-    public void doAction(Faction callerFaction, Province location, int amount);
+    public void doAction(Agent agent);
 
-    public void forceDoAction(Faction callerFaction, Province location, int amount);
+    public void forceDoAction(Faction callerFaction, Province location);
 
     public boolean callToDoCosts(Faction callerFaction, Province location);
 
@@ -19,5 +20,5 @@ public interface FactionAction {
 
     public String getActionName();
 
-    public TimedActionWrapper getActionAsTimedElement(Faction callerFaction, Province location, int amount);
+    public TimedActionWrapper getActionAsTimedElement(Agent agent);
 }

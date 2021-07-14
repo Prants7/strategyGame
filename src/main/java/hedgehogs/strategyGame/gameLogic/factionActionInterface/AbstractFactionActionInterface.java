@@ -1,5 +1,6 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface;
 
+import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.buildOfficeAction.BuildOfficeAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction.LandClearAction;
@@ -34,46 +35,46 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
 
     @Override
     public void performAdminLandAssign(Faction forFaction, Province targetProvince) {
-        adminPerformAction(this.landPurchaseAction, forFaction, targetProvince, 1);
+        adminPerformAction(this.landPurchaseAction, forFaction, targetProvince);
     }
 
 
-    protected void adminPerformAction(FactionAction action, Faction targetFaction, Province targetProvince, int amount) {
-        action.forceDoAction(targetFaction, targetProvince, amount);
+    protected void adminPerformAction(FactionAction action, Faction targetFaction, Province targetProvince) {
+        action.forceDoAction(targetFaction, targetProvince);
     }
 
     @Override
-    public void performLandPurchase(Faction callingFaction, Province targetProvince) {
-        this.performStandardVersionOfAction(this.landPurchaseAction, callingFaction,targetProvince, 1);
+    public void performLandPurchase(Agent agent) {
+        this.performStandardVersionOfAction(this.landPurchaseAction, agent);
     }
 
-    protected void performStandardVersionOfAction(FactionAction action, Faction targetFaction, Province targetProvince, int amount) {
-        if(!action.allowedToDoAction(targetFaction, targetProvince, amount)) {
+    protected void performStandardVersionOfAction(FactionAction action, Agent agent) {
+        if(!action.allowedToDoAction(agent)) {
             return;
         }
-        TimedActionWrapper newAction = this.getNewTimedAction(action, targetFaction, targetProvince, 1);
+        TimedActionWrapper newAction = this.getNewTimedAction(action, agent);
         this.timedActionWaitList.addNewTimedAction(newAction);
     }
 
     @Override
-    public void performLandClearance(Faction callingFaction, Province targetProvince, int amount) {
-        this.performStandardVersionOfAction(this.landClearAction, callingFaction,targetProvince, 1);
+    public void performLandClearance(Agent agent) {
+        this.performStandardVersionOfAction(this.landClearAction, agent);
 
     }
 
     @Override
-    public void performFamilyHallBuild(Faction callingFaction, Province targetProvince) {
-        this.performStandardVersionOfAction(this.buildOfficeAction, callingFaction,targetProvince, 1);
+    public void performFamilyHallBuild(Agent agent) {
+        this.performStandardVersionOfAction(this.buildOfficeAction, agent);
     }
 
     @Override
     public void performAdminFamilyHallBuild(Faction callingFaction, Province targetProvince) {
-        this.adminPerformAction(this.buildOfficeAction, callingFaction, targetProvince, 1);
+        this.adminPerformAction(this.buildOfficeAction, callingFaction, targetProvince);
     }
 
     @Override
-    public void seizeControlInCity(Faction callingFaction, Province targetProvince) {
-        this.performStandardVersionOfAction(this.seizeControlAction, callingFaction,targetProvince, 1);
+    public void seizeControlInCity(Agent agent) {
+        this.performStandardVersionOfAction(this.seizeControlAction, agent);
     }
 
     public FactionAction getLandPurchaseAction() {
@@ -84,8 +85,8 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
         return landClearAction;
     }
 
-    private TimedActionWrapper getNewTimedAction(FactionAction actionBase, Faction targetFaction, Province location, int amount) {
-        TimedActionWrapper newAction = actionBase.getActionAsTimedElement(targetFaction, location, amount);
+    private TimedActionWrapper getNewTimedAction(FactionAction actionBase, Agent agent) {
+        TimedActionWrapper newAction = actionBase.getActionAsTimedElement(agent);
         return newAction;
     }
 }

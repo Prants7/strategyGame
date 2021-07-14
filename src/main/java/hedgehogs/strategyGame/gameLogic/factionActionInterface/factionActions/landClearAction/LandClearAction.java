@@ -1,5 +1,6 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction;
 
+import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.AbstractFactionAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCostImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionGainImp;
@@ -26,8 +27,8 @@ public class LandClearAction extends AbstractFactionAction {
     }
 
     @Override
-    protected boolean passesSystematicConstraints(Faction callerFaction, Province location, int amount) {
-        if(location.getAmountOfUnsettledLand() < amount) {
+    protected boolean passesSystematicConstraints(Faction callerFaction, Province location) {
+        if(location.getAmountOfUnsettledLand() < 1) {
             return false;
         }
         if(!location.accessLocationOffices().factionHasOffice(callerFaction)) {
@@ -37,8 +38,8 @@ public class LandClearAction extends AbstractFactionAction {
     }
 
     @Override
-    protected void runActionScript(Faction callerFaction, Province location, int amount) {
-        location.settleAmountOfLand(amount);
+    protected void runActionScriptWithoutAgent(Faction callerFaction, Province location) {
+        location.settleAmountOfLand(1);
     }
 
     @Override
