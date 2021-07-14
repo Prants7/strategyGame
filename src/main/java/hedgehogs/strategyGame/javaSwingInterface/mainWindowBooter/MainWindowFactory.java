@@ -50,11 +50,16 @@ public class MainWindowFactory {
         b.setBounds(130,100,100, 40);//x axis, y axis, width, height*/
 
         //f.add(b);//adding button in JFrame
-        JList<Province> provinceList = this.provinceListFactory.giveProvinceList(this.gameLogic.getWorld().getAllProvinces());
+        /*JList<Province> provinceList = this.provinceListFactory.giveProvinceList(this.gameLogic.getWorld().getAllProvinces());
         provinceSelectListener = new ProvinceSelectListener(provinceList, this);
-        provinceList.addListSelectionListener(provinceSelectListener);
+        provinceList.addListSelectionListener(provinceSelectListener);*/
 
-        mainFrame.add(provinceList, BorderLayout.WEST);
+        //mainFrame.add(provinceList, BorderLayout.WEST);
+        JButton mapButton = new JButton("Open map");
+        mapButton.addActionListener(event -> {
+            this.openMainMap();
+        });
+        mainFrame.add(mapButton, BorderLayout.WEST);
         mainFrame.add(this.factionInfoFactory.getFactionInfoPanel(this.gameLogic.getFactionPhoneBook().getPlayerFaction()), BorderLayout.NORTH);
         mainFrame.add(this.turnChangeButtonFactory.giveTurnChangeButton(this.gameLogic.getTimeCenterSocket(), this), BorderLayout.SOUTH);
 
@@ -87,5 +92,9 @@ public class MainWindowFactory {
     public void openAgentView(Agent selectedAgent) {
         this.tabViewerFactory.changeScreenTo(this.agentViewFactory);
         this.agentViewFactory.selectAgent(selectedAgent);
+    }
+
+    public void openMainMap() {
+        this.tabViewerFactory.changeScreenTo(this.mapFactory);
     }
 }

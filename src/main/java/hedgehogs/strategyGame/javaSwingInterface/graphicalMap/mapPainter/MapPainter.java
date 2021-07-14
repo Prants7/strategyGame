@@ -1,17 +1,20 @@
 package hedgehogs.strategyGame.javaSwingInterface.graphicalMap.mapPainter;
 
+import com.sun.tools.javac.Main;
 import hedgehogs.strategyGame.gameLogic.gameLogicHub.GameLogicHub;
 import hedgehogs.strategyGame.gameLogic.land.Province;
+import hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter.MainWindowFactory;
 
-import javax.annotation.PostConstruct;
 import java.awt.*;
 import java.util.ArrayList;
 
 public class MapPainter extends Canvas {
     private GameLogicHub gameLogicHub;
+    private MainWindowFactory mainWindowFactor;
     private java.util.List<VisualCityObject> settlementsToDraw;
 
-    public MapPainter(GameLogicHub gameLogicHub) {
+    public MapPainter(GameLogicHub gameLogicHub, MainWindowFactory mainWindowFactory) {
+        this.mainWindowFactor = mainWindowFactory;
         this.gameLogicHub = gameLogicHub;
         this.bootUp();
     }
@@ -27,7 +30,7 @@ public class MapPainter extends Canvas {
     }
 
     private VisualCityObject makeOneVisualCityObject(Province targetProvince) {
-        return new VisualCityObject(targetProvince);
+        return new VisualCityObject(targetProvince, this.mainWindowFactor);
     }
 
     public void paint(Graphics g) {
@@ -46,7 +49,13 @@ public class MapPainter extends Canvas {
     }
 
     private void paintOneSettlement(Graphics g, VisualCityObject oneCity) {
-        g.fillOval(oneCity.getDrawX(), oneCity.getDrawY(), oneCity.getDrawLength(), oneCity.getDrawHeight());
+        g.fillOval(oneCity.getDrawX(), oneCity.getDrawY(), oneCity.getDrawLength(), oneCity.getDrawWidth());
         g.drawString(oneCity.getLogicalObject().getProvinceName(), oneCity.getDrawX(), oneCity.getDrawY());
+    }
+
+    public void performClickSearch(int clickX, int clickY) {
+        for(VisualCityObject oneDrawable : this.settlementsToDraw) {
+            oneDrawable.clickedOnThis(clickX, clickY);
+        }
     }
 }
