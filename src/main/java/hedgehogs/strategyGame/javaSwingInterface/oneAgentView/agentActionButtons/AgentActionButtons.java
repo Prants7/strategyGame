@@ -45,18 +45,26 @@ public class AgentActionButtons extends MinorAbstractUIObjectFactory {
         makeMoveAgentButton();
         int buttonY = 1;
         for(FactionAction oneAction : actions) {
-            JButton newButton = new JButton(oneAction.getActionName() + " " + oneAction.getCostsString());
-            newButton.addActionListener( e -> {
-                System.out.println("trying to do action "+oneAction.getActionName()+ " with agent " + this.lastSelectedAgent.getName());
-                FactionActionInput input = new FactionActionInputImp().setAgent(this.lastSelectedAgent);
-                oneAction.startAction(input);
-                //this.factionActionInterface.tryToPerformActionWithAgent(oneAction, input);
-                this.makeContentRefreshCall();
-            });
+            JButton newButton = makeButtonForAction(oneAction);
             this.allButtons.add(newButton);
             this.addNewElementToPanel(newButton, 0, buttonY);
             buttonY++;
         }
+    }
+
+    private JButton makeButtonForAction(FactionAction oneAction) {
+        JButton newButton = new JButton(oneAction.getActionName() + " " + oneAction.getCostsString());
+        newButton.addActionListener( e -> {
+            performActionWithoutExtraInput(oneAction);
+        });
+        return newButton;
+    }
+
+    private void performActionWithoutExtraInput(FactionAction oneAction) {
+        System.out.println("trying to do action "+oneAction.getActionName()+ " with agent " + this.lastSelectedAgent.getName());
+        FactionActionInput input = new FactionActionInputImp().setAgent(this.lastSelectedAgent);
+        oneAction.startAction(input);
+        this.makeContentRefreshCall();
     }
 
     private void makeMoveAgentButton() {
@@ -75,17 +83,10 @@ public class AgentActionButtons extends MinorAbstractUIObjectFactory {
         if(!this.hasSelectedAgent()) {
             return;
         }
-        //this.getPanelObject().removeAll();
-        //this.allButtons.clear();
-        //this.makeAllActionButtons(this.factionActionInterface.getListOfUsableFactionActions());
     }
 
     private boolean hasSelectedAgent() {
         return lastSelectedAgent != null;
-    }
-
-    public Agent getLastSelectedAgent() {
-        return this.lastSelectedAgent;
     }
 
     public void setLastSelectedAgent(Agent lastSelectedAgent) {
