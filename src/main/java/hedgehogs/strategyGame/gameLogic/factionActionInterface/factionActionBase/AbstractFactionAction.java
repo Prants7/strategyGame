@@ -162,29 +162,18 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
         return this.standardFillTime;
     }
 
-    protected Agent getAgentFromInput(FactionActionInput input) {
-        if(!input.hasAgent()) {
-            System.out.println("ERROR: trying to retrieve a null agent from FactionActionInput");
-        }
-        return input.getAgent();
-    }
-
     protected Province getPrimaryLocationFromInput(FactionActionInput input) {
         if(input.hasAgent()) {
             return input.getAgent().getLocation();
         }
-        else {
-            return input.getFirstLocation();
-        }
+        return null;
     }
 
     protected Faction getFactionFromInput(FactionActionInput input) {
         if(input.hasAgent()) {
             return input.getAgent().getAlignmentFaction();
         }
-        else {
-            return input.getFaction();
-        }
+        return null;
     }
 
     @Override

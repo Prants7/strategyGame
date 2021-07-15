@@ -1,5 +1,7 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface;
 
+import hedgehogs.strategyGame.gameLogic.agents.adminAgent.AdminAgent;
+import hedgehogs.strategyGame.gameLogic.agents.agentFactory.AgentFactory;
 import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
@@ -22,6 +24,7 @@ import java.util.List;
 
 @Component
 public class FactionActionInterfaceImplementation implements FactionActionInterface {
+    private AgentFactory agentFactory;
     private FactionAction landPurchaseAction;
     private FactionAction landClearAction;
     private TimedActionWaitList timedActionWaitList;
@@ -31,12 +34,14 @@ public class FactionActionInterfaceImplementation implements FactionActionInterf
     private MoveAgentAction moveAgentAction;
 
     @Autowired
-    public FactionActionInterfaceImplementation(LandPurchaseAction landPurchaseAction,
+    public FactionActionInterfaceImplementation(AgentFactory agentFactory,
+                                                LandPurchaseAction landPurchaseAction,
                                                 LandClearAction landClearAction,
                                                 TimedActionWaitList timedActionWaitList,
                                                 BuildOfficeAction buildOfficeAction,
                                                 SeizeControlFromLocalsAction seizeControlAction,
                                                 MoveAgentAction moveAgentAction) {
+        this.agentFactory = agentFactory;
         this.landPurchaseAction = landPurchaseAction;
         this.landClearAction = landClearAction;
         this.timedActionWaitList = timedActionWaitList;
@@ -60,8 +65,13 @@ public class FactionActionInterfaceImplementation implements FactionActionInterf
     }
 
     protected void adminPerformAction(FactionAction action, Faction targetFaction, Province targetProvince) {
-        FactionActionInput tempInput = new FactionActionInputImp().setFaction(targetFaction).setFirstLocation(targetProvince);
+        FactionActionInput tempInput =
+                new FactionActionInputImp().setAgent(this.getAdminAgent(targetFaction, targetProvince));
         action.forceDoAction(tempInput);
+    }
+
+    private Agent getAdminAgent(Faction targetFaction, Province targetProvince) {
+        return agentFactory.makeNewAdminAgent(targetFaction, targetProvince);
     }
 
     @Override

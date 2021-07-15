@@ -12,18 +12,6 @@ public interface FactionActionInput {
 
     public Agent getAgent();
 
-    public FactionActionInput setFaction(Faction targetFaction);
-
-    public boolean hasFaction();
-
-    public Faction getFaction();
-
-    public FactionActionInput setFirstLocation(Province firstLocation);
-
-    public boolean hasFirstLocation();
-
-    public Province getFirstLocation();
-
     public FactionActionInput setOtherLocation(Province otherLocation);
 
     public boolean hasOtherLocation();

@@ -1,5 +1,6 @@
 package hedgehogs.strategyGame.gameLogic.agents.agentFactory;
 
+import hedgehogs.strategyGame.gameLogic.agents.adminAgent.AdminAgent;
 import hedgehogs.strategyGame.gameLogic.agents.agentPhoneBook.AgentPhoneBook;
 import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.agents.envoy.Envoy;
@@ -17,5 +18,10 @@ public class AgentFactory {
         Agent newAgent = new Envoy(name, alignment, location);
         agentPhoneBook.addAgentToBook(newAgent);
         return newAgent;
+    }
+
+    public Agent makeNewAdminAgent(Faction targetFaction, Province location) {
+        Agent adminAgent = new AdminAgent(targetFaction, location);
+        return adminAgent;
     }
 }
