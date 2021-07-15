@@ -8,12 +8,15 @@ import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
 import hedgehogs.strategyGame.gameLogic.gameTime.TimeCenterSocket;
 import hedgehogs.strategyGame.gameLogic.land.Province;
+import hedgehogs.strategyGame.gameLogic.land.roads.Road;
+import hedgehogs.strategyGame.gameLogic.land.roads.RoadFactory;
 import hedgehogs.strategyGame.gameLogic.world.World;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 @Component
 @Data
@@ -24,6 +27,7 @@ public class GameLogicHub {
     private TimeCenterSocket timeCenterSocket;
     private AgentFactory agentFactory;
     private AgentPhoneBook agentPhoneBook;
+    private RoadFactory roadFactory;
 
     @Autowired
     public GameLogicHub(World world,
@@ -31,13 +35,15 @@ public class GameLogicHub {
                         FactionActionInterface factionActionInterface,
                         TimeCenterSocket timeCenterSocket,
                         AgentFactory agentFactory,
-                        AgentPhoneBook agentPhoneBook) {
+                        AgentPhoneBook agentPhoneBook,
+                        RoadFactory roadFactory) {
         this.world = world;
         this.factionPhoneBook = factionPhoneBook;
         this.factionActionInterface = factionActionInterface;
         this.timeCenterSocket = timeCenterSocket;
         this.agentFactory = agentFactory;
         this.agentPhoneBook = agentPhoneBook;
+        this.roadFactory = roadFactory;
     }
 
     public void bootUpGame() {
@@ -82,6 +88,10 @@ public class GameLogicHub {
         System.out.println("moving " + targetAgent.getName()+ " from: "+targetAgent.getLocation().getProvinceName()
                 + " to "+ newLocation.getProvinceName());
         targetAgent.moveAgent(newLocation);
+    }
+
+    public List<Road> getAllRoads() {
+        return this.roadFactory.getAllRoads();
     }
 
 }

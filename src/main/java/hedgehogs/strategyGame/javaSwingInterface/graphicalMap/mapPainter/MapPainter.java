@@ -3,6 +3,7 @@ package hedgehogs.strategyGame.javaSwingInterface.graphicalMap.mapPainter;
 import com.sun.tools.javac.Main;
 import hedgehogs.strategyGame.gameLogic.gameLogicHub.GameLogicHub;
 import hedgehogs.strategyGame.gameLogic.land.Province;
+import hedgehogs.strategyGame.gameLogic.land.roads.Road;
 import hedgehogs.strategyGame.javaSwingInterface.graphicalMap.mapFactory.MapFactory;
 import hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter.MainWindowFactory;
 
@@ -39,6 +40,7 @@ public class MapPainter extends Canvas {
     public void paint(Graphics g) {
         //g.fillOval(100, 100, 200, 200);
         this.paintAllSettlements(g, this.settlementsToDraw);
+        this.paintAllRoads(g, this.gameLogicHub.getAllRoads());
     }
 
     private java.util.List<Province> getAllProvinces() {
@@ -65,6 +67,13 @@ public class MapPainter extends Canvas {
             if(oneDrawable.clickedOnThis(clickX, clickY)) {
                 this.masterFactory.giveClickedElement(oneDrawable);
             }
+        }
+    }
+
+    private void paintAllRoads(Graphics g, java.util.List<Road> roads) {
+        for(Road oneRoad : roads) {
+            g.drawLine(oneRoad.getFirstProvince().accessCoordinates().getX()+10, oneRoad.getFirstProvince().accessCoordinates().getY()+10,
+                    oneRoad.getSecondProvince().accessCoordinates().getX()+10, oneRoad.getSecondProvince().accessCoordinates().getY()+10);
         }
     }
 }

@@ -16,8 +16,8 @@ public class VisualCityObject {
         this.logicalObject = logicalObject;
         this.drawX = this.logicalObject.accessCoordinates().getX();
         this.drawY = this.logicalObject.accessCoordinates().getY();
-        this.drawWidth = 10;
-        this.drawLength = 10;
+        this.drawWidth = 20;
+        this.drawLength = 20;
     }
 
     public Province getLogicalObject() {
