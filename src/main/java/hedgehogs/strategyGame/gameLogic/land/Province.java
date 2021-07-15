@@ -6,6 +6,7 @@ import hedgehogs.strategyGame.gameLogic.land.buildings.offices.officeLocationAre
 import hedgehogs.strategyGame.gameLogic.land.infuenceTable.InfluenceTable;
 import hedgehogs.strategyGame.gameLogic.land.landFractction.LandFraction;
 import hedgehogs.strategyGame.gameLogic.land.prosperity.Prosperity;
+import hedgehogs.strategyGame.gameLogic.land.roads.Road;
 
 import java.util.List;
 import java.util.Map;
@@ -35,4 +36,8 @@ public interface Province {
     public CityOfficeLocationImp accessLocationOffices();
 
     public Coordinates accessCoordinates();
+
+    public boolean addRoad(Road newRoad);
+
+    public boolean hasDirectAccessTo(Province targetProvince);
 }

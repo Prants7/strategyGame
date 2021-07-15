@@ -9,7 +9,9 @@ import hedgehogs.strategyGame.gameLogic.land.infuenceTable.InfluenceTableImp;
 import hedgehogs.strategyGame.gameLogic.land.landFractction.LandFraction;
 import hedgehogs.strategyGame.gameLogic.land.prosperity.Prosperity;
 import hedgehogs.strategyGame.gameLogic.land.prosperity.ProsperityImp;
+import hedgehogs.strategyGame.gameLogic.land.roads.Road;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,12 +20,14 @@ public abstract class BaseProvince implements Province {
     private Prosperity prosperity;
     private CityOfficeLocationImp officeInterface;
     private Coordinates settlementCoordinates;
+    private List<Road> connectedRoads;
 
     public BaseProvince(int xLocation, int yLocation) {
         this.influenceTable = new InfluenceTableImp();
         this.prosperity = new ProsperityImp();
         this.officeInterface = new CityOfficeLocationImp();
         this.settlementCoordinates = new SettlementCoordinates(xLocation, yLocation);
+        this.connectedRoads = new ArrayList<>();
     }
 
     public String getProvinceName() {
@@ -103,5 +107,20 @@ public abstract class BaseProvince implements Province {
     @Override
     public Coordinates accessCoordinates() {
         return this.settlementCoordinates;
+    }
+
+    @Override
+    public boolean addRoad(Road newRoad) {
+        return this.connectedRoads.add(newRoad);
+    }
+
+    @Override
+    public boolean hasDirectAccessTo(Province targetProvince) {
+        for(Road oneRoad : this.connectedRoads) {
+            if(oneRoad.getOtherEnd(this) == targetProvince) {
+                return true;
+            }
+        }
+        return false;
     }
 }

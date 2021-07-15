@@ -11,6 +11,8 @@ public class RoadImp implements Road {
         this.firstProvince = firstProvince;
         this.secondProvince = secondProvince;
         this.distance = this.getDistanceBetweenSavedProvinces();
+        firstProvince.addRoad(this);
+        secondProvince.addRoad(this);
     }
 
     private int getDistanceBetweenSavedProvinces() {

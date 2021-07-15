@@ -22,8 +22,20 @@ public class RoadFactory {
     }
 
     public boolean makeNewRoadBetweenProvinces(Province firstProvince, Province secondProvince) {
+        if(!this.checkIfAllowedToMakeNewRoad(firstProvince, secondProvince)) {
+            System.out.println("ERROR: Not allowed to make road between "+firstProvince.getProvinceName() +
+                    " and "+secondProvince.getProvinceName());
+            return false;
+        }
         Road newRoad = new RoadImp(firstProvince, secondProvince);
         this.allRoads.add(newRoad);
+        return true;
+    }
+
+    private boolean checkIfAllowedToMakeNewRoad(Province firstProvince, Province secondProvince) {
+        if(firstProvince.hasDirectAccessTo(secondProvince)) {
+            return false;
+        }
         return true;
     }
 }
