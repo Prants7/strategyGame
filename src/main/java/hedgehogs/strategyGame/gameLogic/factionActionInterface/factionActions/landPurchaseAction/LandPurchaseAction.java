@@ -3,6 +3,7 @@ package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.l
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.AbstractFactionAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCostImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionGainImp;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.FactionResourceInterface;
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.ResourceType;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
@@ -27,7 +28,9 @@ public class LandPurchaseAction extends AbstractFactionAction {
     }
 
     @Override
-    protected boolean passesSystematicConstraints(Faction callerFaction, Province location) {
+    protected boolean passesSystematicConstraints(FactionActionInput input) {
+        Province location = this.getPrimaryLocationFromInput(input);
+        Faction callerFaction = this.getFactionFromInput(input);
         int amountOfSettledLand = location.getAmountOfSettledLand();
         int amountOfTargetFactionLand = 0;
         if(location.getFractionOwnershipMap().containsKey(location)) {
@@ -43,7 +46,9 @@ public class LandPurchaseAction extends AbstractFactionAction {
     }
 
     @Override
-    protected void runActionScriptWithoutAgent(Faction callerFaction, Province location) {
+    protected void runActionScriptWithoutAgent(FactionActionInput input) {
+        Province location = this.getPrimaryLocationFromInput(input);
+        Faction callerFaction = this.getFactionFromInput(input);
         LandFraction targetFractionToPurchase = location.getFirstFractionNotInHandsOfFaction(callerFaction);
         if(!targetFractionToPurchase.isManaged()) {
             System.out.println("Aborted land purchase in perform module as got unmanaged land");

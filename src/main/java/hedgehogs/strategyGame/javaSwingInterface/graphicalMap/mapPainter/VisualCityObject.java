@@ -4,15 +4,15 @@ import hedgehogs.strategyGame.gameLogic.land.Province;
 import hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter.MainWindowFactory;
 
 public class VisualCityObject {
-    private MainWindowFactory mainWindowFactory;
+    //private MainWindowFactory mainWindowFactory;
     private Province logicalObject;
     private int drawX;
     private int drawY;
     private int drawLength;
     private int drawWidth;
 
-    public VisualCityObject(Province logicalObject, MainWindowFactory mainWindowFactory) {
-        this.mainWindowFactory = mainWindowFactory;
+    public VisualCityObject(Province logicalObject) {
+        //this.mainWindowFactory = mainWindowFactory;
         this.logicalObject = logicalObject;
         this.drawX = this.logicalObject.accessCoordinates().getX();
         this.drawY = this.logicalObject.accessCoordinates().getY();
@@ -45,7 +45,7 @@ public class VisualCityObject {
             return false;
         }
         //System.out.println("Clicked on settlement "+this.logicalObject.getProvinceName());
-        this.mainWindowFactory.openProvinceView(this.logicalObject);
+        //this.mainWindowFactory.openProvinceView(this.logicalObject);
         return true;
     }
 

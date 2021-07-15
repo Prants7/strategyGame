@@ -1,39 +1,35 @@
-package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.seizeControlFromLocalsAction;
+package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.moveAgentAction;
 
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.AbstractFactionAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCostImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionGainImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.FactionResourceInterface;
-import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.ResourceType;
-import hedgehogs.strategyGame.gameLogic.factions.Faction;
-import hedgehogs.strategyGame.gameLogic.land.Province;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class SeizeControlFromLocalsAction extends AbstractFactionAction {
+public class MoveAgentAction extends AbstractFactionAction {
 
-    @Autowired
-    public SeizeControlFromLocalsAction(FactionResourceInterface factionResourceInterface) {
+    public MoveAgentAction(FactionResourceInterface factionResourceInterface) {
         super(factionResourceInterface);
     }
 
     @Override
     protected int bootGiveStandardFillTime() {
-        return 0;
+        return 2;
     }
 
     @Override
     protected boolean passesSystematicConstraints(FactionActionInput input) {
-        Province location = this.getPrimaryLocationFromInput(input);
-        Faction callerFaction = this.getFactionFromInput(input);
-        if(location.accessLocationOffices().hasControllingFaction()) {
+        if(!input.hasAgent()) {
             return false;
         }
-        if(!location.accessLocationOffices().factionHasOffice(callerFaction)) {
+        if(!input.hasOtherLocation()) {
+            return false;
+        }
+        if(input.getAgent().getLocation() == input.getOtherLocation()) {
             return false;
         }
         return true;
@@ -41,9 +37,8 @@ public class SeizeControlFromLocalsAction extends AbstractFactionAction {
 
     @Override
     protected void runActionScriptWithoutAgent(FactionActionInput input) {
-        Province location = this.getPrimaryLocationFromInput(input);
-        Faction callerFaction = this.getFactionFromInput(input);
-        location.accessLocationOffices().setControllingFaction(callerFaction);
+        input.getAgent().moveAgent(input.getOtherLocation());
+
     }
 
     @Override
@@ -53,11 +48,11 @@ public class SeizeControlFromLocalsAction extends AbstractFactionAction {
 
     @Override
     protected void addResourceCosts(List<FactionActionCostImp> addLocation) {
-        addLocation.add(new FactionActionCostImp(ResourceType.INFLUENCE, 10));
+
     }
 
     @Override
     protected String bootGiveActionName() {
-        return "Declare yourself the ruler of this city";
+        return "Move agent";
     }
 }

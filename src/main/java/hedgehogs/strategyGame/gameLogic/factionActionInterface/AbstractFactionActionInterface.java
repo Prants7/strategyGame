@@ -2,9 +2,11 @@ package hedgehogs.strategyGame.gameLogic.factionActionInterface;
 
 import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionAction;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.buildOfficeAction.BuildOfficeAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction.LandClearAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landPurchaseAction.LandPurchaseAction;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.moveAgentAction.MoveAgentAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.seizeControlFromLocalsAction.SeizeControlFromLocalsAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWaitList;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapper;
@@ -23,19 +25,22 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
     private FactionAction buildOfficeAction;
     private FactionAction seizeControlAction;
     private List<FactionAction> actionList;
+    private MoveAgentAction moveAgentAction;
 
     @Autowired
     public AbstractFactionActionInterface(LandPurchaseAction landPurchaseAction,
                                           LandClearAction landClearAction,
                                           TimedActionWaitList timedActionWaitList,
                                           BuildOfficeAction buildOfficeAction,
-                                          SeizeControlFromLocalsAction seizeControlAction) {
+                                          SeizeControlFromLocalsAction seizeControlAction,
+                                          MoveAgentAction moveAgentAction) {
         this.landPurchaseAction = landPurchaseAction;
         this.landClearAction = landClearAction;
         this.timedActionWaitList = timedActionWaitList;
         this.buildOfficeAction = buildOfficeAction;
         this.seizeControlAction = seizeControlAction;
         this.makeActionList();
+        this.moveAgentAction = moveAgentAction;
     }
 
     private void makeActionList() {
@@ -57,27 +62,27 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
     }
 
     @Override
-    public void performLandPurchase(Agent agent) {
-        this.performStandardVersionOfAction(this.landPurchaseAction, agent);
+    public void performLandPurchase(FactionActionInput input) {
+        this.performStandardVersionOfAction(this.landPurchaseAction, input);
     }
 
-    protected void performStandardVersionOfAction(FactionAction action, Agent agent) {
-        if(!action.allowedToDoAction(agent)) {
+    protected void performStandardVersionOfAction(FactionAction action, FactionActionInput input) {
+        if(!action.allowedToDoAction(input)) {
             return;
         }
-        TimedActionWrapper newAction = this.getNewTimedAction(action, agent);
+        TimedActionWrapper newAction = this.getNewTimedAction(action, input);
         this.timedActionWaitList.addNewTimedAction(newAction);
     }
 
     @Override
-    public void performLandClearance(Agent agent) {
-        this.performStandardVersionOfAction(this.landClearAction, agent);
+    public void performLandClearance(FactionActionInput input) {
+        this.performStandardVersionOfAction(this.landClearAction, input);
 
     }
 
     @Override
-    public void performFamilyHallBuild(Agent agent) {
-        this.performStandardVersionOfAction(this.buildOfficeAction, agent);
+    public void performFamilyHallBuild(FactionActionInput input) {
+        this.performStandardVersionOfAction(this.buildOfficeAction, input);
     }
 
     @Override
@@ -86,8 +91,8 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
     }
 
     @Override
-    public void seizeControlInCity(Agent agent) {
-        this.performStandardVersionOfAction(this.seizeControlAction, agent);
+    public void seizeControlInCity(FactionActionInput input) {
+        this.performStandardVersionOfAction(this.seizeControlAction, input);
     }
 
     public FactionAction getLandPurchaseAction() {
@@ -98,8 +103,8 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
         return landClearAction;
     }
 
-    private TimedActionWrapper getNewTimedAction(FactionAction actionBase, Agent agent) {
-        TimedActionWrapper newAction = actionBase.getActionAsTimedElement(agent);
+    private TimedActionWrapper getNewTimedAction(FactionAction actionBase, FactionActionInput input) {
+        TimedActionWrapper newAction = actionBase.getActionAsTimedElement(input);
         return newAction;
     }
 
@@ -109,8 +114,13 @@ public abstract class AbstractFactionActionInterface implements FactionActionInt
     }
 
     @Override
-    public boolean tryToPerformActionWithAgent(FactionAction desiredAction, Agent targetAgent) {
-        this.performStandardVersionOfAction(desiredAction, targetAgent);
+    public boolean tryToPerformActionWithAgent(FactionAction desiredAction, FactionActionInput input) {
+        this.performStandardVersionOfAction(desiredAction, input);
         return true;
+    }
+
+    @Override
+    public MoveAgentAction getMoveAgentAction() {
+        return this.moveAgentAction;
     }
 }

@@ -1,6 +1,8 @@
 package hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter;
 
 import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionAction;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
 import hedgehogs.strategyGame.gameLogic.gameLogicHub.GameLogicHub;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 import hedgehogs.strategyGame.javaSwingInterface.factionInfo.FactionInfoFactory;
@@ -95,6 +97,12 @@ public class MainWindowFactory {
     }
 
     public void openMainMap() {
+        this.mapFactory.clearAction();
+        this.tabViewerFactory.changeScreenTo(this.mapFactory);
+    }
+
+    public void openMainMapForActionInput(FactionAction targetAction, FactionActionInput input) {
+        this.mapFactory.setAction(targetAction, input);
         this.tabViewerFactory.changeScreenTo(this.mapFactory);
     }
 }

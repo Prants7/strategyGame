@@ -2,6 +2,8 @@ package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBas
 
 
 import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInputImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapper;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapperImp;
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.FactionResourceInterface;
@@ -39,44 +41,49 @@ public abstract class AbstractFactionAction implements FactionAction {
     protected abstract int bootGiveStandardFillTime();
 
     @Override
-    public boolean allowedToDoAction(Agent agent) {
+    public boolean allowedToDoAction(FactionActionInput input) {
+        if(!input.hasAgent()) {
+            return false;
+        }
+        Agent agent = input.getAgent();
         if(agent.getLocation() == null) {
             return false;
         }
         if(!this.checkIfCanDoCosts(agent.getAlignmentFaction(), agent.getLocation())) {
             return false;
         }
-        if(!this.passesSystematicConstraints(agent.getAlignmentFaction(), agent.getLocation())) {
+        if(!this.passesSystematicConstraints(input)) {
             return false;
         }
         return true;
     }
 
-    protected abstract boolean passesSystematicConstraints(Faction callerFaction, Province location);
+    protected abstract boolean passesSystematicConstraints(FactionActionInput input);
 
     @Override
-    public void doAction(Agent agent) {
-        if(!this.allowedToDoAction(agent)) {
+    public void doAction(FactionActionInput input) {
+        if(!this.allowedToDoAction(input)) {
             return;
         }
-        this.runActionScript(agent);
-        this.doGains(agent.getAlignmentFaction(), agent.getLocation());
+        this.runActionScript(input);
+        this.doGains(input.getAgent().getAlignmentFaction(), input.getAgent().getLocation());
     }
 
     @Override
     public void forceDoAction(Faction callerFaction, Province location) {
-        if(!this.passesSystematicConstraints(callerFaction, location)) {
+        FactionActionInput tempHackInput = new FactionActionInputImp().setFaction(callerFaction).setFirstLocation(location);
+        if(!this.passesSystematicConstraints(tempHackInput)) {
             System.out.println("Failed to force through action cause of systematic constraints");
             return;
         }
-        this.runActionScriptWithoutAgent(callerFaction, location);
+        this.runActionScriptWithoutAgent(tempHackInput);
     }
 
-    protected void runActionScript(Agent agent) {
-        this.runActionScriptWithoutAgent(agent.getAlignmentFaction(), agent.getLocation());
+    protected void runActionScript(FactionActionInput input) {
+        this.runActionScriptWithoutAgent(input);
     }
 
-    protected abstract void runActionScriptWithoutAgent(Faction callerFaction, Province location);
+    protected abstract void runActionScriptWithoutAgent(FactionActionInput input);
 
     protected boolean checkIfCanDoCosts(Faction callerFaction, Province location) {
         for(FactionActionCostImp oneCost : this.costs) {
@@ -160,18 +167,43 @@ public abstract class AbstractFactionAction implements FactionAction {
     }
 
     @Override
-    public TimedActionWrapper getActionAsTimedElement(Agent agent) {
-        return this.makeTimedWrapperBasedOnThis(agent);
+    public TimedActionWrapper getActionAsTimedElement(FactionActionInput input) {
+        return this.makeTimedWrapperBasedOnThis(input);
     }
 
-    private TimedActionWrapper makeTimedWrapperBasedOnThis(Agent agent) {
-        int calculatedActionTime = this.calculateActionTimeForFactionOnLocation(agent.getAlignmentFaction(), agent.getLocation());
+    private TimedActionWrapper makeTimedWrapperBasedOnThis(FactionActionInput input) {
+        int calculatedActionTime = this.calculateActionTimeForFactionOnLocation(input);
         TimedActionWrapperImp newWrapper =
-                new TimedActionWrapperImp(this, agent, calculatedActionTime);
+                new TimedActionWrapperImp(this, input, calculatedActionTime);
         return newWrapper;
     }
 
-    private int calculateActionTimeForFactionOnLocation(Faction callerFaction, Province location) {
+    private int calculateActionTimeForFactionOnLocation(FactionActionInput input) {
         return this.standardFillTime;
+    }
+
+    protected Agent getAgentFromInput(FactionActionInput input) {
+        if(!input.hasAgent()) {
+            System.out.println("ERROR: trying to retrieve a null agent from FactionActionInput");
+        }
+        return input.getAgent();
+    }
+
+    protected Province getPrimaryLocationFromInput(FactionActionInput input) {
+        if(input.hasAgent()) {
+            return input.getAgent().getLocation();
+        }
+        else {
+            return input.getFirstLocation();
+        }
+    }
+
+    protected Faction getFactionFromInput(FactionActionInput input) {
+        if(input.hasAgent()) {
+            return input.getAgent().getAlignmentFaction();
+        }
+        else {
+            return input.getFaction();
+        }
     }
 }

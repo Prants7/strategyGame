@@ -4,6 +4,7 @@ import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.AbstractFactionAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCostImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionGainImp;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.FactionResourceInterface;
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.ResourceType;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
@@ -29,7 +30,9 @@ public class BuildOfficeAction extends AbstractFactionAction {
     }
 
     @Override
-    protected boolean passesSystematicConstraints(Faction callerFaction, Province location) {
+    protected boolean passesSystematicConstraints(FactionActionInput input) {
+        Province location = this.getPrimaryLocationFromInput(input);
+        Faction callerFaction = this.getFactionFromInput(input);
         if(location.accessLocationOffices().factionHasOffice(callerFaction)) {
             return false;
         }
@@ -37,7 +40,9 @@ public class BuildOfficeAction extends AbstractFactionAction {
     }
 
     @Override
-    protected void runActionScriptWithoutAgent(Faction callerFaction, Province location) {
+    protected void runActionScriptWithoutAgent(FactionActionInput input) {
+        Province location = this.getPrimaryLocationFromInput(input);
+        Faction callerFaction = this.getFactionFromInput(input);
         this.tempBuildFamilyHall(callerFaction, location);
     }
 

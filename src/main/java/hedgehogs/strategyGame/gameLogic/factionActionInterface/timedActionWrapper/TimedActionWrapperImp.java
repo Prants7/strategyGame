@@ -3,23 +3,24 @@ package hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapp
 import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.AbstractFactionAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionAction;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 
 public class TimedActionWrapperImp implements TimedActionWrapper {
-    private Agent starterAgent;
+    private FactionActionInput actionInput;
     private FactionAction designatedAction;
     private Faction targetFaction;
     private Province location;
     private int time;
     private boolean finished;
 
-    public TimedActionWrapperImp(FactionAction designatedAction, Agent agent,
+    public TimedActionWrapperImp(FactionAction designatedAction, FactionActionInput input,
                                  int time) {
-        this.starterAgent = agent;
+        this.actionInput = input;
         this.designatedAction = designatedAction;
-        this.targetFaction = agent.getAlignmentFaction();
-        this.location = agent.getLocation();
+        this.targetFaction = input.getAgent().getAlignmentFaction();
+        this.location = input.getAgent().getLocation();
         this.time = time;
         this.finished = false;
         this.fillActionCost();
@@ -37,7 +38,7 @@ public class TimedActionWrapperImp implements TimedActionWrapper {
     }
 
     private void fillAction() {
-        this.designatedAction.doAction(this.starterAgent);
+        this.designatedAction.doAction(this.actionInput);
         this.finished = true;
     }
 
