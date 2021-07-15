@@ -43,7 +43,7 @@ public class WorldImp extends BaseWorld {
 
     private void makeRoadsForFirstTimeProvinces() {
         this.roadFactory.makeNewRoadBetweenProvinces(this.provinces.get(0), this.provinces.get(1));
-        this.roadFactory.makeNewRoadBetweenProvinces(this.provinces.get(0), this.provinces.get(2));
+        //this.roadFactory.makeNewRoadBetweenProvinces(this.provinces.get(0), this.provinces.get(2));
         this.roadFactory.makeNewRoadBetweenProvinces(this.provinces.get(2), this.provinces.get(1));
     }
 

@@ -36,13 +36,10 @@ public class MoveAgentAction extends AbstractFactionAction {
 
     @Override
     protected boolean passesSystematicConstraints(FactionActionInput input) {
-        if(!input.hasAgent()) {
-            return false;
-        }
-        if(!input.hasOtherLocation()) {
-            return false;
-        }
         if(input.getAgent().getLocation() == input.getOtherLocation()) {
+            return false;
+        }
+        if(!input.getAgent().getLocation().hasDirectAccessTo(input.getOtherLocation())) {
             return false;
         }
         return true;
