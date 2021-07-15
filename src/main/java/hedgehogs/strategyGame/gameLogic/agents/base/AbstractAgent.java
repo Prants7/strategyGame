@@ -1,5 +1,6 @@
 package hedgehogs.strategyGame.gameLogic.agents.base;
 
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapper;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 
@@ -9,6 +10,7 @@ public abstract class AbstractAgent implements Agent {
     private String roleName;
     private Province location;
     private boolean actionLock;
+    private TimedActionWrapper currentTask;
 
     public AbstractAgent(String name, Faction alignment, Province location) {
         this.name = name;
@@ -57,12 +59,19 @@ public abstract class AbstractAgent implements Agent {
     }
 
     @Override
-    public void lockToATask() {
+    public void lockToATask(TimedActionWrapper targetTask) {
         this.actionLock = true;
+        this.currentTask = targetTask;
     }
 
     @Override
     public void unlockFromTask() {
         this.actionLock = false;
+        this.currentTask = null;
+    }
+
+    @Override
+    public TimedActionWrapper getCurrentTask() {
+        return this.currentTask;
     }
 }

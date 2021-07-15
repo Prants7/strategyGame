@@ -24,6 +24,7 @@ public class OneAgentViewFactory extends AbstractUIObjectFactory {
     private JLabel factionLabel;
     private JLabel locationLabel;
     private AgentActionButtons agentActionButtons;
+    private JLabel busyWithTaskLabel;
 
 
     @Override
@@ -34,9 +35,12 @@ public class OneAgentViewFactory extends AbstractUIObjectFactory {
         this.addNewElementToPanel(factionLabel, 0, 1);
         this.locationLabel = new JLabel("");
         this.addNewElementToPanel(locationLabel, 0, 2);
+        this.busyWithTaskLabel = new JLabel("");
+        this.addNewElementToPanel(busyWithTaskLabel, 0, 3);
         this.agentActionButtons = new AgentActionButtons(
                 this.factionPhoneBook.getPlayerFaction(), this.factionActionInterface, this.mainWindowFactory);
-        this.addNewElementToPanel(this.agentActionButtons.getPanelObject(), 0, 3);
+        this.addNewElementToPanel(this.agentActionButtons.getPanelObject(), 0, 4);
+
     }
 
     @Override
@@ -52,6 +56,7 @@ public class OneAgentViewFactory extends AbstractUIObjectFactory {
         this.writeFactionLabel();
         this.writeLocationLabel();
         this.agentActionButtons.refreshElements();
+        writeBusyWithTaskLabel();
     }
 
     private void writeContentToNameLabel() {
@@ -64,6 +69,18 @@ public class OneAgentViewFactory extends AbstractUIObjectFactory {
 
     private void writeLocationLabel() {
         this.locationLabel.setText("Location: "+this.selectedAgent.getLocation().getProvinceName());
+    }
+
+    private void writeBusyWithTaskLabel() {
+        if(this.selectedAgent.isLockedInTask()) {
+            this.busyWithTaskLabel.setText("Doing task: "+
+                    this.selectedAgent.getCurrentTask().getDesignatedAction().getActionName() + " for " +
+                    this.selectedAgent.getCurrentTask().getTurnsTillComplete());
+        }
+        else {
+            this.busyWithTaskLabel.setText("Not doing any task");
+        }
+
     }
 
     public void selectAgent(Agent selectedAgent) {

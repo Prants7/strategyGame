@@ -24,7 +24,7 @@ public class TimedActionWrapperImp implements TimedActionWrapper {
         this.location = input.getAgent().getLocation();
         this.time = time;
         this.finished = false;
-        this.actionInput.getAgent().lockToATask();
+        this.actionInput.getAgent().lockToATask(this);
         this.fillActionCost();
         doFinishedCheck();
     }

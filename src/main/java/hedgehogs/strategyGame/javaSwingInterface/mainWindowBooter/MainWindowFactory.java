@@ -84,6 +84,7 @@ public class MainWindowFactory {
         this.factionInfoFactory.updateData();
         this.provinceViewFactory.refreshElements();
         this.timedActionListViewFactory.refreshElements();
+        this.tabViewerFactory.refreshElements();
     }
 
     public void openProvinceView(Province selectedProvince) {
