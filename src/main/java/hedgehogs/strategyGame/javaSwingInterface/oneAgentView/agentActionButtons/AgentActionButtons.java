@@ -49,7 +49,8 @@ public class AgentActionButtons extends MinorAbstractUIObjectFactory {
             newButton.addActionListener( e -> {
                 System.out.println("trying to do action "+oneAction.getActionName()+ " with agent " + this.lastSelectedAgent.getName());
                 FactionActionInput input = new FactionActionInputImp().setAgent(this.lastSelectedAgent);
-                this.factionActionInterface.tryToPerformActionWithAgent(oneAction, input);
+                oneAction.startAction(input);
+                //this.factionActionInterface.tryToPerformActionWithAgent(oneAction, input);
                 this.makeContentRefreshCall();
             });
             this.allButtons.add(newButton);

@@ -11,15 +11,12 @@ public interface FactionAction {
 
     public boolean allowedToDoAction(FactionActionInput input);
 
-    public void doAction(FactionActionInput input);
+    public void startAction(FactionActionInput input);
 
-    public void forceDoAction(Faction callerFaction, Province location);
-
-    public boolean callToDoCosts(Faction callerFaction, Province location);
+    public void forceDoAction(FactionActionInput input);
 
     public String getCostsString();
 
     public String getActionName();
 
-    public TimedActionWrapper getActionAsTimedElement(FactionActionInput input);
 }

@@ -3,6 +3,7 @@ package hedgehogs.strategyGame.gameLogic.factionActionInterface;
 import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInputImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.buildOfficeAction.BuildOfficeAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction.LandClearAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landPurchaseAction.LandPurchaseAction;
@@ -60,7 +61,8 @@ public class FactionActionInterfaceImplementation implements FactionActionInterf
 
 
     protected void adminPerformAction(FactionAction action, Faction targetFaction, Province targetProvince) {
-        action.forceDoAction(targetFaction, targetProvince);
+        FactionActionInput tempInput = new FactionActionInputImp().setFaction(targetFaction).setFirstLocation(targetProvince);
+        action.forceDoAction(tempInput);
     }
 
     @Override
@@ -72,8 +74,9 @@ public class FactionActionInterfaceImplementation implements FactionActionInterf
         if(!action.allowedToDoAction(input)) {
             return;
         }
-        TimedActionWrapper newAction = this.getNewTimedAction(action, input);
-        this.timedActionWaitList.addNewTimedAction(newAction);
+        /*TimedActionWrapper newAction = this.getNewTimedAction(action, input);
+        this.timedActionWaitList.addNewTimedAction(newAction);*/
+        action.startAction(input);
     }
 
     @Override
@@ -97,29 +100,29 @@ public class FactionActionInterfaceImplementation implements FactionActionInterf
         this.performStandardVersionOfAction(this.seizeControlAction, input);
     }
 
-    public FactionAction getLandPurchaseAction() {
+    /*public FactionAction getLandPurchaseAction() {
         return landPurchaseAction;
     }
 
     public FactionAction getLandClearAction() {
         return landClearAction;
-    }
+    }*/
 
-    private TimedActionWrapper getNewTimedAction(FactionAction actionBase, FactionActionInput input) {
+    /*private TimedActionWrapper getNewTimedAction(FactionAction actionBase, FactionActionInput input) {
         TimedActionWrapper newAction = actionBase.getActionAsTimedElement(input);
         return newAction;
-    }
+    }*/
 
     @Override
     public List<FactionAction> getListOfUsableFactionActions() {
         return new ArrayList<>(this.actionList);
     }
 
-    @Override
+    /*@Override
     public boolean tryToPerformActionWithAgent(FactionAction desiredAction, FactionActionInput input) {
         this.performStandardVersionOfAction(desiredAction, input);
         return true;
-    }
+    }*/
 
     @Override
     public MoveAgentAction getMoveAgentAction() {

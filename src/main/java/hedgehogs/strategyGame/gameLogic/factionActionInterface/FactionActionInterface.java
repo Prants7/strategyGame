@@ -25,7 +25,7 @@ public interface FactionActionInterface {
 
     public List<FactionAction> getListOfUsableFactionActions();
 
-    public boolean tryToPerformActionWithAgent(FactionAction desiredAction, FactionActionInput input);
+    //public boolean tryToPerformActionWithAgent(FactionAction desiredAction, FactionActionInput input);
 
     public MoveAgentAction getMoveAgentAction();
 }

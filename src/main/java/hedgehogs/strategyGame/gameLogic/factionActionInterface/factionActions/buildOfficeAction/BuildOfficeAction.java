@@ -5,6 +5,7 @@ import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCostImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionGainImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWaitList;
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.FactionResourceInterface;
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.ResourceType;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
@@ -20,13 +21,22 @@ import java.util.List;
 public class BuildOfficeAction extends AbstractFactionAction {
 
     @Autowired
-    public BuildOfficeAction(FactionResourceInterface factionResourceInterface) {
-        super(factionResourceInterface);
+    public BuildOfficeAction(FactionResourceInterface factionResourceInterface,
+                             TimedActionWaitList timedActionWaitList) {
+        super(factionResourceInterface,timedActionWaitList);
     }
 
     @Override
     protected int bootGiveStandardFillTime() {
         return 5;
+    }
+
+    @Override
+    protected boolean checkIfInputHasRequiredFields(FactionActionInput input) {
+        if(!input.hasAgent()) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -40,7 +50,7 @@ public class BuildOfficeAction extends AbstractFactionAction {
     }
 
     @Override
-    protected void runActionScriptWithoutAgent(FactionActionInput input) {
+    protected void runActionScript(FactionActionInput input) {
         Province location = this.getPrimaryLocationFromInput(input);
         Faction callerFaction = this.getFactionFromInput(input);
         this.tempBuildFamilyHall(callerFaction, location);

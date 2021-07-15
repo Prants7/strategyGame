@@ -4,6 +4,7 @@ import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCostImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionGainImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWaitList;
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.FactionResourceInterface;
 import org.springframework.stereotype.Component;
 
@@ -12,13 +13,25 @@ import java.util.List;
 @Component
 public class MoveAgentAction extends AbstractFactionAction {
 
-    public MoveAgentAction(FactionResourceInterface factionResourceInterface) {
-        super(factionResourceInterface);
+    public MoveAgentAction(FactionResourceInterface factionResourceInterface,
+                           TimedActionWaitList timedActionWaitList) {
+        super(factionResourceInterface, timedActionWaitList);
     }
 
     @Override
     protected int bootGiveStandardFillTime() {
         return 2;
+    }
+
+    @Override
+    protected boolean checkIfInputHasRequiredFields(FactionActionInput input) {
+        if(!input.hasAgent()) {
+            return false;
+        }
+        if(!input.hasOtherLocation()) {
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -36,7 +49,7 @@ public class MoveAgentAction extends AbstractFactionAction {
     }
 
     @Override
-    protected void runActionScriptWithoutAgent(FactionActionInput input) {
+    protected void runActionScript(FactionActionInput input) {
         input.getAgent().moveAgent(input.getOtherLocation());
 
     }

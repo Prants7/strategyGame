@@ -53,7 +53,8 @@ public class MapFactory extends AbstractUIObjectFactory {
     public void giveClickedElement(VisualCityObject clickedObject) {
         if(this.hasAction()) {
             this.actionInput.setOtherLocation(clickedObject.getLogicalObject());
-            this.gameLogicHub.getFactionActionInterface().tryToPerformActionWithAgent(this.targetAction, this.actionInput);
+            this.targetAction.startAction(this.actionInput);
+            //this.gameLogicHub.getFactionActionInterface().tryToPerformActionWithAgent(this.targetAction, this.actionInput);
             this.clearAction();
         }
         this.mainWindowFactory.openProvinceView(clickedObject.getLogicalObject());
