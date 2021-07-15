@@ -11,21 +11,11 @@ import java.util.List;
 
 public interface FactionActionInterface {
 
-    public void performLandPurchase(FactionActionInput input);
-
     public void performAdminLandAssign(Faction forFaction, Province targetProvince);
-
-    public void performLandClearance(FactionActionInput input);
-
-    public void performFamilyHallBuild(FactionActionInput input);
 
     public void performAdminFamilyHallBuild(Faction callingFaction, Province targetProvince);
 
-    public void seizeControlInCity(FactionActionInput input);
-
     public List<FactionAction> getListOfUsableFactionActions();
-
-    //public boolean tryToPerformActionWithAgent(FactionAction desiredAction, FactionActionInput input);
 
     public MoveAgentAction getMoveAgentAction();
 }

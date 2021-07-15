@@ -59,35 +59,9 @@ public class FactionActionInterfaceImplementation implements FactionActionInterf
         adminPerformAction(this.landPurchaseAction, forFaction, targetProvince);
     }
 
-
     protected void adminPerformAction(FactionAction action, Faction targetFaction, Province targetProvince) {
         FactionActionInput tempInput = new FactionActionInputImp().setFaction(targetFaction).setFirstLocation(targetProvince);
         action.forceDoAction(tempInput);
-    }
-
-    @Override
-    public void performLandPurchase(FactionActionInput input) {
-        this.performStandardVersionOfAction(this.landPurchaseAction, input);
-    }
-
-    protected void performStandardVersionOfAction(FactionAction action, FactionActionInput input) {
-        if(!action.allowedToDoAction(input)) {
-            return;
-        }
-        /*TimedActionWrapper newAction = this.getNewTimedAction(action, input);
-        this.timedActionWaitList.addNewTimedAction(newAction);*/
-        action.startAction(input);
-    }
-
-    @Override
-    public void performLandClearance(FactionActionInput input) {
-        this.performStandardVersionOfAction(this.landClearAction, input);
-
-    }
-
-    @Override
-    public void performFamilyHallBuild(FactionActionInput input) {
-        this.performStandardVersionOfAction(this.buildOfficeAction, input);
     }
 
     @Override
@@ -96,33 +70,9 @@ public class FactionActionInterfaceImplementation implements FactionActionInterf
     }
 
     @Override
-    public void seizeControlInCity(FactionActionInput input) {
-        this.performStandardVersionOfAction(this.seizeControlAction, input);
-    }
-
-    /*public FactionAction getLandPurchaseAction() {
-        return landPurchaseAction;
-    }
-
-    public FactionAction getLandClearAction() {
-        return landClearAction;
-    }*/
-
-    /*private TimedActionWrapper getNewTimedAction(FactionAction actionBase, FactionActionInput input) {
-        TimedActionWrapper newAction = actionBase.getActionAsTimedElement(input);
-        return newAction;
-    }*/
-
-    @Override
     public List<FactionAction> getListOfUsableFactionActions() {
         return new ArrayList<>(this.actionList);
     }
-
-    /*@Override
-    public boolean tryToPerformActionWithAgent(FactionAction desiredAction, FactionActionInput input) {
-        this.performStandardVersionOfAction(desiredAction, input);
-        return true;
-    }*/
 
     @Override
     public MoveAgentAction getMoveAgentAction() {
