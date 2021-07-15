@@ -8,12 +8,14 @@ public abstract class AbstractAgent implements Agent {
     private Faction alignment;
     private String roleName;
     private Province location;
+    private boolean actionLock;
 
     public AbstractAgent(String name, Faction alignment, Province location) {
         this.name = name;
         this.alignment = alignment;
         this.roleName = this.bootGiveRoleName();
         this.location = location;
+        this.actionLock = false;
     }
 
     @Override
@@ -47,5 +49,20 @@ public abstract class AbstractAgent implements Agent {
     public boolean moveAgent(Province newLocation) {
         this.location = newLocation;
         return true;
+    }
+
+    @Override
+    public boolean isLockedInTask() {
+        return this.actionLock;
+    }
+
+    @Override
+    public void lockToATask() {
+        this.actionLock = true;
+    }
+
+    @Override
+    public void unlockFromTask() {
+        this.actionLock = false;
     }
 }

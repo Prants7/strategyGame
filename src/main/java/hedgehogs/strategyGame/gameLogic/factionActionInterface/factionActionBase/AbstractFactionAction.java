@@ -48,6 +48,12 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
         if(!checkIfInputHasRequiredFields(input)) {
             return false;
         }
+        if(!input.hasAgent()) {
+            return false;
+        }
+        if(input.getAgent().isLockedInTask()) {
+            return false;
+        }
         if(!this.checkIfInputFieldsAllowCosts(input)) {
             return false;
         }

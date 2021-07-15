@@ -14,4 +14,10 @@ public interface Agent {
     public Province getLocation();
 
     public boolean moveAgent(Province newLocation);
+
+    public boolean isLockedInTask();
+
+    public void lockToATask();
+
+    public void unlockFromTask();
 }
