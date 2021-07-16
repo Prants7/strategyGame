@@ -2,6 +2,7 @@ package hedgehogs.strategyGame.gameLogic.land;
 
 import hedgehogs.strategyGame.gameLogic.coordinates.Coordinates;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
+import hedgehogs.strategyGame.gameLogic.land.buildings.buildingSlots.LocalBuildingManager;
 import hedgehogs.strategyGame.gameLogic.land.buildings.offices.officeLocationArea.CityOfficeLocationImp;
 import hedgehogs.strategyGame.gameLogic.land.infuenceTable.InfluenceTable;
 import hedgehogs.strategyGame.gameLogic.land.landFractction.LandFraction;
@@ -36,6 +37,8 @@ public interface Province {
     public CityOfficeLocationImp accessLocationOffices();
 
     public Coordinates accessCoordinates();
+
+    public LocalBuildingManager accessBuildings();
 
     public boolean addRoad(Road newRoad);
 

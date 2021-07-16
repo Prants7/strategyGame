@@ -3,6 +3,8 @@ package hedgehogs.strategyGame.gameLogic.land;
 import hedgehogs.strategyGame.gameLogic.coordinates.Coordinates;
 import hedgehogs.strategyGame.gameLogic.coordinates.SettlementCoordinates;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
+import hedgehogs.strategyGame.gameLogic.land.buildings.buildingSlots.LocalBuildingManager;
+import hedgehogs.strategyGame.gameLogic.land.buildings.buildingSlots.LocalBuildingManagerImp;
 import hedgehogs.strategyGame.gameLogic.land.buildings.offices.officeLocationArea.CityOfficeLocationImp;
 import hedgehogs.strategyGame.gameLogic.land.infuenceTable.InfluenceTable;
 import hedgehogs.strategyGame.gameLogic.land.infuenceTable.InfluenceTableImp;
@@ -21,6 +23,7 @@ public abstract class BaseProvince implements Province {
     private CityOfficeLocationImp officeInterface;
     private Coordinates settlementCoordinates;
     private List<Road> connectedRoads;
+    private LocalBuildingManager localBuildingManager;
 
     public BaseProvince(int xLocation, int yLocation) {
         this.influenceTable = new InfluenceTableImp();
@@ -28,6 +31,7 @@ public abstract class BaseProvince implements Province {
         this.officeInterface = new CityOfficeLocationImp();
         this.settlementCoordinates = new SettlementCoordinates(xLocation, yLocation);
         this.connectedRoads = new ArrayList<>();
+        this.localBuildingManager = new LocalBuildingManagerImp(this);
     }
 
     public String getProvinceName() {
@@ -122,5 +126,9 @@ public abstract class BaseProvince implements Province {
             }
         }
         return false;
+    }
+
+    public LocalBuildingManager accessBuildings() {
+        return this.localBuildingManager;
     }
 }
