@@ -46,20 +46,26 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
     @Override
     public boolean allowedToDoAction(FactionActionInput input) {
         if(!checkIfInputHasRequiredFields(input)) {
+            System.out.println("failed if has required fields check");
             return false;
         }
         if(!input.hasAgent()) {
+            System.out.println("failed has agent check");
             return false;
         }
         if(input.getAgent().isLockedInTask()) {
+            System.out.println("failed lock in task check");
             return false;
         }
         if(!this.checkIfInputFieldsAllowCosts(input)) {
+            System.out.println("failed the allow costs check");
             return false;
         }
         if(!this.passesSystematicConstraints(input)) {
+            System.out.println("fails systematic constraints");
             return false;
         }
+        System.out.println("passes allowed do do action");
         return true;
     }
 

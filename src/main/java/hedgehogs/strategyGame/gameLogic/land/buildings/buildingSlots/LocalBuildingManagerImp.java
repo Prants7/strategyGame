@@ -1,6 +1,7 @@
 package hedgehogs.strategyGame.gameLogic.land.buildings.buildingSlots;
 
 import hedgehogs.strategyGame.gameLogic.land.Province;
+import hedgehogs.strategyGame.gameLogic.land.buildings.cityBuildings.base.CityBuilding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,7 @@ public class LocalBuildingManagerImp implements  LocalBuildingManager {
 
     @Override
     public int getAmountOfUsedSlots() {
-        return 0;
+        return (int) this.slotsHere.stream().filter( oneSlot -> !oneSlot.isEmpty()).count();
     }
 
     @Override
@@ -58,5 +59,28 @@ public class LocalBuildingManagerImp implements  LocalBuildingManager {
     @Override
     public Province getMasterProvince() {
         return this.masterProvince;
+    }
+
+    @Override
+    public boolean attemptToConstructBuildingHere(CityBuilding newBuilding) {
+        if(getAmountOfUnusedSlots() < 1) {
+            return false;
+        }
+        BuildingSlot targetSlot = this.getFirstAvailableSlot();
+        if(!targetSlot.canAddNewBuilding(newBuilding)) {
+            System.out.println("ERROR: first empty slot doesn't allow designated building");
+            return false;
+        }
+        targetSlot.addNewBuilding(newBuilding);
+        return true;
+    }
+
+    private BuildingSlot getFirstAvailableSlot() {
+        for(BuildingSlot oneSlot : this.slotsHere) {
+            if(oneSlot.isEmpty()) {
+                return oneSlot;
+            }
+        }
+        return null;
     }
 }

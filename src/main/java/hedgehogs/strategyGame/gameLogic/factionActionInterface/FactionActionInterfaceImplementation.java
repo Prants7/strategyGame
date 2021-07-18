@@ -6,6 +6,7 @@ import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInputImp;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.buildCityBuilding.BuildCityBuildingAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.buildOfficeAction.BuildOfficeAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction.LandClearAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landPurchaseAction.LandPurchaseAction;
@@ -32,6 +33,7 @@ public class FactionActionInterfaceImplementation implements FactionActionInterf
     private FactionAction seizeControlAction;
     private List<FactionAction> actionList;
     private MoveAgentAction moveAgentAction;
+    private BuildCityBuildingAction buildCityBuildingAction;
 
     @Autowired
     public FactionActionInterfaceImplementation(AgentFactory agentFactory,
@@ -40,7 +42,8 @@ public class FactionActionInterfaceImplementation implements FactionActionInterf
                                                 TimedActionWaitList timedActionWaitList,
                                                 BuildOfficeAction buildOfficeAction,
                                                 SeizeControlFromLocalsAction seizeControlAction,
-                                                MoveAgentAction moveAgentAction) {
+                                                MoveAgentAction moveAgentAction,
+                                                BuildCityBuildingAction buildCityBuildingAction) {
         this.agentFactory = agentFactory;
         this.landPurchaseAction = landPurchaseAction;
         this.landClearAction = landClearAction;
@@ -49,6 +52,7 @@ public class FactionActionInterfaceImplementation implements FactionActionInterf
         this.seizeControlAction = seizeControlAction;
         this.makeActionList();
         this.moveAgentAction = moveAgentAction;
+        this.buildCityBuildingAction = buildCityBuildingAction;
     }
 
     private void makeActionList() {
@@ -87,5 +91,10 @@ public class FactionActionInterfaceImplementation implements FactionActionInterf
     @Override
     public MoveAgentAction getMoveAgentAction() {
         return this.moveAgentAction;
+    }
+
+    @Override
+    public BuildCityBuildingAction getBuildCityBuildingAction() {
+        return this.buildCityBuildingAction;
     }
 }

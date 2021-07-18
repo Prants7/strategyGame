@@ -3,6 +3,7 @@ package hedgehogs.strategyGame.gameLogic.factionActionInterface;
 import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.buildCityBuilding.BuildCityBuildingAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.moveAgentAction.MoveAgentAction;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
@@ -18,4 +19,6 @@ public interface FactionActionInterface {
     public List<FactionAction> getListOfUsableFactionActions();
 
     public MoveAgentAction getMoveAgentAction();
+
+    public BuildCityBuildingAction getBuildCityBuildingAction();
 }
