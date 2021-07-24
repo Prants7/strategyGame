@@ -5,6 +5,7 @@ import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
 import hedgehogs.strategyGame.gameLogic.gameLogicHub.GameLogicHub;
 import hedgehogs.strategyGame.gameLogic.land.Province;
+import hedgehogs.strategyGame.javaSwingInterface.buildingsView.BuildingViewFactory;
 import hedgehogs.strategyGame.javaSwingInterface.factionInfo.FactionInfoFactory;
 import hedgehogs.strategyGame.javaSwingInterface.graphicalMap.mapFactory.MapFactory;
 import hedgehogs.strategyGame.javaSwingInterface.oneAgentView.OneAgentViewFactory;
@@ -40,6 +41,8 @@ public class MainWindowFactory {
     private OneAgentViewFactory agentViewFactory;
     @Autowired
     private MapFactory mapFactory;
+    @Autowired
+    private BuildingViewFactory buildingViewFactory;
     private JFrame mainFrame;
     private ProvinceSelectListener provinceSelectListener;
 
@@ -48,15 +51,6 @@ public class MainWindowFactory {
         this.mainFrame =new JFrame();//creating instance of JFrame
         mainFrame.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        /*JButton b=new JButton("click");//creating instance of JButton
-        b.setBounds(130,100,100, 40);//x axis, y axis, width, height*/
-
-        //f.add(b);//adding button in JFrame
-        /*JList<Province> provinceList = this.provinceListFactory.giveProvinceList(this.gameLogic.getWorld().getAllProvinces());
-        provinceSelectListener = new ProvinceSelectListener(provinceList, this);
-        provinceList.addListSelectionListener(provinceSelectListener);*/
-
-        //mainFrame.add(provinceList, BorderLayout.WEST);
         JButton mapButton = new JButton("Open map");
         mapButton.addActionListener(event -> {
             this.openMainMap();
@@ -67,13 +61,11 @@ public class MainWindowFactory {
 
         mainFrame.add(this.tabViewerFactory.getPanelObject(),BorderLayout.CENTER);
         this.tabViewerFactory.changeScreenTo(this.mapFactory);
-        //mainFrame.add(this.provinceViewFactory.getPanelObject(), BorderLayout.CENTER);
 
         mainFrame.add(this.timedActionListViewFactory.getPanelObject(), BorderLayout.EAST);
 
-        mainFrame.setSize(800,600);//400 width and 500 height
-        //f.setLayout(new BoxLayout(f, BoxLayout.X_AXIS));//using no layout managers
-        mainFrame.setVisible(true);//making the frame visible
+        mainFrame.setSize(800,600);
+        mainFrame.setVisible(true);
     }
 
     private void setUpGame() {
@@ -105,5 +97,10 @@ public class MainWindowFactory {
     public void openMainMapForActionInput(FactionAction targetAction, FactionActionInput input) {
         this.mapFactory.setAction(targetAction, input);
         this.tabViewerFactory.changeScreenTo(this.mapFactory);
+    }
+
+    public void openBuildingViewForProvince(Province targetProvince) {
+        this.tabViewerFactory.changeScreenTo(this.buildingViewFactory);
+        this.buildingViewFactory.openViewForProvince(targetProvince);
     }
 }

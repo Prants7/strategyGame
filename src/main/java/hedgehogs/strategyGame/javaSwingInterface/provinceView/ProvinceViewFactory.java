@@ -14,6 +14,8 @@ import hedgehogs.strategyGame.javaSwingInterface.provinceView.provinceDescriptio
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.swing.*;
+
 @Component
 public class ProvinceViewFactory extends AbstractUIObjectFactory  {
     private FactionActionInterface factionActionInterface;
@@ -25,6 +27,7 @@ public class ProvinceViewFactory extends AbstractUIObjectFactory  {
     private ControlTable controlTable;
     private LandFractionsTable landFractionsTable;
     private ProvinceDescriptionTable provinceDescriptionTable;
+    private JButton openBuildingView;
     //private ProvincePlayerActionButtons playerActionButtons;
 
     private AgentList agentList;
@@ -53,6 +56,14 @@ public class ProvinceViewFactory extends AbstractUIObjectFactory  {
 
         this.agentList = new AgentList(this.getPlayerFaction(), agentPhoneBook, mainWindowFactory);
         this.addNewElementToPanel(this.agentList.getPanelObject(), 1, 2);
+
+        this.openBuildingView = new JButton("open buildings view");
+        this.openBuildingView.addActionListener( e -> {
+            if(this.lastSelectedProvince != null) {
+                this.mainWindowFactory.openBuildingViewForProvince(this.lastSelectedProvince);
+            }
+        });
+        this.addNewElementToPanel(this.openBuildingView, 1, 0);
 
         /*this.playerActionButtons =
                 new ProvincePlayerActionButtons(this.getPlayerFaction(), this, this.factionActionInterface, this.agentPhoneBook);

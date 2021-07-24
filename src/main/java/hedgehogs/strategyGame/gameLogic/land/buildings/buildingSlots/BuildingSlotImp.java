@@ -1,9 +1,11 @@
 package hedgehogs.strategyGame.gameLogic.land.buildings.buildingSlots;
 
+import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.buildings.cityBuildings.base.CityBuilding;
 
 public class BuildingSlotImp implements BuildingSlot {
     private CityBuilding building;
+    private Faction owner;
 
     private boolean hasBuilding() {
         return this.building != null;
@@ -37,5 +39,15 @@ public class BuildingSlotImp implements BuildingSlot {
         }
         this.building = cityBuilding;
         return true;
+    }
+
+    @Override
+    public boolean hasOwner() {
+        return this.owner != null;
+    }
+
+    @Override
+    public Faction getOwner() {
+        return this.owner;
     }
 }
