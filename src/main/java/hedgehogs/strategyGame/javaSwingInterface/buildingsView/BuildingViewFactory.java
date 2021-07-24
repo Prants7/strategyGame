@@ -1,6 +1,5 @@
 package hedgehogs.strategyGame.javaSwingInterface.buildingsView;
 
-import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 import hedgehogs.strategyGame.gameLogic.land.buildings.buildingSlots.BuildingSlot;
