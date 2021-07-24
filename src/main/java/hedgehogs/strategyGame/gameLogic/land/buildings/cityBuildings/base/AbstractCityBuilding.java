@@ -5,7 +5,10 @@ import javax.annotation.PostConstruct;
 public abstract class AbstractCityBuilding implements CityBuilding {
     private String name;
 
-    @PostConstruct
+    public AbstractCityBuilding() {
+        this.bootUp();
+    }
+
     protected void bootUp() {
         this.name = bootGiveName();
     }

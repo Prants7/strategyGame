@@ -6,6 +6,6 @@ public class VillageBuilding extends AbstractCityBuilding {
 
     @Override
     protected String bootGiveName() {
-        return null;
+        return "Village";
     }
 }
