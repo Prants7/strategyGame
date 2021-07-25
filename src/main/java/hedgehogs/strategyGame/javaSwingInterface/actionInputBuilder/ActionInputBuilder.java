@@ -33,7 +33,7 @@ public class ActionInputBuilder {
 
     private ActionInputName getNextMissingInput() {
         for(ActionInputName oneName : this.targetedAction.getRequiredInputs()) {
-            if(!alreadyExistingInputs.getInputValueByEnum(oneName).hasElement()) {
+            if(!alreadyExistingInputs.checkInputByEnum(oneName)) {
                 return oneName;
             }
         }

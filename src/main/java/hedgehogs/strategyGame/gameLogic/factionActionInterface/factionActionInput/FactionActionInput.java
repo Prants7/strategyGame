@@ -11,21 +11,15 @@ public interface FactionActionInput {
 
     public FactionActionInput setAgent(Agent agent);
 
-    public boolean hasAgent();
-
     public Agent getAgent();
 
     public FactionActionInput setOtherLocation(Province otherLocation);
-
-    public boolean hasOtherLocation();
 
     public Province getOtherLocation();
 
     public FactionActionInput setCityBuilding(CityBuilding cityBuilding);
 
-    public boolean hasCityBuilding();
-
     public CityBuilding getCityBuilding();
 
-    public InputSocket<?> getInputValueByEnum(ActionInputName inputName);
+    public boolean checkInputByEnum(ActionInputName inputName);
 }

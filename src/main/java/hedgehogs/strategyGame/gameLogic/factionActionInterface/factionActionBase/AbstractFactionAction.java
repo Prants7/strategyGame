@@ -58,11 +58,7 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
             System.out.println("failed if has required fields check");
             return false;
         }
-        if(!input.hasAgent()) {
-            System.out.println("failed has agent check");
-            return false;
-        }
-        if(input.getAgent().isLockedInTask()) {
+        if(!agentNotLockedInTaskCheck(input)) {
             System.out.println("failed lock in task check");
             return false;
         }
@@ -93,15 +89,17 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
         return true;
     }
 
-    private boolean hasRequiredField(FactionActionInput input, ActionInputName oneInputField) {
-        InputSocket foundSocket = input.getInputValueByEnum(oneInputField);
-        if(foundSocket == null) {
-            return false;
-        }
-        if(!foundSocket.hasElement()) {
-            return false;
+    private boolean agentNotLockedInTaskCheck(FactionActionInput input) {
+        if(this.usedInputFields.contains(ActionInputName.AGENT)) {
+            if(input.getAgent().isLockedInTask()) {
+                return false;
+            }
         }
         return true;
+    }
+
+    private boolean hasRequiredField(FactionActionInput input, ActionInputName oneInputField) {
+        return input.checkInputByEnum(oneInputField);
     }
 
     protected abstract boolean passesSystematicConstraints(FactionActionInput input);
@@ -207,24 +205,22 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
         return this.standardFillTime;
     }
 
-    protected AgentSocket accessAgentSocketFromInput(FactionActionInput input) {
+    /*protected AgentSocket accessAgentSocketFromInput(FactionActionInput input) {
         return (AgentSocket) input.getInputValueByEnum(ActionInputName.AGENT);
-    }
+    }*/
 
     protected Province getPrimaryLocationFromInput(FactionActionInput input) {
-        /*if(input.hasAgent()) {
+        if(input.checkInputByEnum(ActionInputName.AGENT)) {
             return input.getAgent().getLocation();
         }
-        return null*/
-        return this.accessAgentSocketFromInput(input).getElement().getLocation();
+        return null;
     }
 
     protected Faction getFactionFromInput(FactionActionInput input) {
-        /*if(input.hasAgent()) {
+        if(input.checkInputByEnum(ActionInputName.AGENT)) {
             return input.getAgent().getAlignmentFaction();
         }
-        return null;*/
-        return this.accessAgentSocketFromInput(input).getElement().getAlignmentFaction();
+        return null;
     }
 
 
