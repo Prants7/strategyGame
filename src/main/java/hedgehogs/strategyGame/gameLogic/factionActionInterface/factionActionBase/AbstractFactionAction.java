@@ -277,4 +277,8 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
         return true;
     }
 
+    @Override
+    public Set<ActionInputName> getRequiredInputs() {
+        return new HashSet<>(this.usedInputFields);
+    }
 }

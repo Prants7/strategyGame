@@ -94,8 +94,8 @@ public class MainWindowFactory {
         this.tabViewerFactory.changeScreenTo(this.mapFactory);
     }
 
-    public void openMainMapForActionInput(FactionAction targetAction, FactionActionInput input) {
-        this.mapFactory.setAction(targetAction, input);
+    public void openMainMapForActionInput() {
+        this.mapFactory.askForLocationData();
         this.tabViewerFactory.changeScreenTo(this.mapFactory);
     }
 

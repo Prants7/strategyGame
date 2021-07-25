@@ -9,6 +9,7 @@ import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.bu
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.moveAgentAction.MoveAgentAction;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.buildings.cityBuildings.base.CityBuildingFactory;
+import hedgehogs.strategyGame.javaSwingInterface.actionInputBuilder.ActionInputBuilder;
 import hedgehogs.strategyGame.javaSwingInterface.generalBuildObjects.MinorAbstractUIObjectFactory;
 import hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter.MainWindowFactory;
 
@@ -21,15 +22,18 @@ public class AgentActionButtons extends MinorAbstractUIObjectFactory {
     private MainWindowFactory mainWindowFactory;
     private java.util.List<JButton> allButtons;
     private CityBuildingFactory buildingFactory;
+    private ActionInputBuilder actionInputBuilder;
 
     public AgentActionButtons(Faction perspectiveFaction,
                               FactionActionInterface factionActionInterface,
                               MainWindowFactory mainWindowFactory,
-                              CityBuildingFactory buildingFactory) {
+                              CityBuildingFactory buildingFactory,
+                              ActionInputBuilder actionInputBuilder) {
         super(perspectiveFaction);
         this.factionActionInterface = factionActionInterface;
         this.mainWindowFactory = mainWindowFactory;
         this.buildingFactory = buildingFactory;
+        this.actionInputBuilder = actionInputBuilder;
         this.allButtons = new ArrayList<>();
     }
 
@@ -66,21 +70,28 @@ public class AgentActionButtons extends MinorAbstractUIObjectFactory {
         return newButton;
     }
 
+    private void performActionThroughActionInputBuilder(FactionAction action, FactionActionInput startingInput) {
+        this.actionInputBuilder.startFillingNewAction(action, startingInput);
+    }
+
     private void performActionWithoutExtraInput(FactionAction oneAction) {
         System.out.println("trying to do action "+oneAction.getActionName()+ " with agent " + this.lastSelectedAgent.getName());
         FactionActionInput input = new FactionActionInputImp().setAgent(this.lastSelectedAgent);
-        oneAction.startAction(input);
+        //oneAction.startAction(input);
+        this.performActionThroughActionInputBuilder(oneAction, input);
         this.makeContentRefreshCall();
     }
 
     private void makeMoveAgentButton() {
         MoveAgentAction moveAgent = this.factionActionInterface.getMoveAgentAction();
-        JButton newButton = new JButton(moveAgent.getActionName());
-        newButton.addActionListener( e -> {
+        //JButton newButton = new JButton(moveAgent.getActionName());
+        JButton newButton = this.makeButtonForAction(moveAgent);
+        /*newButton.addActionListener( e -> {
             System.out.println("trying to activate move agent");
             FactionActionInput newInput = new FactionActionInputImp().setAgent(this.lastSelectedAgent);
             this.mainWindowFactory.openMainMapForActionInput(moveAgent, newInput);
-        });
+
+        });*/
         this.addNewElementToPanel(newButton, 0, 0);
     }
 
@@ -91,7 +102,8 @@ public class AgentActionButtons extends MinorAbstractUIObjectFactory {
             System.out.println("trying to build a new village");
             FactionActionInput newInput = new FactionActionInputImp().setAgent(this.lastSelectedAgent)
                     .setCityBuilding(this.buildingFactory.getNewVillageBuildingBuilding());
-            buildAction.startAction(newInput);
+            //buildAction.startAction(newInput);
+            performActionThroughActionInputBuilder(buildAction, newInput);
             this.makeContentRefreshCall();
         });
         this.addNewElementToPanel(newButton, 1, 0);

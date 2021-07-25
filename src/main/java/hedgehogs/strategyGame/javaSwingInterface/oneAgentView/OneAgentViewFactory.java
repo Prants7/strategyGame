@@ -4,6 +4,7 @@ import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.FactionActionInterface;
 import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
 import hedgehogs.strategyGame.gameLogic.land.buildings.cityBuildings.base.CityBuildingFactory;
+import hedgehogs.strategyGame.javaSwingInterface.actionInputBuilder.ActionInputBuilder;
 import hedgehogs.strategyGame.javaSwingInterface.generalBuildObjects.AbstractUIObjectFactory;
 import hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter.MainWindowFactory;
 import hedgehogs.strategyGame.javaSwingInterface.oneAgentView.agentActionButtons.AgentActionButtons;
@@ -22,6 +23,8 @@ public class OneAgentViewFactory extends AbstractUIObjectFactory {
     private FactionPhoneBook factionPhoneBook;
     @Autowired
     private CityBuildingFactory buildingFactory;
+    @Autowired
+    private ActionInputBuilder actionInputBuilder;
     private Agent selectedAgent;
     private JLabel agentNameLabel;
     private JLabel factionLabel;
@@ -42,7 +45,7 @@ public class OneAgentViewFactory extends AbstractUIObjectFactory {
         this.addNewElementToPanel(busyWithTaskLabel, 0, 3);
         this.agentActionButtons = new AgentActionButtons(
                 this.factionPhoneBook.getPlayerFaction(), this.factionActionInterface, this.mainWindowFactory,
-                this.buildingFactory);
+                this.buildingFactory, this.actionInputBuilder);
         this.addNewElementToPanel(this.agentActionButtons.getPanelObject(), 0, 4);
 
     }
