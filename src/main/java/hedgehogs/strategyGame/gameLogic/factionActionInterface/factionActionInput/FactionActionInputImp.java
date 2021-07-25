@@ -1,82 +1,68 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput;
 
 import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.inputSockets.AgentSocket;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.inputSockets.BuildingSocket;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.inputSockets.InputSocket;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.inputSockets.LocationSocket;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.inputSockets.*;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 import hedgehogs.strategyGame.gameLogic.land.buildings.cityBuildings.base.CityBuilding;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class FactionActionInputImp implements FactionActionInput {
-    private AgentSocket agentSocket;
-    private LocationSocket locationSocket;
-    private BuildingSocket buildingSocket;
+    private Map<ActionInputName, InputSocketImp<?>> inputFields;
 
     public FactionActionInputImp() {
-        this.agentSocket = new AgentSocket();
-        this.locationSocket = new LocationSocket();
-        this.buildingSocket = new BuildingSocket();
+        this.inputFields = new HashMap<>();
+    }
+
+    public FactionActionInput setNewValue(ActionInputName inputName, Object newValue) {
+        InputSocketImp<?> newSocket = new InputSocketImp<>(newValue);
+        this.inputFields.put(inputName, newSocket);
+        return this;
+    }
+
+    public Object getValueWithKey(ActionInputName keyName) {
+        if(this.inputFields.containsKey(keyName)) {
+            return this.inputFields.get(keyName).getElement();
+        }
+        return null;
     }
 
     @Override
     public FactionActionInput setAgent(Agent agent) {
-        this.agentSocket.setElement(agent);
-        return this;
+        return this.setNewValue(ActionInputName.AGENT, agent);
     }
 
     @Override
     public Agent getAgent() {
-        return this.agentSocket.getElement();
+        return (Agent) this.getValueWithKey(ActionInputName.AGENT);
     }
 
     @Override
     public FactionActionInput setOtherLocation(Province otherLocation) {
-        this.locationSocket.setElement(otherLocation);
-        return this;
+        return this.setNewValue(ActionInputName.NEXT_LOCATION, otherLocation);
     }
 
     @Override
     public Province getOtherLocation() {
-        return this.locationSocket.getElement();
+        return (Province) this.getValueWithKey(ActionInputName.NEXT_LOCATION);
     }
 
     @Override
     public FactionActionInput setCityBuilding(CityBuilding cityBuilding) {
-        this.buildingSocket.setElement(cityBuilding);
-        return this;
+        return this.setNewValue(ActionInputName.BUILDING, cityBuilding);
     }
 
     @Override
     public CityBuilding getCityBuilding() {
-        return this.buildingSocket.getElement();
+        return (CityBuilding) this.getValueWithKey(ActionInputName.BUILDING);
     }
-
-    /*@Override
-    public InputSocket<?> getInputValueByEnum(ActionInputName inputName) {
-        if(inputName == ActionInputName.AGENT) {
-            return this.agentSocket;
-        }
-        if(inputName == ActionInputName.NEXT_LOCATION) {
-            return this.locationSocket;
-        }
-        if(inputName == ActionInputName.BUILDING) {
-            return this.buildingSocket;
-        }
-        return null;
-    }*/
 
     @Override
     public boolean checkInputByEnum(ActionInputName inputName) {
-        if(inputName == ActionInputName.AGENT) {
-            return this.agentSocket.hasElement();
-        }
-        if(inputName == ActionInputName.NEXT_LOCATION) {
-            return this.locationSocket.hasElement();
-        }
-        if(inputName == ActionInputName.BUILDING) {
-            return this.buildingSocket.hasElement();
+        if(this.inputFields.containsKey(inputName)) {
+            return this.inputFields.get(inputName).hasElement();
         }
         return false;
     }

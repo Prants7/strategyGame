@@ -1,7 +1,14 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.inputSockets;
 
-public abstract class AbstractInputSocket<SaveType> implements InputSocket<SaveType> {
+public class InputSocketImp<SaveType> implements InputSocket<SaveType> {
     private SaveType savedElement;
+
+    public InputSocketImp() {
+    }
+
+    public InputSocketImp(SaveType elementToSave) {
+        this.savedElement = elementToSave;
+    }
 
     @Override
     public boolean hasElement() {

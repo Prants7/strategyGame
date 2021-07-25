@@ -43,6 +43,7 @@ public class ActionInputBuilder {
     private void acquireNextInputValue(ActionInputName inputName) {
         if(inputName == ActionInputName.NEXT_LOCATION) {
             this.acquireNextLocation();
+            return;
         }
         System.out.println("NEEDS INPUT THAT HAS NO SOLUTION: "+inputName);
     }
