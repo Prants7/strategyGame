@@ -2,7 +2,10 @@ package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBas
 
 
 import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.ActionInputName;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.inputSockets.AgentSocket;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.inputSockets.InputSocket;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWaitList;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapper;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapperImp;
@@ -14,14 +17,18 @@ import hedgehogs.strategyGame.gameLogic.land.Province;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
+import javax.swing.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public abstract class AbstractFactionAction implements FactionAction, TimedActionCommandInterface {
     private FactionResourceInterface factionResourceInterface;
     private TimedActionWaitList timedActionWaitList;
     private List<FactionActionCostImp> costs;
     private List<FactionActionGainImp> gains;
+    private Set<ActionInputName> usedInputFields;
     private String actionName;
     private int standardFillTime;
 
@@ -39,6 +46,8 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
         this.addResourceGains(this.gains);
         this.actionName = this.bootGiveActionName();
         this.standardFillTime = this.bootGiveStandardFillTime();
+        this.usedInputFields = new HashSet<>();
+        this.bootAddRequiredInputFieldNames(this.usedInputFields);
     }
 
     protected abstract int bootGiveStandardFillTime();
@@ -69,7 +78,31 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
         return true;
     }
 
-    protected abstract boolean checkIfInputHasRequiredFields(FactionActionInput input);
+    private boolean checkIfInputHasRequiredFields(FactionActionInput input) {
+        return this.checkExistenceOfAllFields(input, this.usedInputFields);
+    }
+
+    protected abstract void bootAddRequiredInputFieldNames(Set<ActionInputName> saveLocation);
+
+    private boolean checkExistenceOfAllFields(FactionActionInput input, Set<ActionInputName> requiredInputs) {
+        for(ActionInputName oneName : requiredInputs) {
+            if(!hasRequiredField(input, oneName)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean hasRequiredField(FactionActionInput input, ActionInputName oneInputField) {
+        InputSocket foundSocket = input.getInputValueByEnum(oneInputField);
+        if(foundSocket == null) {
+            return false;
+        }
+        if(!foundSocket.hasElement()) {
+            return false;
+        }
+        return true;
+    }
 
     protected abstract boolean passesSystematicConstraints(FactionActionInput input);
 
@@ -83,7 +116,7 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
         return true;
     }
 
-    protected boolean checkIfCanDoCosts(FactionActionInput input) {
+    private boolean checkIfCanDoCosts(FactionActionInput input) {
         Faction foundFaction = this.getFactionFromInput(input);
         Province foundLocation = this.getPrimaryLocationFromInput(input);
         for(FactionActionCostImp oneCost : this.costs) {
@@ -174,19 +207,27 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
         return this.standardFillTime;
     }
 
+    protected AgentSocket accessAgentSocketFromInput(FactionActionInput input) {
+        return (AgentSocket) input.getInputValueByEnum(ActionInputName.AGENT);
+    }
+
     protected Province getPrimaryLocationFromInput(FactionActionInput input) {
-        if(input.hasAgent()) {
+        /*if(input.hasAgent()) {
             return input.getAgent().getLocation();
         }
-        return null;
+        return null*/
+        return this.accessAgentSocketFromInput(input).getElement().getLocation();
     }
 
     protected Faction getFactionFromInput(FactionActionInput input) {
-        if(input.hasAgent()) {
+        /*if(input.hasAgent()) {
             return input.getAgent().getAlignmentFaction();
         }
-        return null;
+        return null;*/
+        return this.accessAgentSocketFromInput(input).getElement().getAlignmentFaction();
     }
+
+
 
     @Override
     public boolean doActionCosts(FactionActionInput input) {
@@ -199,7 +240,7 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
         return true;
     }
 
-    protected boolean doCosts(Faction callerFaction, Province location) {
+    private boolean doCosts(Faction callerFaction, Province location) {
         for(FactionActionCostImp oneCost : this.costs) {
             if(!this.factionResourceInterface.removeResourceFromFaction(
                     getResourceSettings(callerFaction, location, oneCost))) {
@@ -226,7 +267,7 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
         return true;
     }
 
-    protected boolean doGains(Faction callerFaction, Province location) {
+    private boolean doGains(Faction callerFaction, Province location) {
         for(FactionActionGainImp oneGain : this.gains) {
             if(!this.factionResourceInterface.addResourceToFaction(
                     getResourceSettings(callerFaction, location, oneGain))) {
@@ -235,4 +276,5 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
         }
         return true;
     }
+
 }

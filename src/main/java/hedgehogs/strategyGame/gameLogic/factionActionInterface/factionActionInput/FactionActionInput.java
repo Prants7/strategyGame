@@ -1,6 +1,7 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput;
 
 import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.inputSockets.InputSocket;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 import hedgehogs.strategyGame.gameLogic.land.buildings.cityBuildings.base.CityBuilding;
@@ -24,4 +25,6 @@ public interface FactionActionInput {
     public boolean hasCityBuilding();
 
     public CityBuilding getCityBuilding();
+
+    public InputSocket<?> getInputValueByEnum(ActionInputName inputName);
 }

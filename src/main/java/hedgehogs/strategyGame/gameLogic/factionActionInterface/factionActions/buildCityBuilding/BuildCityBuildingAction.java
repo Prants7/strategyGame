@@ -3,6 +3,7 @@ package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.b
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.AbstractFactionAction;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCostImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionGainImp;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.ActionInputName;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWaitList;
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.FactionResourceInterface;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class BuildCityBuildingAction extends AbstractFactionAction {
@@ -25,7 +27,7 @@ public class BuildCityBuildingAction extends AbstractFactionAction {
         return 2;
     }
 
-    @Override
+    /*@Override
     protected boolean checkIfInputHasRequiredFields(FactionActionInput input) {
         if(!input.hasAgent()) {
             return false;
@@ -34,6 +36,12 @@ public class BuildCityBuildingAction extends AbstractFactionAction {
             return false;
         }
         return true;
+    }*/
+
+    @Override
+    protected void bootAddRequiredInputFieldNames(Set<ActionInputName> saveLocation) {
+        saveLocation.add(ActionInputName.AGENT);
+        saveLocation.add(ActionInputName.BUILDING);
     }
 
     @Override
