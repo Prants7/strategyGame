@@ -8,6 +8,7 @@ import hedgehogs.strategyGame.gameLogic.land.infuenceTable.InfluenceTable;
 import hedgehogs.strategyGame.gameLogic.land.landFractction.LandFraction;
 import hedgehogs.strategyGame.gameLogic.land.prosperity.Prosperity;
 import hedgehogs.strategyGame.gameLogic.land.roads.Road;
+import hedgehogs.strategyGame.gameLogic.land.settlementStats.statGrouping.SettlementStatGroup;
 
 import java.util.List;
 import java.util.Map;
@@ -43,4 +44,6 @@ public interface Province {
     public boolean addRoad(Road newRoad);
 
     public boolean hasDirectAccessTo(Province targetProvince);
+
+    public SettlementStatGroup accessStats();
 }

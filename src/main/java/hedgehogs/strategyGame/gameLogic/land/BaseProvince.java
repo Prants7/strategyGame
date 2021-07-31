@@ -12,6 +12,7 @@ import hedgehogs.strategyGame.gameLogic.land.landFractction.LandFraction;
 import hedgehogs.strategyGame.gameLogic.land.prosperity.Prosperity;
 import hedgehogs.strategyGame.gameLogic.land.prosperity.ProsperityImp;
 import hedgehogs.strategyGame.gameLogic.land.roads.Road;
+import hedgehogs.strategyGame.gameLogic.land.settlementStats.statGrouping.SettlementStatGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,10 @@ public abstract class BaseProvince implements Province {
     private Coordinates settlementCoordinates;
     private List<Road> connectedRoads;
     private LocalBuildingManager localBuildingManager;
+    private SettlementStatGroup statGroup;
 
     public BaseProvince(int xLocation, int yLocation) {
+        this.statGroup = new SettlementStatGroup(this);
         this.influenceTable = new InfluenceTableImp();
         this.prosperity = new ProsperityImp();
         this.officeInterface = new CityOfficeLocationImp();
@@ -130,5 +133,10 @@ public abstract class BaseProvince implements Province {
 
     public LocalBuildingManager accessBuildings() {
         return this.localBuildingManager;
+    }
+
+    @Override
+    public SettlementStatGroup accessStats() {
+        return this.statGroup;
     }
 }

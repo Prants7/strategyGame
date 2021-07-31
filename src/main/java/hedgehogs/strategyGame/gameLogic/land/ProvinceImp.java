@@ -24,14 +24,6 @@ public class ProvinceImp extends BaseProvince {
         }
     }
 
-    /*public void setName(String newName) {
-        this.name = newName;
-    }*/
-
-    /*public void callBootSettle() {
-        this.makeIntoSettledLand();
-    }*/
-
     @Override
     protected String provideProvinceName() {
         return this.name;
@@ -106,9 +98,13 @@ public class ProvinceImp extends BaseProvince {
     }
 
     private void makeBasicLandFractions(LandFractionFactory factory) {
-        for(int newFractionNr = 0; newFractionNr < 10 ; newFractionNr++) {
+        for(int newFractionNr = 0; newFractionNr < this.getAmountDesiredFractions() ; newFractionNr++) {
             this.landFractions.add(factory.getNewLandFraction());
         }
+    }
+
+    private int getAmountDesiredFractions() {
+        return this.accessStats().getLandAmount().getCurrentValue();
     }
 
     private void makeIntoSettledLand() {
