@@ -54,7 +54,9 @@ public class BuildCityBuildingAction extends AbstractFactionAction {
 
     @Override
     protected void runActionScript(FactionActionInput input) {
-        input.getAgent().getLocation().accessBuildings().attemptToConstructBuildingHere(input.getCityBuilding());
+        if(input.getAgent().getLocation().accessBuildings().attemptToConstructBuildingHere(input.getCityBuilding())) {
+            input.getCityBuilding().finished(input.getAgent().getLocation());
+        }
     }
 
     @Override

@@ -3,6 +3,10 @@ package hedgehogs.strategyGame.gameLogic.land;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.landFractction.LandFraction;
 import hedgehogs.strategyGame.gameLogic.land.landFractction.LandFractionFactory;
+import hedgehogs.strategyGame.gameLogic.land.settlementStats.statBase.StatName;
+import hedgehogs.strategyGame.gameLogic.land.settlementStats.statChangeData.StatChangeData;
+import hedgehogs.strategyGame.gameLogic.land.settlementStats.statChangeListener.StatChangeListenerImp;
+import hedgehogs.strategyGame.gameLogic.land.settlementStats.statChangeListener.StatChangeReceiver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,18 +14,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class ProvinceImp extends BaseProvince {
+public class ProvinceImp extends BaseProvince implements StatChangeReceiver {
     private String name;
     private List<LandFraction> landFractions;
+    private LandFractionFactory fractionFactory;
 
     public ProvinceImp(String provinceName, boolean settled, LandFractionFactory fractionFactory,
                        int xLocation, int yLocation) {
         super(xLocation, yLocation);
         this.name = provinceName;
+        this.fractionFactory = fractionFactory;
         this.setUpLandFractions(fractionFactory);
         if(settled) {
             this.makeIntoSettledLand();
         }
+        this.accessStats().addNewListener(new StatChangeListenerImp(this));
     }
 
     @Override
@@ -73,16 +80,6 @@ public class ProvinceImp extends BaseProvince {
         System.out.println("---");
     }
 
-    /*private int slowCountOfSettledLand() {
-        int countResult = 0;
-        for(LandFraction oneFraction : this.landFractions) {
-            if(oneFraction.isManaged()) {
-                countResult++;
-            }
-        }
-        return countResult;
-    }*/
-
     private int streamCountOfSettledLand() {
         long countResult = this.landFractions.stream().filter(oneFraction -> oneFraction.isManaged()).count();
         return (int) countResult;
@@ -104,7 +101,7 @@ public class ProvinceImp extends BaseProvince {
     }
 
     private int getAmountDesiredFractions() {
-        return this.accessStats().getLandAmount().getCurrentValue();
+        return this.accessStats().getStatValue(StatName.LAND_AMOUNT);
     }
 
     private void makeIntoSettledLand() {
@@ -147,5 +144,28 @@ public class ProvinceImp extends BaseProvince {
     @Override
     public String toString() {
         return this.name;
+    }
+
+    @Override
+    public boolean reactToStatChange(StatChangeData changedStat) {
+        correctLandFractionAmount();
+        return true;
+    }
+
+    private void correctLandFractionAmount() {
+        if(this.accessStats().getStatValue(StatName.LAND_AMOUNT) > this.landFractions.size()) {
+            increaseAmountOfLand();
+        }
+    }
+
+    private void increaseAmountOfLand() {
+        while (this.accessStats().getStatValue(StatName.LAND_AMOUNT) > this.landFractions.size()) {
+            this.landFractions.add(this.fractionFactory.getNewLandFraction());
+        }
+    }
+
+    @Override
+    public StatName giveStatsToListenerFor() {
+        return StatName.LAND_AMOUNT;
     }
 }
