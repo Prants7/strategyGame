@@ -13,6 +13,11 @@ public class VillageBuilding extends AbstractCityBuilding {
     }
 
     @Override
+    protected int bootGiveBuildLimit() {
+        return 3;
+    }
+
+    @Override
     protected void addFinishStats(Province location) {
         location.accessStats().sendStatChange(new StatChangeDataImp(StatName.LAND_AMOUNT, 5));
     }

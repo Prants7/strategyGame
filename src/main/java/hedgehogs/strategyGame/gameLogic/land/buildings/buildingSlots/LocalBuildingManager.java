@@ -18,4 +18,6 @@ public interface LocalBuildingManager {
     public Province getMasterProvince();
 
     public boolean attemptToConstructBuildingHere(CityBuilding newBuilding);
+
+    public int countBuilding(CityBuilding targetType);
 }

@@ -63,7 +63,8 @@ public class AgentActionButtons extends MinorAbstractUIObjectFactory {
     }
 
     private JButton makeButtonForAction(FactionAction oneAction) {
-        JButton newButton = new JButton(oneAction.getActionName() + " " + oneAction.getCostsString());
+        FactionActionInput testInput = new FactionActionInputImp().setAgent(this.lastSelectedAgent);
+        JButton newButton = new JButton(oneAction.getActionName() + " " + oneAction.getCostsString(testInput));
         newButton.addActionListener( e -> {
             performActionWithoutExtraInput(oneAction);
         });

@@ -50,4 +50,9 @@ public class BuildingSlotImp implements BuildingSlot {
     public Faction getOwner() {
         return this.owner;
     }
+
+    @Override
+    public CityBuilding getBuilding() {
+        return this.building;
+    }
 }

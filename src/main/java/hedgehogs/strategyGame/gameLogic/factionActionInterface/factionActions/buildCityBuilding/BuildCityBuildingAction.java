@@ -1,7 +1,7 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.buildCityBuilding;
 
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.AbstractFactionAction;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCostImp;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCost.FactionActionCostFlatCost;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionGainImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.ActionInputName;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
@@ -65,7 +65,7 @@ public class BuildCityBuildingAction extends AbstractFactionAction {
     }
 
     @Override
-    protected void addResourceCosts(List<FactionActionCostImp> addLocation) {
+    protected void addResourceCosts(List<FactionActionCostFlatCost> addLocation) {
 
     }
 

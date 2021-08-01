@@ -16,4 +16,6 @@ public interface BuildingSlot {
     public boolean hasOwner();
 
     public Faction getOwner();
+
+    public CityBuilding getBuilding();
 }

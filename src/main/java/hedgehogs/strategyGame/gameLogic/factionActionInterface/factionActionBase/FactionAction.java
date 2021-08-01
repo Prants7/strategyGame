@@ -18,7 +18,7 @@ public interface FactionAction {
 
     public void forceDoAction(FactionActionInput input);
 
-    public String getCostsString();
+    public String getCostsString(FactionActionInput input);
 
     public String getActionName();
 

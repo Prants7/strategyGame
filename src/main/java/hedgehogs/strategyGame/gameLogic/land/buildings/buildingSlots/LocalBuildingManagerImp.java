@@ -66,6 +66,9 @@ public class LocalBuildingManagerImp implements  LocalBuildingManager {
         if(getAmountOfUnusedSlots() < 1) {
             return false;
         }
+        if(!newBuilding.allowedToBuildInProvince(this.masterProvince)) {
+            return false;
+        }
         BuildingSlot targetSlot = this.getFirstAvailableSlot();
         if(!targetSlot.canAddNewBuilding(newBuilding)) {
             System.out.println("ERROR: first empty slot doesn't allow designated building");
@@ -73,6 +76,21 @@ public class LocalBuildingManagerImp implements  LocalBuildingManager {
         }
         targetSlot.addNewBuilding(newBuilding);
         return true;
+    }
+
+    @Override
+    public int countBuilding(CityBuilding targetType) {
+        int count = (int) this.slotsHere.stream().filter(
+                oneSlot -> {
+                    if(oneSlot.getBuilding() == null) {
+                        return false;
+                    }
+                    else {
+                        return oneSlot.getBuilding().getClass() == targetType.getClass();
+                    }
+                }
+                ).count();
+        return count;
     }
 
     private BuildingSlot getFirstAvailableSlot() {

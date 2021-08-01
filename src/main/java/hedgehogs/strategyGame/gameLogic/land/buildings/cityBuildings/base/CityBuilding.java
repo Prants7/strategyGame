@@ -8,4 +8,6 @@ public interface CityBuilding {
 
     public boolean finished(Province location);
 
+    public boolean allowedToBuildInProvince(Province targetLocation);
+
 }

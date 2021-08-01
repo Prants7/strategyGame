@@ -1,8 +1,7 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landClearAction;
 
-import hedgehogs.strategyGame.gameLogic.agents.base.Agent;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.AbstractFactionAction;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCostImp;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCost.FactionActionCostFlatCost;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionGainImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.ActionInputName;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
@@ -70,8 +69,8 @@ public class LandClearAction extends AbstractFactionAction {
     }
 
     @Override
-    protected void addResourceCosts(List<FactionActionCostImp> addLocation) {
-        addLocation.add(new FactionActionCostImp(ResourceType.GOLD, 2));
+    protected void addResourceCosts(List<FactionActionCostFlatCost> addLocation) {
+        addLocation.add(new FactionActionCostFlatCost(ResourceType.GOLD, 2));
     }
 
     @Override
