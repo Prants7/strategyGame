@@ -120,11 +120,11 @@ public class AgentActionButtons extends MinorAbstractUIObjectFactory {
         if(!this.hasSelectedAgent()) {
             return;
         }
-        /*FactionAction buildAction = this.factionActionInterface.getBuildCityBuildingAction();
+        FactionAction buildAction = this.factionActionInterface.getBuildCityBuildingAction();
         this.buildVillageButton.setText("Build new Village "+buildAction
                 .getCostsString(new FactionActionInputImp()
                         .setAgent(this.lastSelectedAgent)
-                        .setCityBuilding(this.buildingFactory.getNewVillageBuildingBuilding())));*/
+                        .setCityBuilding(this.buildingFactory.getNewVillageBuildingBuilding())));
     }
 
     private boolean hasSelectedAgent() {
