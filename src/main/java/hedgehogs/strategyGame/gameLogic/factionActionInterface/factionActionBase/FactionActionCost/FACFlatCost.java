@@ -4,11 +4,11 @@ import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInpu
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.ResourceType;
 import lombok.Data;
 
-public class FactionActionCostFlatCost implements FactionActionCost {
+public class FACFlatCost implements FactionActionCost {
     private ResourceType resourceType;
     private int amount;
 
-    public FactionActionCostFlatCost(ResourceType resourceType, int amount) {
+    public FACFlatCost(ResourceType resourceType, int amount) {
         this.resourceType = resourceType;
         this.amount = amount;
     }

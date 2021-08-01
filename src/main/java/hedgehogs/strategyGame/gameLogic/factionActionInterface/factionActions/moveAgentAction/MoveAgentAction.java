@@ -1,7 +1,8 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.moveAgentAction;
 
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.AbstractFactionAction;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCost.FactionActionCostFlatCost;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCost.FACFlatCost;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCost.FactionActionCost;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionGainImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.ActionInputName;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
@@ -65,7 +66,7 @@ public class MoveAgentAction extends AbstractFactionAction {
     }
 
     @Override
-    protected void addResourceCosts(List<FactionActionCostFlatCost> addLocation) {
+    protected void addResourceCosts(List<FactionActionCost> addLocation) {
 
     }
 

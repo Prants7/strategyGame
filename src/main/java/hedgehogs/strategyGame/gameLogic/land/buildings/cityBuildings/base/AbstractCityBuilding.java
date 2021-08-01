@@ -1,12 +1,16 @@
 package hedgehogs.strategyGame.gameLogic.land.buildings.cityBuildings.base;
 
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCost.FactionActionCost;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class AbstractCityBuilding implements CityBuilding {
     private String name;
     private int cityBuildLimit;
+    private List<FactionActionCost> costList;
 
     public AbstractCityBuilding() {
         this.bootUp();
@@ -15,11 +19,15 @@ public abstract class AbstractCityBuilding implements CityBuilding {
     protected void bootUp() {
         this.name = bootGiveName();
         this.cityBuildLimit = bootGiveBuildLimit();
+        this.costList = new ArrayList<>();
+        this.bootAddCosts(this.costList);
     }
 
     protected abstract String bootGiveName();
 
     protected abstract int bootGiveBuildLimit();
+
+    protected abstract void bootAddCosts(List<FactionActionCost> addLocation);
 
     private boolean hasLocalBuildLimit() {
         if(this.cityBuildLimit > 0) {
@@ -57,5 +65,10 @@ public abstract class AbstractCityBuilding implements CityBuilding {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<FactionActionCost> getBuildingSpecificCosts() {
+        return new ArrayList<>(this.costList);
     }
 }

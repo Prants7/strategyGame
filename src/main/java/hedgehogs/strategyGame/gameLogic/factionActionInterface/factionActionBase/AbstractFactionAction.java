@@ -1,7 +1,8 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase;
 
 
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCost.FactionActionCostFlatCost;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCost.FACFlatCost;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCost.FactionActionCost;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.ActionInputName;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWaitList;
@@ -23,7 +24,7 @@ import java.util.Set;
 public abstract class AbstractFactionAction implements FactionAction, TimedActionCommandInterface {
     private FactionResourceInterface factionResourceInterface;
     private TimedActionWaitList timedActionWaitList;
-    private List<FactionActionCostFlatCost> costs;
+    private List<FactionActionCost> costs;
     private List<FactionActionGainImp> gains;
     private Set<ActionInputName> usedInputFields;
     private String actionName;
@@ -114,7 +115,7 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
     private boolean checkIfCanDoCosts(FactionActionInput input) {
         Faction foundFaction = this.getFactionFromInput(input);
         Province foundLocation = this.getPrimaryLocationFromInput(input);
-        for(FactionActionCostFlatCost oneCost : this.costs) {
+        for(FactionActionCost oneCost : this.costs) {
             if(!this.factionResourceInterface.canRemoveResourcesFromFaction(
                     getResourceSettings(foundFaction, foundLocation, oneCost, input))) {
                 return false;
@@ -144,7 +145,7 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
     protected abstract void runActionScript(FactionActionInput input);
 
     private ResourceSettings getResourceSettings(Faction callerFaction, Province location,
-                                                 FactionActionCostFlatCost cost, FactionActionInput input) {
+                                                 FactionActionCost cost, FactionActionInput input) {
         return getDirectionNeutralResourceSettings(callerFaction, location, cost.getResourceType(), cost.getAmount(input));
     }
 
@@ -167,7 +168,7 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
 
     protected abstract void addResourceGains(List<FactionActionGainImp> addLocation);
 
-    protected abstract void addResourceCosts(List<FactionActionCostFlatCost> addLocation);
+    protected abstract void addResourceCosts(List<FactionActionCost> addLocation);
 
     @Override
     public String getCostsString(FactionActionInput input) {
@@ -176,7 +177,7 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
         }
         else {
             String costList = "";
-            for(FactionActionCostFlatCost oneCost : this.costs) {
+            for(FactionActionCost oneCost : this.costs) {
                 if(!costList.equals("")) {
                     costList += ", ";
                 }
@@ -236,7 +237,7 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
     }
 
     private boolean doCosts(Faction callerFaction, Province location, FactionActionInput input) {
-        for(FactionActionCostFlatCost oneCost : this.costs) {
+        for(FactionActionCost oneCost : this.costs) {
             if(!this.factionResourceInterface.removeResourceFromFaction(
                     getResourceSettings(callerFaction, location, oneCost, input))) {
                 return false;

@@ -1,12 +1,15 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.buildCityBuilding;
 
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.AbstractFactionAction;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCost.FactionActionCostFlatCost;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCost.FACFlatCost;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCost.FACReferenceToBuilding;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCost.FactionActionCost;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionGainImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.ActionInputName;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWaitList;
 import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.FactionResourceInterface;
+import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.ResourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -65,8 +68,8 @@ public class BuildCityBuildingAction extends AbstractFactionAction {
     }
 
     @Override
-    protected void addResourceCosts(List<FactionActionCostFlatCost> addLocation) {
-
+    protected void addResourceCosts(List<FactionActionCost> addLocation) {
+        addLocation.add(new FACReferenceToBuilding(ResourceType.GOLD));
     }
 
     @Override

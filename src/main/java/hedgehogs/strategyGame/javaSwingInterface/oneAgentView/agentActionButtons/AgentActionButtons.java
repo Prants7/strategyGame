@@ -23,6 +23,7 @@ public class AgentActionButtons extends MinorAbstractUIObjectFactory {
     private java.util.List<JButton> allButtons;
     private CityBuildingFactory buildingFactory;
     private ActionInputBuilder actionInputBuilder;
+    private JButton buildVillageButton;
 
     public AgentActionButtons(Faction perspectiveFaction,
                               FactionActionInterface factionActionInterface,
@@ -98,8 +99,12 @@ public class AgentActionButtons extends MinorAbstractUIObjectFactory {
 
     private void makeBuildVillageButton() {
         FactionAction buildAction = this.factionActionInterface.getBuildCityBuildingAction();
-        JButton newButton = new JButton("Build new Village");
-        newButton.addActionListener( e -> {
+        this.buildVillageButton = new JButton("Build new Village");
+        /*this.buildVillageButton = new JButton("Build new Village "+buildAction
+                .getCostsString(new FactionActionInputImp()
+                        .setAgent(this.lastSelectedAgent)
+                        .setCityBuilding(this.buildingFactory.getNewVillageBuildingBuilding())));*/
+        this.buildVillageButton.addActionListener( e -> {
             System.out.println("trying to build a new village");
             FactionActionInput newInput = new FactionActionInputImp().setAgent(this.lastSelectedAgent)
                     .setCityBuilding(this.buildingFactory.getNewVillageBuildingBuilding());
@@ -107,7 +112,7 @@ public class AgentActionButtons extends MinorAbstractUIObjectFactory {
             performActionThroughActionInputBuilder(buildAction, newInput);
             this.makeContentRefreshCall();
         });
-        this.addNewElementToPanel(newButton, 1, 0);
+        this.addNewElementToPanel(this.buildVillageButton, 1, 0);
     }
 
     @Override
@@ -115,6 +120,11 @@ public class AgentActionButtons extends MinorAbstractUIObjectFactory {
         if(!this.hasSelectedAgent()) {
             return;
         }
+        /*FactionAction buildAction = this.factionActionInterface.getBuildCityBuildingAction();
+        this.buildVillageButton.setText("Build new Village "+buildAction
+                .getCostsString(new FactionActionInputImp()
+                        .setAgent(this.lastSelectedAgent)
+                        .setCityBuilding(this.buildingFactory.getNewVillageBuildingBuilding())));*/
     }
 
     private boolean hasSelectedAgent() {

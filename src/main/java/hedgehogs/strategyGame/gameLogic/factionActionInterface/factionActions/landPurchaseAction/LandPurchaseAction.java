@@ -1,7 +1,8 @@
 package hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActions.landPurchaseAction;
 
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.AbstractFactionAction;
-import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCost.FactionActionCostFlatCost;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCost.FACFlatCost;
+import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionCost.FactionActionCost;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase.FactionActionGainImp;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.ActionInputName;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
@@ -80,8 +81,8 @@ public class LandPurchaseAction extends AbstractFactionAction {
     }
 
     @Override
-    protected void addResourceCosts(List<FactionActionCostFlatCost> addLocation) {
-        addLocation.add(new FactionActionCostFlatCost(ResourceType.GOLD, 2));
+    protected void addResourceCosts(List<FactionActionCost> addLocation) {
+        addLocation.add(new FACFlatCost(ResourceType.GOLD, 2));
     }
 
     @Override
