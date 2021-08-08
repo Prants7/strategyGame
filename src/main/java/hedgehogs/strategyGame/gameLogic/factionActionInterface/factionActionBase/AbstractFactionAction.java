@@ -16,10 +16,7 @@ import hedgehogs.strategyGame.gameLogic.land.Province;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class AbstractFactionAction implements FactionAction, TimedActionCommandInterface {
     private FactionResourceInterface factionResourceInterface;
@@ -276,5 +273,13 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
     @Override
     public Set<ActionInputName> getRequiredInputs() {
         return new HashSet<>(this.usedInputFields);
+    }
+
+    public Map<ResourceType, Integer> getMapOfCostResources(FactionActionInput input) {
+        Map<ResourceType, Integer> resourceMap = new HashMap<>();
+        for(FactionActionCost oneCostElement: this.costs) {
+            resourceMap.put(oneCostElement.getResourceType(), oneCostElement.getAmount(input));
+        }
+        return resourceMap;
     }
 }

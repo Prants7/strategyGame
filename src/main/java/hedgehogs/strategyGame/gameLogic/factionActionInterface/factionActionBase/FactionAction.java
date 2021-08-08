@@ -5,9 +5,11 @@ import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInpu
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapper;
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.timedActionWrapper.TimedActionWrapperImp;
+import hedgehogs.strategyGame.gameLogic.factionReousrceInterface.ResourceType;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 
+import java.util.Map;
 import java.util.Set;
 
 public interface FactionAction {
