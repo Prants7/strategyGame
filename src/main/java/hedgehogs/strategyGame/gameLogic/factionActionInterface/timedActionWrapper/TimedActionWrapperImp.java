@@ -89,4 +89,22 @@ public class TimedActionWrapperImp implements TimedActionWrapper {
         return this.time;
     }
 
+    public void cancelAction() {
+        this.giveBackResources();
+        this.actionInput.getAgent().unlockFromTask();
+        this.finished = true;
+    }
+
+    private void giveBackResources() {
+        for(Map.Entry<ResourceType, Integer> oneEntry: this.investedResources.entrySet()) {
+            if(oneEntry.getKey() == ResourceType.GOLD) {
+                this.actionInput.getAgent().getAlignmentFaction().depositGoldToTreasury(oneEntry.getValue());
+            }
+            if(oneEntry.getKey() == ResourceType.INFLUENCE) {
+                this.actionInput.getAgent().getLocation().getProvinceInfluenceTable().addInfluenceForFaction(
+                        this.actionInput.getAgent().getAlignmentFaction(), oneEntry.getValue());
+            }
+        }
+    }
+
 }
