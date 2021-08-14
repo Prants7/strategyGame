@@ -51,10 +51,46 @@ public class TimedActionWrapperImp implements TimedActionWrapper {
     }
 
     private void fillAction() {
+        Map<ResourceType, Integer> leftOverResources = this.calculateLeftOverResourcesForCurrentCost();
+        if(checkIfActionStillValidThroughLeftOverResources(leftOverResources)) {
+            this.performSuccessfulActionFinish(leftOverResources);
+        }
+        else {
+            performFailedActionFinish();
+        }
+
+    }
+
+    private void performSuccessfulActionFinish(Map<ResourceType, Integer> leftOverResources) {
         this.designatedAction.doActionFunctionality(this.actionInput);
         this.designatedAction.doGiveActionRewards(this.actionInput);
+        this.giveBackResources(leftOverResources);
         this.actionInput.getAgent().unlockFromTask();
         this.finished = true;
+    }
+
+    private void performFailedActionFinish() {
+        this.giveBackResources(this.investedResources);
+        this.actionInput.getAgent().unlockFromTask();
+        this.finished = true;
+    }
+
+    private Map<ResourceType, Integer> calculateLeftOverResourcesForCurrentCost() {
+        Map<ResourceType, Integer> currentCosts = this.designatedAction.getMapOfCostResources(actionInput);
+        Map<ResourceType, Integer> leftOverCost = new HashMap<>();
+        for(Map.Entry<ResourceType, Integer> oneEntry : currentCosts.entrySet()) {
+            leftOverCost.put(oneEntry.getKey(), this.investedResources.get(oneEntry.getKey()) - oneEntry.getValue());
+        }
+        return leftOverCost;
+    }
+
+    private boolean checkIfActionStillValidThroughLeftOverResources(Map<ResourceType, Integer> leftovers) {
+        for(Map.Entry<ResourceType, Integer> oneEntry : leftovers.entrySet()) {
+            if(oneEntry.getValue() < 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -90,13 +126,16 @@ public class TimedActionWrapperImp implements TimedActionWrapper {
     }
 
     public void cancelAction() {
-        this.giveBackResources();
+        this.giveBackResources(this.investedResources);
         this.actionInput.getAgent().unlockFromTask();
         this.finished = true;
     }
 
-    private void giveBackResources() {
-        for(Map.Entry<ResourceType, Integer> oneEntry: this.investedResources.entrySet()) {
+    private void giveBackResources(Map<ResourceType, Integer> targetResources) {
+        for(Map.Entry<ResourceType, Integer> oneEntry: targetResources.entrySet()) {
+            if(oneEntry.getValue() < 1) {
+                continue;
+            }
             if(oneEntry.getKey() == ResourceType.GOLD) {
                 this.actionInput.getAgent().getAlignmentFaction().depositGoldToTreasury(oneEntry.getValue());
             }

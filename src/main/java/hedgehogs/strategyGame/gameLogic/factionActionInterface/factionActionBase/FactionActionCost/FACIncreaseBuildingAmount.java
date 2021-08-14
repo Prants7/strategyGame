@@ -25,9 +25,6 @@ public class FACIncreaseBuildingAmount implements FactionActionCost {
     public int getAmount(FactionActionInput input) {
         int buildingAmount = input.getAgent().getLocation().accessBuildings().countBuilding(this.dependentBuilding);
         double finalAmount = Math.pow(2, buildingAmount);
-        System.out.println("Calculation result in Building one, pow result "+finalAmount);
-        int result = (int) (baseCost * finalAmount);
-        System.out.println("Calculation result in Building one "+result);
-        return result;
+        return (int) (baseCost * finalAmount);
     }
 }

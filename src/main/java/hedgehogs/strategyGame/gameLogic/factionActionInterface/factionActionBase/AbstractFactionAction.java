@@ -202,9 +202,6 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
         return this.standardFillTime;
     }
 
-    /*protected AgentSocket accessAgentSocketFromInput(FactionActionInput input) {
-        return (AgentSocket) input.getInputValueByEnum(ActionInputName.AGENT);
-    }*/
 
     protected Province getPrimaryLocationFromInput(FactionActionInput input) {
         if(input.checkInputByEnum(ActionInputName.AGENT)) {
@@ -219,8 +216,6 @@ public abstract class AbstractFactionAction implements FactionAction, TimedActio
         }
         return null;
     }
-
-
 
     @Override
     public boolean doActionCosts(FactionActionInput input) {
