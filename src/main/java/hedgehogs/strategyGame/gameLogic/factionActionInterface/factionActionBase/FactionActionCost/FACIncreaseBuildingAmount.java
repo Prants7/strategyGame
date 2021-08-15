@@ -18,7 +18,7 @@ public class FACIncreaseBuildingAmount implements FactionActionCost {
 
     @Override
     public ResourceType getResourceType() {
-        return null;
+        return type;
     }
 
     @Override

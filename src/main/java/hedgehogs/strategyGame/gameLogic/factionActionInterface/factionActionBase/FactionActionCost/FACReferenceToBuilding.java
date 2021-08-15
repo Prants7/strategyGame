@@ -21,12 +21,12 @@ public class FACReferenceToBuilding implements FactionActionCost {
     @Override
     public int getAmount(FactionActionInput input) {
         List<FactionActionCost> foundCosts = input.getCityBuilding().getBuildingSpecificCosts();
-        System.out.println("When calculating building dependent cost, found amount of costs: "+foundCosts.size());
         int total = 0;
         for(FactionActionCost oneCost: foundCosts) {
-            total += oneCost.getAmount(input);
+            if(this.designatedResource == oneCost.getResourceType()) {
+                total += oneCost.getAmount(input);
+            }
         }
-        System.out.println("When calculating building dependent cost, total: "+total);
         return total;
 
     }
