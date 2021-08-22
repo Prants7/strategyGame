@@ -1,7 +1,9 @@
 package hedgehogs.strategyGame.gameLogic.land.buildings.buildingSlots;
 
+import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
 import hedgehogs.strategyGame.gameLogic.land.Province;
 import hedgehogs.strategyGame.gameLogic.land.buildings.cityBuildings.base.CityBuilding;
+import hedgehogs.strategyGame.gameLogic.land.buildings.citySlotTable.CitySlotTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +11,14 @@ import java.util.List;
 public class LocalBuildingManagerImp implements  LocalBuildingManager {
     private Province masterProvince;
     private List<BuildingSlot> slotsHere;
+    private CitySlotTable citySlotTable;
+    private FactionPhoneBook factionPhoneBook;
 
-    public LocalBuildingManagerImp(Province masterProvince) {
+    public LocalBuildingManagerImp(Province masterProvince, CitySlotTable citySlotTable, FactionPhoneBook factionPhoneBook) {
         this.masterProvince = masterProvince;
         this.slotsHere = new ArrayList<>();
+        this.citySlotTable = citySlotTable;
+        this.factionPhoneBook = factionPhoneBook;
         updateBuildingSlots();
     }
 
@@ -23,17 +29,17 @@ public class LocalBuildingManagerImp implements  LocalBuildingManager {
     }
 
     private boolean isThereNeedForMoreSlots() {
-        return this.calculateCurrentlyAllowedAmountOfSlots() > this.slotsHere.size();
+        double currentAmountOfProsperity = this.masterProvince.accessProsperity().getCurrentValue();
+        double prosperityMark = this.citySlotTable.getProsperityMarkForNextSlot(this.getAmountOfSlots());
+        System.out.println("is there a need for more slots: " + (currentAmountOfProsperity > prosperityMark) +
+                " on province: "+this.masterProvince.getProvinceName());
+        return currentAmountOfProsperity > prosperityMark;
     }
 
     private void addMoreSlots() {
         while(isThereNeedForMoreSlots()) {
-            slotsHere.add(new BuildingSlotImp());
+            slotsHere.add(makeNewBuildingSlotOwnedByThePlayer());
         }
-    }
-
-    private int calculateCurrentlyAllowedAmountOfSlots() {
-        return 3;
     }
 
     @Override
@@ -93,6 +99,11 @@ public class LocalBuildingManagerImp implements  LocalBuildingManager {
         return count;
     }
 
+    @Override
+    public void performBuildingSlotAmountCheck() {
+        this.updateBuildingSlots();
+    }
+
     private BuildingSlot getFirstAvailableSlot() {
         for(BuildingSlot oneSlot : this.slotsHere) {
             if(oneSlot.isEmpty()) {
@@ -100,5 +111,11 @@ public class LocalBuildingManagerImp implements  LocalBuildingManager {
             }
         }
         return null;
+    }
+
+    private BuildingSlot makeNewBuildingSlotOwnedByThePlayer() {
+        BuildingSlot newSlot = new BuildingSlotImp();
+        newSlot.setOwner(this.factionPhoneBook.getPlayerFaction());
+        return newSlot;
     }
 }

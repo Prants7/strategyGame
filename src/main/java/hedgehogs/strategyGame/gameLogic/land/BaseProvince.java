@@ -3,8 +3,10 @@ package hedgehogs.strategyGame.gameLogic.land;
 import hedgehogs.strategyGame.gameLogic.coordinates.Coordinates;
 import hedgehogs.strategyGame.gameLogic.coordinates.SettlementCoordinates;
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
+import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
 import hedgehogs.strategyGame.gameLogic.land.buildings.buildingSlots.LocalBuildingManager;
 import hedgehogs.strategyGame.gameLogic.land.buildings.buildingSlots.LocalBuildingManagerImp;
+import hedgehogs.strategyGame.gameLogic.land.buildings.citySlotTable.CitySlotTable;
 import hedgehogs.strategyGame.gameLogic.land.buildings.offices.officeLocationArea.CityOfficeLocationImp;
 import hedgehogs.strategyGame.gameLogic.land.infuenceTable.InfluenceTable;
 import hedgehogs.strategyGame.gameLogic.land.infuenceTable.InfluenceTableImp;
@@ -26,15 +28,19 @@ public abstract class BaseProvince implements Province {
     private List<Road> connectedRoads;
     private LocalBuildingManager localBuildingManager;
     private SettlementStatGroup statGroup;
+    private CitySlotTable citySlotTable;
+    private FactionPhoneBook factionPhoneBook;
 
-    public BaseProvince(int xLocation, int yLocation) {
+    public BaseProvince(int xLocation, int yLocation, CitySlotTable citySlotTable, FactionPhoneBook factionPhoneBook) {
         this.statGroup = new SettlementStatGroup(this);
         this.influenceTable = new InfluenceTableImp();
         this.prosperity = new ProsperityImp();
         this.officeInterface = new CityOfficeLocationImp();
         this.settlementCoordinates = new SettlementCoordinates(xLocation, yLocation);
         this.connectedRoads = new ArrayList<>();
-        this.localBuildingManager = new LocalBuildingManagerImp(this);
+        this.citySlotTable = citySlotTable;
+        this.factionPhoneBook = factionPhoneBook;
+        this.localBuildingManager = new LocalBuildingManagerImp(this, citySlotTable, factionPhoneBook);
     }
 
     public String getProvinceName() {

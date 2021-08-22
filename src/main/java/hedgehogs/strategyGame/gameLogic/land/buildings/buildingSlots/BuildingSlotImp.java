@@ -52,6 +52,11 @@ public class BuildingSlotImp implements BuildingSlot {
     }
 
     @Override
+    public void setOwner(Faction ownerFaction) {
+        this.owner = ownerFaction;
+    }
+
+    @Override
     public CityBuilding getBuilding() {
         return this.building;
     }

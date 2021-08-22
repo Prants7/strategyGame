@@ -1,6 +1,8 @@
 package hedgehogs.strategyGame.gameLogic.land;
 
 import hedgehogs.strategyGame.gameLogic.factions.Faction;
+import hedgehogs.strategyGame.gameLogic.factions.FactionPhoneBook;
+import hedgehogs.strategyGame.gameLogic.land.buildings.citySlotTable.CitySlotTable;
 import hedgehogs.strategyGame.gameLogic.land.landFractction.LandFraction;
 import hedgehogs.strategyGame.gameLogic.land.landFractction.LandFractionFactory;
 import hedgehogs.strategyGame.gameLogic.land.settlementStats.statBase.StatName;
@@ -20,8 +22,8 @@ public class ProvinceImp extends BaseProvince implements StatChangeReceiver {
     private LandFractionFactory fractionFactory;
 
     public ProvinceImp(String provinceName, boolean settled, LandFractionFactory fractionFactory,
-                       int xLocation, int yLocation) {
-        super(xLocation, yLocation);
+                       int xLocation, int yLocation, CitySlotTable citySlotTable, FactionPhoneBook factionPhoneBook) {
+        super(xLocation, yLocation, citySlotTable, factionPhoneBook);
         this.name = provinceName;
         this.fractionFactory = fractionFactory;
         this.setUpLandFractions(fractionFactory);

@@ -20,4 +20,6 @@ public interface LocalBuildingManager {
     public boolean attemptToConstructBuildingHere(CityBuilding newBuilding);
 
     public int countBuilding(CityBuilding targetType);
+
+    public void performBuildingSlotAmountCheck();
 }

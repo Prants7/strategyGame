@@ -17,5 +17,7 @@ public interface BuildingSlot {
 
     public Faction getOwner();
 
+    public void setOwner(Faction ownerFaction);
+
     public CityBuilding getBuilding();
 }
