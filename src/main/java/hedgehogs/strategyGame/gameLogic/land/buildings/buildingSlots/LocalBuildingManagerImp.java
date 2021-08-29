@@ -29,10 +29,11 @@ public class LocalBuildingManagerImp implements  LocalBuildingManager {
     }
 
     private boolean isThereNeedForMoreSlots() {
+        if(this.getAmountOfSlots() < this.citySlotTable.getBaseBuildingAmount() + 1) {
+            return true;
+        }
         double currentAmountOfProsperity = this.masterProvince.accessProsperity().getCurrentValue();
         double prosperityMark = this.citySlotTable.getProsperityMarkForNextSlot(this.getAmountOfSlots());
-        System.out.println("is there a need for more slots: " + (currentAmountOfProsperity > prosperityMark) +
-                " on province: "+this.masterProvince.getProvinceName());
         return currentAmountOfProsperity > prosperityMark;
     }
 
@@ -49,7 +50,7 @@ public class LocalBuildingManagerImp implements  LocalBuildingManager {
 
     @Override
     public int getAmountOfUnusedSlots() {
-        return this.slotsHere.size();
+        return (int) this.slotsHere.stream().filter( oneSlot -> oneSlot.isEmpty()).count();
     }
 
     @Override

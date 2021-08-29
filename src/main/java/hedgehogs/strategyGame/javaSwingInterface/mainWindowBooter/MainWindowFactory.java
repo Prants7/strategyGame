@@ -5,9 +5,11 @@ import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionBase
 import hedgehogs.strategyGame.gameLogic.factionActionInterface.factionActionInput.FactionActionInput;
 import hedgehogs.strategyGame.gameLogic.gameLogicHub.GameLogicHub;
 import hedgehogs.strategyGame.gameLogic.land.Province;
+import hedgehogs.strategyGame.gameLogic.land.buildings.offices.base.Office;
 import hedgehogs.strategyGame.javaSwingInterface.buildingsView.BuildingViewFactory;
 import hedgehogs.strategyGame.javaSwingInterface.factionInfo.FactionInfoFactory;
 import hedgehogs.strategyGame.javaSwingInterface.graphicalMap.mapFactory.MapFactory;
+import hedgehogs.strategyGame.javaSwingInterface.officeView.OfficeViewFactory;
 import hedgehogs.strategyGame.javaSwingInterface.oneAgentView.OneAgentViewFactory;
 import hedgehogs.strategyGame.javaSwingInterface.provinceList.ProvinceListFactory;
 import hedgehogs.strategyGame.javaSwingInterface.provinceList.ProvinceSelectListener;
@@ -43,6 +45,8 @@ public class MainWindowFactory {
     private MapFactory mapFactory;
     @Autowired
     private BuildingViewFactory buildingViewFactory;
+    @Autowired
+    private OfficeViewFactory officeViewFactory;
     private JFrame mainFrame;
     private ProvinceSelectListener provinceSelectListener;
 
@@ -102,5 +106,10 @@ public class MainWindowFactory {
     public void openBuildingViewForProvince(Province targetProvince) {
         this.tabViewerFactory.changeScreenTo(this.buildingViewFactory);
         this.buildingViewFactory.openViewForProvince(targetProvince);
+    }
+
+    public void openOfficeView(Office targetOffice) {
+        this.tabViewerFactory.changeScreenTo(this.officeViewFactory);
+        this.officeViewFactory.openViewForHeadquarters(targetOffice);
     }
 }

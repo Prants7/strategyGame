@@ -54,4 +54,9 @@ public abstract class BaseFaction implements Faction {
     public FactionFractionTaxPolicy accessTaxPolicy() {
         return this.fractionTaxPolicy;
     }
+
+    @Override
+    public String toString() {
+        return this.getFactionName();
+    }
 }

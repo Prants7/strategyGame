@@ -51,7 +51,7 @@ public class ProvinceViewFactory extends AbstractUIObjectFactory  {
         this.landFractionsTable = new LandFractionsTable(this.getPlayerFaction());
         this.addNewElementToPanel(this.landFractionsTable.getPanelObject(), 0, 1);
 
-        this.controlTable = new ControlTable(this.getPlayerFaction());
+        this.controlTable = new ControlTable(this.getPlayerFaction(), this.mainWindowFactory);
         this.addNewElementToPanel(this.controlTable.getPanelObject(), 0, 2);
 
         this.agentList = new AgentList(this.getPlayerFaction(), agentPhoneBook, mainWindowFactory);

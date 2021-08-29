@@ -5,19 +5,23 @@ import hedgehogs.strategyGame.gameLogic.land.Province;
 import hedgehogs.strategyGame.gameLogic.land.buildings.offices.base.Office;
 import hedgehogs.strategyGame.javaSwingInterface.generalBuildObjects.AbstractUIObjectFactory;
 import hedgehogs.strategyGame.javaSwingInterface.generalBuildObjects.MinorAbstractUIObjectFactory;
+import hedgehogs.strategyGame.javaSwingInterface.mainWindowBooter.MainWindowFactory;
 
 import javax.swing.*;
 import java.util.Map;
 
 public class ControlTable extends MinorAbstractUIObjectFactory {
+    private MainWindowFactory mainWindowFactory;
+
     private Province lastSelectedProvince;
     private JLabel controllingFaction;
     private JLabel playerInfluence;
     private JLabel officeListLabel;
-    private JList<String> officeList;
+    private JList<Office> officeList;
 
-    public ControlTable(Faction perspectiveFaction) {
+    public ControlTable(Faction perspectiveFaction, MainWindowFactory mainWindowFactory) {
         super(perspectiveFaction);
+        this.mainWindowFactory = mainWindowFactory;
     }
 
     @Override
@@ -51,6 +55,11 @@ public class ControlTable extends MinorAbstractUIObjectFactory {
     private void makeOfficeList() {
         this.officeList = new JList<>();
         this.addNewElementToPanel(this.officeList, 0, 3);
+        this.officeList.addListSelectionListener( selectionEvent -> {
+            if(this.officeList.getSelectedValue() != null) {
+                this.mainWindowFactory.openOfficeView(this.officeList.getSelectedValue());
+            }
+        });
     }
 
     @Override
@@ -74,10 +83,10 @@ public class ControlTable extends MinorAbstractUIObjectFactory {
     }
 
     private void writeOfficeTable() {
-        DefaultListModel<String> listModel = new DefaultListModel<>();
+        DefaultListModel<Office> listModel = new DefaultListModel<>();
         for(Map.Entry<Faction, Office> oneEntry : this.lastSelectedProvince.accessLocationOffices().getAllOffices().entrySet()) {
             if(oneEntry.getKey() != null) {
-                listModel.addElement(oneEntry.getKey().getFactionName()+": "+oneEntry.getValue().getBuildingTypeName());
+                listModel.addElement(oneEntry.getValue());
             }
         }
         this.officeList.setModel(listModel);
