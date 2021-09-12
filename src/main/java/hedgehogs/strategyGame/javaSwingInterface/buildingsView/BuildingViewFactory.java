@@ -16,13 +16,13 @@ import java.util.List;
 public class BuildingViewFactory extends AbstractUIObjectFactory {
     private Province lastSelectedProvince;
     private JLabel provinceNameLabel;
-    private List<BuildSlotMinorView> buildSlots;
+    //private List<BuildSlotMinorView> buildSlots;
     private FactionPhoneBook factionPhoneBook;
 
     @Autowired
     public BuildingViewFactory(FactionPhoneBook factionPhoneBook) {
         this.factionPhoneBook = factionPhoneBook;
-        this.buildSlots = new ArrayList<>();
+        //this.buildSlots = new ArrayList<>();
     }
 
     @Override
